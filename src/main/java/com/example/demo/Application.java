@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.ServletComponentScan;
 
 @ServletComponentScan("com.bside.BSIDE.**")
-@MapperScan(basePackages = "com.bside.BSIDE.user.persistence")
+@MapperScan(basePackages = "com.bside.BSIDE.**.persistence")
 @SpringBootApplication(scanBasePackages = "com.bside.BSIDE.**")
 public class Application {
 

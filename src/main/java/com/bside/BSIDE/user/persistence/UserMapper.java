@@ -10,8 +10,8 @@ import com.bside.BSIDE.user.domain.UserDto;
 
 @Mapper
 public interface UserMapper {
-
-	// @Insert("INSERT INTO user(username, password, email) VALUES(#{username}, #{password}, #{email})")
     void insertUser(UserDto userDto);
+    String deleteUser(String eml);
     List<UserDto> getAllUsers();
+    void updateUser(UserDto userDto);
 }

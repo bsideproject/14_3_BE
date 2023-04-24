@@ -38,7 +38,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver    
 
 mybatis: 
-  mapper-locations: classpath:sqlmap/mapper/user/*.xml
+  mapper-locations: classpath:sqlmap/mapper/**/*.xml
   
   
   jpa:
