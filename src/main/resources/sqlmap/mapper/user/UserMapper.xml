@@ -31,17 +31,16 @@
 	
 	<update id="updateUser" parameterType="com.bside.BSIDE.user.domain.UserDto">
 		UPDATE bside.user SET (
-			name=#{name}, 
-			usr_nm=#{usrNm}, 
+			user_nm=#{usrNm}, 
 			gndr_cls_cd=#{gndrClsCd}, 
 			brdt=#{brdt},
 			updateDtm=now() 
 		)
-			WHERE eml=#{userId}
+			WHERE eml=#{email}
 	</update>
 	
 	<delete id="deleteUser" parameterType = "String">
-		DELETE FROM bside.cust 
-		WHERE eml = #{userId}
+		DELETE FROM bside.user 
+		WHERE eml = #{email}
 	</delete>
 </mapper>
