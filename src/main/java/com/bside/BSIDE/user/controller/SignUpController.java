@@ -69,5 +69,14 @@ public class SignUpController {
     }
 
 
+    // 이메일과 다른 식별데이터 조회하는 로직 필요
+    @Operation(summary = "이메일 발송", description = "String eml")
+    @PostMapping("/find-password")
+    public ResponseEntity<?> findPassword(@RequestBody String eml) throws Exception {
+        log.debug("eml: {}", eml);
+        Map<String, Object> result = signUpService.createMailSendPassword(eml);
+        signUpService.sendMail(result);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
 
 }

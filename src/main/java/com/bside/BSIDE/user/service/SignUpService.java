@@ -14,4 +14,9 @@ public interface SignUpService {
 
     // 회원 조회
     Map<String, Object> selectMember(String eml) throws Exception;
+
+    // 메일 발송
+    Map<String, Object> createMailSendPassword(String eml);
+
+    void sendMail(Map<String, Object> result);
 }

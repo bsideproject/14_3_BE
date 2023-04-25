@@ -10,4 +10,6 @@ public interface SignUpMapper {
     int duplicateCheck(String eml);
     void createMember(UserDto userDto);
     Map<String, Object> selectMember(String eml);
+
+    void updatePassword(String eml, String str);
 }

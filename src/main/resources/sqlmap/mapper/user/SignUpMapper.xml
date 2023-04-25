@@ -10,7 +10,7 @@
 
     <insert id="createMember" parameterType="com.bside.BSIDE.user.domain.UserDto">
         INSERT INTO
-            bside.cust(
+            bside.user(
             eml,
             usr_nm,
             password,
@@ -32,7 +32,7 @@
         SELECT
             COUNT(eml)
         FROM
-            bside.cust
+            bside.user
         WHERE eml = #{eml}
     </select>
 
@@ -40,9 +40,19 @@
         SELECT
             *
         FFROM
-            bside.cust
+            bside.user
         WHERE eml = #{eml}
     </select>
+
+    <update id="updatePassword" parameterType="string">
+        UPDATE
+            bside.user
+        SET
+            password= #{str}
+        WHERE
+            eml = #{eml}
+    </update>
+
 
 
 
