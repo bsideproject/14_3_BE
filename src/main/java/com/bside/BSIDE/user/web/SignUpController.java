@@ -1,4 +1,4 @@
-package com.bside.BSIDE.user.controller;
+package com.bside.BSIDE.user.web;
 
 import com.bside.BSIDE.user.domain.UserDto;
 import com.bside.BSIDE.user.service.SignUpService;
