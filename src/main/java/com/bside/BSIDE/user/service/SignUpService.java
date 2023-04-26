@@ -1,6 +1,7 @@
 package com.bside.BSIDE.user.service;
 
 
+import com.bside.BSIDE.user.domain.MailDto;
 import com.bside.BSIDE.user.domain.UserDto;
 
 import java.util.Map;
@@ -15,8 +16,6 @@ public interface SignUpService {
     // 회원 조회
     Map<String, Object> selectMember(String eml) throws Exception;
 
-    // 메일 발송
-    Map<String, Object> createMailSendPassword(String eml);
-
-    void sendMail(Map<String, Object> result);
+    // 이메일발송한 비번 변경
+    void updatePassword(MailDto mailDto) throws Exception;
 }

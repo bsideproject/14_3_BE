@@ -44,11 +44,11 @@
         WHERE eml = #{eml}
     </select>
 
-    <update id="updatePassword" parameterType="string">
+    <update id="updatePassword" parameterType="com.bside.BSIDE.user.domain.UserDto">
         UPDATE
             bside.user
         SET
-            password= #{str}
+            password= #{tempPassword}
         WHERE
             eml = #{eml}
     </update>

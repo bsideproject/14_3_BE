@@ -1,6 +1,8 @@
 package com.bside.BSIDE.user.web;
 
+import com.bside.BSIDE.user.domain.MailDto;
 import com.bside.BSIDE.user.domain.UserDto;
+import com.bside.BSIDE.user.service.EmailService;
 import com.bside.BSIDE.user.service.SignUpService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +34,7 @@ import java.util.Map;
 public class SignUpController {
 
     private final SignUpService signUpService;
+    private final EmailService mailService;
 
     @PostMapping("/duplicate-check")
     @Operation(summary = "이메일 중복체크", description = "String eml")
@@ -69,14 +72,13 @@ public class SignUpController {
     }
 
 
-    // 이메일과 다른 식별데이터 조회하는 로직 필요
-    @Operation(summary = "이메일 발송", description = "String eml")
+    // TODO: 이메일일치여부에 따른 이메일과 다른 식별데이터 조회하는 로직 필요
+    @Operation(summary = "이메일 발송", description = "MailDto mailDto")
     @PostMapping("/find-password")
-    public ResponseEntity<?> findPassword(@RequestBody String eml) throws Exception {
-        log.debug("eml: {}", eml);
-        Map<String, Object> result = signUpService.createMailSendPassword(eml);
-        signUpService.sendMail(result);
-        return new ResponseEntity<>(result, HttpStatus.OK);
+    public ResponseEntity<?> findPassword(MailDto mailDto) throws Exception {
+        mailService.mailSend(mailDto);
+
+        return new ResponseEntity<>(mailDto.getEml(), HttpStatus.OK);
     }
 
 }
