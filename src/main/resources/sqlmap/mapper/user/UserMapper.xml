@@ -7,19 +7,41 @@
 <mapper namespace="com.bside.BSIDE.user.persistence.UserMapper">
 	<insert id="insertUser" parameterType="com.bside.BSIDE.user.domain.UserDto">
 		INSERT INTO
-			.info(
-			username,
+			bside.user(
+			eml,
+			usr_nm,
 			password,
-			email
+			gndr_cls_cd,
+			brdt,
+			join_dtm
 		)
 		VALUES(
-				  #{username},
+				  #{eml},
+				  #{usrNm},
 				  #{password},
-				  #{email}
+				  #{gndrClsCd},
+				  #{brdt},
+				  now()
 			  )
 	</insert>
 	
 	<select id="getAllUsers" resultType="com.bside.BSIDE.user.domain.UserDto">
-		SELECT * FROM bside.cust
+		SELECT * FROM bside.user
 	</select>
+	
+	<update id="updateUser" parameterType="com.bside.BSIDE.user.domain.UserDto">
+		UPDATE bside.user SET (
+			name=#{name}, 
+			usr_nm=#{usrNm}, 
+			gndr_cls_cd=#{gndrClsCd}, 
+			brdt=#{brdt},
+			updateDtm=now() 
+		)
+			WHERE eml=#{userId}
+	</update>
+	
+	<delete id="deleteUser" parameterType = "String">
+		DELETE FROM bside.cust 
+		WHERE eml = #{userId}
+	</delete>
 </mapper>

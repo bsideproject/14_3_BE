@@ -26,5 +26,15 @@ public class UserServiceImpl implements UserService{
     public List<UserDto> getAllUsers() {
         return userMapper.getAllUsers();
     }
+    
+    @Override
+    public void deleteUser(String eml) {
+        userMapper.deleteUser(eml);
+    }
+    
+    @Override
+    public void updateUser(UserDto userDto) {
+    	userMapper.updateUser(userDto);
+    }
 	
 }
