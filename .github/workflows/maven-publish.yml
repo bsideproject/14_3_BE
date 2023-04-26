@@ -38,10 +38,11 @@ jobs:
           HOST: ${{ secrets.SERVER_HOST }}
           USERNAME: ${{ secrets.SERVER_USERNAME }}
           PORT: ${{ secrets.SERVER_PORT }}
+          #          scp -i private_key.pem -P $PORT -o StrictHostKeyChecking=no -r target/*.jar $USERNAME@$HOST:/home/$USERNAME/
       run: |
           echo "$PRIVATE_KEY" > private_key.pem
           chmod 600 private_key.pem
-          scp -i private_key.pem -P $PORT -o StrictHostKeyChecking=no -r target/*.jar $USERNAME@$HOST:/home/$USERNAME/
+          scp -i private_key.pem -P $PORT -o StrictHostKeyChecking=no -r target/*.jar $USERNAME@$HOST:/var/www/html/jars/
           ssh -i private_key.pem -p $PORT -o StrictHostKeyChecking=no $USERNAME@$HOST 'bash -s' <<- EOF
             pgrep java | xargs kill -9 || true
             nohup java -jar /home/$USERNAME/*.jar > /dev/null 2>&1 & disown
