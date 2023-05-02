@@ -40,7 +40,6 @@ spring:
 mybatis: 
   mapper-locations: classpath:sqlmap/mapper/**/*.xml
   
-  
   jpa:
     database: mysql
     hibernate:

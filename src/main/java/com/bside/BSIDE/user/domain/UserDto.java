@@ -38,4 +38,9 @@ public class UserDto {
 
 	@Schema(description = "사용자 생성일자", example = "1993-01-01")
 	private String brdt;
+	
+	public String getEmail() {
+		return this.eml;
+	}
+	
 }

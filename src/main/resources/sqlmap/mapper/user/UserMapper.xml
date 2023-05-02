@@ -30,13 +30,15 @@
 	</select>
 	
 	<update id="updateUser" parameterType="com.bside.BSIDE.user.domain.UserDto">
-		UPDATE bside.user SET (
-			user_nm=#{usrNm}, 
-			gndr_cls_cd=#{gndrClsCd}, 
+		UPDATE bside.user 
+		SET 
+			usr_nm=#{usrNm},
+			password=#{password},
+			gndr_cls_cd=#{gndrClsCd},
 			brdt=#{brdt},
-			updateDtm=now() 
-		)
-			WHERE eml=#{email}
+			update_dtm=now()
+		WHERE 
+			eml=#{email}
 	</update>
 	
 	<delete id="deleteUser" parameterType = "String">

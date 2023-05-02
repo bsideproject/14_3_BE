@@ -25,4 +25,24 @@ public class QuestionServiceImpl implements QuestionService {
     public void insertQuestion(QuestionDto questionDto) {
     	questionMapper.insertQuestion(questionDto);
     }
+    
+    @Override
+    public int countUnansweredQuestions() {
+        return questionMapper.countUnansweredQuestions();
+    }
+    
+    @Override
+    public int countAnsweredQuestionsThisMonth() {
+        return questionMapper.countAnsweredQuestionsThisMonth();
+    }
+    
+    @Override
+    public int countAnsweredQuestionsToday() {
+        return questionMapper.countAnsweredQuestionsToday();
+    }
+    
+    @Override
+    public int countAnsweredQuestionsByMonth(int year, int month) {
+        return questionMapper.countAnsweredQuestionsByMonth(year, month);
+    }
 }
