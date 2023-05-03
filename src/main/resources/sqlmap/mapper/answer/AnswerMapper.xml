@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+		
+<mapper namespace="com.bside.BSIDE.contents.persistence.AnswerMapper">
+
+	<!-- 답변 저장 -->
+	<insert id="saveAnswer" parameterType="com.bside.BSIDE.contents.domain.AnswerDto">
+		INSERT INTO answer(q_no, a_question, a_answer_content, a_writer)
+    	SELECT q.q_no, q.q_question, #{aAnswerContent}, #{aWriter}
+    	FROM question q
+    	WHERE q.q_no = #{qNo}
+	</insert>
+	
+</mapper>

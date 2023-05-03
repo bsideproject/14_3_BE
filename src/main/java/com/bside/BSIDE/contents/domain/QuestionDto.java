@@ -23,8 +23,5 @@ public class QuestionDto {
 	private String category;
 
 	@Schema(description = "질문 작성자", example = "donghun@naver.com")
-	private String q_writer;
-
-	@Schema(accessMode = Schema.AccessMode.READ_ONLY)
-	private String created_at;
+	private String qWriter;
 }

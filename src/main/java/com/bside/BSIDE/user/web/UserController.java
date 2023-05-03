@@ -43,23 +43,27 @@ public class UserController {
         return userService.getAllUsers();
     }
     
-    //회원 삭제    
+    //회원 탈퇴    
     @DeleteMapping("/delete/{email}")
     @Operation(summary = "회원 탈퇴", description = "String eml")
     public ResponseEntity<String> deleteUser(@PathVariable String email) {
         try {
-        	userService.deleteUser(email);
-        	return ResponseEntity.ok("success");
+            int deletedRows = userService.deleteUser(email);
+            if (deletedRows == 0) {
+                return ResponseEntity.ok("해당 이메일을 가진 사용자가 존재하지 않습니다.");
+            } else {
+                return ResponseEntity.ok("사용자 삭제 성공");
+            }
         } catch (Exception e) {
-        	throw e;
+            throw e;
         }
     }
     
     //회원 수정
     @PutMapping("/update/{email}")
     @Operation(summary = "회원 정보 수정", description = "String eml")
-    public ResponseEntity<String> updateUser(@PathVariable String eml, @RequestBody UserDto userDto) {
-        userDto.setEml(eml);
+    public ResponseEntity<String> updateUser(@PathVariable String email, @RequestBody UserDto userDto) {
+        userDto.setEml(email);
         userService.updateUser(userDto);
         return ResponseEntity.ok().build();
     }

@@ -28,8 +28,8 @@ public class UserServiceImpl implements UserService{
     }
     
     @Override
-    public void deleteUser(String eml) {
-        userMapper.deleteUser(eml);
+    public int deleteUser(String email) {
+        return userMapper.deleteUser(email);
     }
     
     @Override

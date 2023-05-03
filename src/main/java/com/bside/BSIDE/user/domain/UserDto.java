@@ -1,6 +1,7 @@
 package com.bside.BSIDE.user.domain;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -37,13 +38,9 @@ public class UserDto {
 
 	@Schema(description = "사용자 생성일자", example = "1993-01-01")
 	private String brdt;
-
-	@Schema(accessMode = Schema.AccessMode.READ_ONLY)
-	private String joinDtm;
-
-	@Schema(accessMode = Schema.AccessMode.READ_ONLY)
-	private String lastLgnDtm;
-
-	@Schema(accessMode = Schema.AccessMode.READ_ONLY)
-	private String updateDtm;
+	
+	public String getEmail() {
+		return this.eml;
+	}
+	
 }
