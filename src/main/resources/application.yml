@@ -20,6 +20,18 @@ springdoc:
     
     
 spring:
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${mail.username}
+    password: ${mail.password}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
   mvc:
     pathmatch:
       matching-strategy: ant-path-matcher 
