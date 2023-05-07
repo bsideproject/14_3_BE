@@ -8,27 +8,31 @@
 <mapper namespace="com.bside.BSIDE.contents.persistence.QuestionMapper">
 
 
-	<!--  질문 리스트 조회 (랜덤으로 3개)  -->
+	<!--  질문 리스트 조회 (랜덤으로 3개) -->
 	<select id="getQuestion" resultType="com.bside.BSIDE.contents.domain.QuestionDto">
-		SELECT Q.question
+		SELECT Q.q_no as qNo, Q.q_question as qQuestion
 		FROM bside.question Q 
 		LEFT OUTER JOIN bside.answer A ON Q.q_no = A.q_no
 		WHERE A.q_no IS NULL
 		ORDER BY RAND() LIMIT 3;
 	</select>
-			
+	
+	<!-- qNo에 해당하는 질문 조회 -->
+	<select id="getQuestionByPNO" resultType="com.bside.BSIDE.contents.domain.QuestionDto" parameterType="int">
+	    SELECT q_no as qNo, q_question as qQuestion
+	    FROM bside.question
+	    WHERE q_no = #{pNo}
+	</select>			
 			
 	<!-- 질문 저장 -->
 	<insert id="insertQuestion" parameterType="com.bside.BSIDE.contents.domain.QuestionDto">
 		INSERT INTO
 			bside.question(
-			q_question,
 			q_category,
 			q_writer,
 			q_created_at
 		)
 		VALUES(
-				  #{question},
 				  #{category},
 				  #{qWriter},
 				  now()

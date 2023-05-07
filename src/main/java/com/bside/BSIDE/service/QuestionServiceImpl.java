@@ -10,39 +10,44 @@ import com.bside.BSIDE.contents.persistence.QuestionMapper;
 @Service
 public class QuestionServiceImpl implements QuestionService {
 
-    private final QuestionMapper questionMapper;
+	private final QuestionMapper questionMapper;
 
-    public QuestionServiceImpl(QuestionMapper questionMapper) {
-        this.questionMapper = questionMapper;
-    }
-    
-    @Override
-    public List<QuestionDto> getQuestion() {
-        return questionMapper.getQuestion();
-    }
-    
-    @Override
-    public void insertQuestion(QuestionDto questionDto) {
-    	questionMapper.insertQuestion(questionDto);
-    }
-    
-    @Override
-    public int countUnansweredQuestions() {
-        return questionMapper.countUnansweredQuestions();
-    }
-    
-    @Override
-    public int countAnsweredQuestionsThisMonth() {
-        return questionMapper.countAnsweredQuestionsThisMonth();
-    }
-    
-    @Override
-    public int countAnsweredQuestionsToday() {
-        return questionMapper.countAnsweredQuestionsToday();
-    }
-    
-    @Override
-    public int countAnsweredQuestionsByMonth(int year, int month) {
-        return questionMapper.countAnsweredQuestionsByMonth(year, month);
+	public QuestionServiceImpl(QuestionMapper questionMapper) {
+		this.questionMapper = questionMapper;
+	}
+
+	@Override
+	public List<QuestionDto> getQuestion() {
+		return questionMapper.getQuestion();
+	}
+
+	@Override
+	public void insertQuestion(QuestionDto questionDto) {
+		questionMapper.insertQuestion(questionDto);
+	}
+
+	@Override
+	public int countUnansweredQuestions() {
+		return questionMapper.countUnansweredQuestions();
+	}
+
+	@Override
+	public int countAnsweredQuestionsThisMonth() {
+		return questionMapper.countAnsweredQuestionsThisMonth();
+	}
+
+	@Override
+	public int countAnsweredQuestionsToday() {
+		return questionMapper.countAnsweredQuestionsToday();
+	}
+
+	@Override
+	public int countAnsweredQuestionsByMonth(int year, int month) {
+		return questionMapper.countAnsweredQuestionsByMonth(year, month);
+	}
+	
+	@Override
+    public QuestionDto getQuestionByPNO(int pNo) {
+        return questionMapper.getQuestionByPNO(pNo);
     }
 }

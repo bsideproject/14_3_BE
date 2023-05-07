@@ -11,4 +11,5 @@ public interface QuestionService {
 	int countAnsweredQuestionsThisMonth();
 	int countAnsweredQuestionsToday();
 	int countAnsweredQuestionsByMonth(int year, int month);
+	QuestionDto getQuestionByPNO(int pNo);
 }

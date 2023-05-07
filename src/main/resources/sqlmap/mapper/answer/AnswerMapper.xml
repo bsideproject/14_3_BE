@@ -9,10 +9,24 @@
 
 	<!-- 답변 저장 -->
 	<insert id="saveAnswer" parameterType="com.bside.BSIDE.contents.domain.AnswerDto">
-		INSERT INTO answer(q_no, a_question, a_answer_content, a_writer)
-    	SELECT q.q_no, q.q_question, #{aAnswerContent}, #{aWriter}
-    	FROM question q
-    	WHERE q.q_no = #{qNo}
-	</insert>
+        INSERT INTO answer(q_no, a_answer_content, a_check, a_writer)
+        VALUES(#{qNo}, #{aAnswerContent}, #{aCheck}, #{aWriter})
+    </insert>
+	
+	<!-- getUnansweredAnswers -->
+	<select id="getUnansweredAnswers" resultMap="answerResultMap">
+	    SELECT *
+	    FROM answer
+	    WHERE a_check = false
+	    AND DATE(a_created_at) = DATE(NOW())
+	</select>
+	
+	<resultMap id="answerResultMap" type="com.bside.BSIDE.contents.domain.AnswerDto">
+		<id property="aNo" column="a_no"/>
+		<result property="qNo" column="q_no"/>
+		<result property="aAnswerContent" column="a_answer_content"/>
+		<result property="aWriter" column="a_writer"/>
+		<result property="aCheck" column="a_check"/>
+	</resultMap>
 	
 </mapper>

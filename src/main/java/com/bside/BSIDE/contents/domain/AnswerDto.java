@@ -1,5 +1,7 @@
 package com.bside.BSIDE.contents.domain;
 
+import java.time.LocalDateTime;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,16 +16,22 @@ import lombok.Setter;
 @Builder
 public class AnswerDto {
 	@Schema(hidden = true)
-	private String aNo;
+	private int aNo;
 		
 	@Schema(description = "질문 고유 식별 번호", example = "1")
-	private String qNo;
+	private int qNo;
 		
 	@Schema(description = "질문에 대한 답변", example = "겨울")
 	private String aAnswerContent;
 	
 	@Schema(description = "답변 작성자", example = "donghun@gmail.com")
 	private String aWriter;
-
+	
+	@Schema(description = "질문에 대한 답변 유무", example = "false")
+	private boolean aCheck;
+	
+	public int getqNo() {
+		return qNo;
+	}
 	
 }

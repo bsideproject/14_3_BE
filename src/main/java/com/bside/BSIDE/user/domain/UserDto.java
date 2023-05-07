@@ -1,5 +1,7 @@
 package com.bside.BSIDE.user.domain;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
@@ -13,6 +15,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@JsonInclude(JsonInclude.Include.NON_NULL) //null 값 출력x
 public class UserDto {
 	@Schema(accessMode = Schema.AccessMode.READ_ONLY)
 	private String usrNo;

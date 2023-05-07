@@ -13,7 +13,7 @@ import com.bside.BSIDE.service.AnswerService;
 import io.swagger.v3.oas.annotations.Operation;
 
 @RestController
-@RequestMapping("/api/answers")
+@RequestMapping("/answers")
 public class AnswerController {
 	private final AnswerService answerService;
 
@@ -22,7 +22,7 @@ public class AnswerController {
     }
     
     /* 답변 저장 */
-    @PostMapping
+    @PostMapping("/saveAnswer")
     @Operation(summary = "답변 저장")
     public ResponseEntity<Void> saveAnswer(@RequestBody AnswerDto answerDto) {
         answerService.saveAnswer(answerDto);
