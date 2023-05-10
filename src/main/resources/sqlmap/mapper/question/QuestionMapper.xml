@@ -6,24 +6,7 @@
 		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 		
 <mapper namespace="com.bside.BSIDE.contents.persistence.QuestionMapper">
-
-
-	<!--  질문 리스트 조회 (랜덤으로 3개) -->
-	<select id="getQuestion" resultType="com.bside.BSIDE.contents.domain.QuestionDto">
-		SELECT Q.q_no as qNo, Q.q_question as qQuestion
-		FROM bside.question Q 
-		LEFT OUTER JOIN bside.answer A ON Q.q_no = A.q_no
-		WHERE A.q_no IS NULL
-		ORDER BY RAND() LIMIT 3;
-	</select>
 	
-	<!-- qNo에 해당하는 질문 조회 -->
-	<select id="getQuestionByPNO" resultType="com.bside.BSIDE.contents.domain.QuestionDto" parameterType="int">
-	    SELECT q_no as qNo, q_question as qQuestion
-	    FROM bside.question
-	    WHERE q_no = #{pNo}
-	</select>			
-			
 	<!-- 질문 저장 -->
 	<insert id="insertQuestion" parameterType="com.bside.BSIDE.contents.domain.QuestionDto">
 		INSERT INTO
@@ -38,6 +21,23 @@
 				  now()
 			  )
 	</insert>
+
+	<!--  질문 리스트 조회 -->
+	<select id="getQuestionByCategory" resultType="com.bside.BSIDE.contents.domain.QuestionDto" parameterType="string">
+		SELECT Q.q_no as qNo, Q.q_question as qQuestion
+		FROM bside.question Q 
+		LEFT OUTER JOIN bside.answer A ON Q.q_no = A.q_no
+		WHERE A.q_no IS NULL AND Q.q_category = #{category}
+		ORDER BY RAND() LIMIT 1;
+	</select>
+	
+	<!-- qNo에 해당하는 질문 조회 -->
+	<select id="getQuestionByPNO" resultType="com.bside.BSIDE.contents.domain.QuestionDto" parameterType="int">
+	    SELECT q_no as qNo, q_question as qQuestion
+	    FROM bside.question
+	    WHERE q_no = #{pNo}
+	</select>
+	
 	
 	<!-- 금일 잔여 답변 개수 조회 -->
 	<select id="countUnansweredQuestions" resultType="int">

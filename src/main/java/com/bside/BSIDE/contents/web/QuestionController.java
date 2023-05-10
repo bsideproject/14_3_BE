@@ -1,6 +1,7 @@
 package com.bside.BSIDE.contents.web;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bside.BSIDE.contents.domain.AnswerDto;
@@ -40,7 +42,7 @@ public class QuestionController {
 	/* 질문 리스트 조회 */
     @GetMapping("/selectQuestion")
     @Operation(summary = "질문 리스트 조회")
-    public List<QuestionDto> getQuestion() {
+    public List<QuestionDto> getQuestionByCategory(@RequestParam(value = "category", required = false) String category) {
     	// 오늘 생성된 답변되지 않은 질문 조회
         List<AnswerDto> unansweredAnswers = answerService.getUnansweredAnswers();
         
@@ -54,8 +56,8 @@ public class QuestionController {
             return unansweredQuestions;
         }
         
-        // 답변되지 않은 질문이 없다면 전체 질문 조회
-        return questionService.getQuestion();
+        // 답변되지 않은 질문이 없다면 전체 질문 조회        
+        return questionService.getQuestionByCategory(category);
     }
     
     /* 질문 저장 */

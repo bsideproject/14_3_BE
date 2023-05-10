@@ -8,7 +8,7 @@ import com.bside.BSIDE.contents.domain.AnswerDto;
 
 @Mapper
 public interface AnswerMapper {
-	void saveAnswer(AnswerDto answerDto);
+	void selectedQuestion(AnswerDto answerDto);
 	List<AnswerDto> getUnansweredAnswers();
-	List<AnswerDto> selectAnsweredAnswersByToday();
+	void saveAnswer(AnswerDto answerDto);
 }

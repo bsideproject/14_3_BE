@@ -29,4 +29,8 @@ public class QuestionDto {
 	
 	@Schema(accessMode = Schema.AccessMode.READ_ONLY)
 	private String qCreatedAt;
+	
+	public int getqNo() {
+	    return this.qNo;
+	}
 }

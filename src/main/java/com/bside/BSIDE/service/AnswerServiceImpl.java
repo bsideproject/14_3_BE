@@ -17,12 +17,20 @@ public class AnswerServiceImpl implements AnswerService {
 
     
     @Override
-    public void saveAnswer(AnswerDto answerDto) {
-        answerMapper.saveAnswer(answerDto);
+    public void selectedQuestion(int qNo, String aWriter) {
+    	AnswerDto answerDto = new AnswerDto();
+    	answerDto.setQNo(qNo);
+        answerDto.setAWriter(aWriter);
+        answerMapper.selectedQuestion(answerDto);
     }
     
     @Override
     public List<AnswerDto> getUnansweredAnswers() {
         return answerMapper.getUnansweredAnswers();
+    }
+    
+    @Override
+    public void saveAnswer(AnswerDto answerDto) {
+    	answerMapper.saveAnswer(answerDto);
     }
 }

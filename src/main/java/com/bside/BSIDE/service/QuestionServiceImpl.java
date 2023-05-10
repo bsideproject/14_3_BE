@@ -17,14 +17,20 @@ public class QuestionServiceImpl implements QuestionService {
 	}
 
 	@Override
-	public List<QuestionDto> getQuestion() {
-		return questionMapper.getQuestion();
-	}
-
-	@Override
 	public void insertQuestion(QuestionDto questionDto) {
 		questionMapper.insertQuestion(questionDto);
 	}
+	
+	@Override
+    public List<QuestionDto> getQuestionByCategory(String category) {
+        return questionMapper.getQuestionByCategory(category);
+    }
+	
+	@Override
+    public QuestionDto getQuestionByPNO(int pNo) {
+        return questionMapper.getQuestionByPNO(pNo);
+    }
+	
 
 	@Override
 	public int countUnansweredQuestions() {
@@ -44,10 +50,6 @@ public class QuestionServiceImpl implements QuestionService {
 	@Override
 	public int countAnsweredQuestionsByMonth(int year, int month) {
 		return questionMapper.countAnsweredQuestionsByMonth(year, month);
-	}
+	}	
 	
-	@Override
-    public QuestionDto getQuestionByPNO(int pNo) {
-        return questionMapper.getQuestionByPNO(pNo);
-    }
 }
