@@ -6,7 +6,9 @@ import com.bside.BSIDE.contents.domain.QuestionDto;
 
 public interface QuestionService {
 	void insertQuestion(QuestionDto questionDto);
-	List<QuestionDto> getQuestion();
+	QuestionDto getQuestionByPNO(int pNo);
+	List<QuestionDto> getQuestionByCategory(String category);	
+	
 	int countUnansweredQuestions();
 	int countAnsweredQuestionsThisMonth();
 	int countAnsweredQuestionsToday();

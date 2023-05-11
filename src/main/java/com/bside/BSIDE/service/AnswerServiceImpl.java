@@ -1,5 +1,7 @@
 package com.bside.BSIDE.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.bside.BSIDE.contents.domain.AnswerDto;
@@ -13,6 +15,19 @@ public class AnswerServiceImpl implements AnswerService {
         this.answerMapper = answerMapper;
     }
 
+    
+    @Override
+    public void selectedQuestion(int qNo, String aWriter) {
+    	AnswerDto answerDto = new AnswerDto();
+    	answerDto.setQNo(qNo);
+        answerDto.setAWriter(aWriter);
+        answerMapper.selectedQuestion(answerDto);
+    }
+    
+    @Override
+    public List<AnswerDto> getUnansweredAnswers() {
+        return answerMapper.getUnansweredAnswers();
+    }
     
     @Override
     public void saveAnswer(AnswerDto answerDto) {

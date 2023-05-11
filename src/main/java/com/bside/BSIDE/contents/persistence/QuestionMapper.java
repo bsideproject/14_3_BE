@@ -11,7 +11,9 @@ import com.bside.BSIDE.contents.domain.QuestionDto;
 @Mapper
 public interface QuestionMapper {
 	void insertQuestion(QuestionDto questionDto);
-	List<QuestionDto> getQuestion();
+	QuestionDto getQuestionByPNO(int pNo);
+	List<QuestionDto> getQuestionByCategory(String category);	
+	
 	int countUnansweredQuestions();
 	int countAnsweredQuestionsThisMonth();
 	int countAnsweredQuestionsToday();

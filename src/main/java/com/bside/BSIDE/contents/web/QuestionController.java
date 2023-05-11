@@ -1,5 +1,7 @@
 package com.bside.BSIDE.contents.web;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -9,9 +11,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bside.BSIDE.contents.domain.AnswerDto;
 import com.bside.BSIDE.contents.domain.QuestionDto;
+import com.bside.BSIDE.service.AnswerService;
 import com.bside.BSIDE.service.QuestionService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -27,17 +32,32 @@ import io.swagger.v3.oas.annotations.Operation;
 public class QuestionController {
 	
 	private final QuestionService questionService;
+	private final AnswerService answerService;
 
-    public QuestionController(QuestionService questionService) {
+    public QuestionController(QuestionService questionService, AnswerService answerService) {
         this.questionService = questionService;
-    }	
-	
-	
+        this.answerService = answerService;
+    }
+        
 	/* 질문 리스트 조회 */
     @GetMapping("/selectQuestion")
     @Operation(summary = "질문 리스트 조회")
-    public List<QuestionDto> getQuestion() {
-        return questionService.getQuestion();
+    public List<QuestionDto> getQuestionByCategory(@RequestParam(value = "category", required = false) String category) {
+    	// 오늘 생성된 답변되지 않은 질문 조회
+        List<AnswerDto> unansweredAnswers = answerService.getUnansweredAnswers();
+        
+        // 만약 오늘 생성된 답변되지 않은 질문이 있다면 해당 질문 출력
+        if (!unansweredAnswers.isEmpty()) {
+            List<QuestionDto> unansweredQuestions = new ArrayList<>();
+            for (AnswerDto answer : unansweredAnswers) {
+                QuestionDto question = questionService.getQuestionByPNO(answer.getqNo());
+                unansweredQuestions.add(question);
+            }
+            return unansweredQuestions;
+        }
+        
+        // 답변되지 않은 질문이 없다면 전체 질문 조회        
+        return questionService.getQuestionByCategory(category);
     }
     
     /* 질문 저장 */
@@ -70,7 +90,7 @@ public class QuestionController {
     @Operation(summary = "오늘 답변한 질문 개수 조회")
     public ResponseEntity<String> countAnsweredQuestionsToday() {
         Integer count = questionService.countAnsweredQuestionsToday();
-        return ResponseEntity.ok("이번 달에 답변한 질문 개수는 "+count+"개 입니다.");
+        return ResponseEntity.ok("오늘 답변한 질문 개수는 "+count+"개 입니다.");
     }
     
     /* 선택한 월에 답변한 질문 개수 조회 */
