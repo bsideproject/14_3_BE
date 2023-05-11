@@ -28,7 +28,7 @@
 		FROM bside.question Q 
 		LEFT OUTER JOIN bside.answer A ON Q.q_no = A.q_no
 		WHERE A.q_no IS NULL AND Q.q_category = #{category}
-		ORDER BY RAND() LIMIT 1;
+		ORDER BY RAND() LIMIT 4;
 	</select>
 	
 	<!-- qNo에 해당하는 질문 조회 -->
@@ -36,8 +36,7 @@
 	    SELECT q_no as qNo, q_question as qQuestion
 	    FROM bside.question
 	    WHERE q_no = #{pNo}
-	</select>
-	
+	</select>	
 	
 	<!-- 금일 잔여 답변 개수 조회 -->
 	<select id="countUnansweredQuestions" resultType="int">

@@ -39,7 +39,7 @@
     <select id="selectMember" parameterType="string" resultType="Map">
         SELECT
             *
-        FFROM
+        FROM
             bside.user
         WHERE eml = #{eml}
     </select>

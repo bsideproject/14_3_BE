@@ -12,7 +12,7 @@ import com.bside.BSIDE.contents.domain.QuestionDto;
 public interface QuestionMapper {
 	void insertQuestion(QuestionDto questionDto);
 	QuestionDto getQuestionByPNO(int pNo);
-	List<QuestionDto> getQuestionByCategory(String category);	
+	List<QuestionDto> getQuestionByCategory(String category);
 	
 	int countUnansweredQuestions();
 	int countAnsweredQuestionsThisMonth();
