@@ -40,8 +40,8 @@ public class QuestionController {
     }
         
 	/* 질문 리스트 조회 */
-    @GetMapping("/selectQuestion")
-    @Operation(summary = "질문 리스트 조회")
+    @GetMapping("/selectByCategory")
+    @Operation(summary = "선택한 카테고리의 질문 리스트 조회")
     public List<QuestionDto> getQuestionByCategory(@RequestParam(value = "category", required = false) String category) {
     	// 오늘 생성된 답변되지 않은 질문 조회
         List<AnswerDto> unansweredAnswers = answerService.getUnansweredAnswers();
@@ -50,7 +50,7 @@ public class QuestionController {
         if (!unansweredAnswers.isEmpty()) {
             List<QuestionDto> unansweredQuestions = new ArrayList<>();
             for (AnswerDto answer : unansweredAnswers) {
-                QuestionDto question = questionService.getQuestionByPNO(answer.getqNo());
+                QuestionDto question = questionService.getQuestionByPNO(answer.getQNo());
                 unansweredQuestions.add(question);
             }
             return unansweredQuestions;
