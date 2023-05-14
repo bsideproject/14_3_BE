@@ -11,6 +11,8 @@ import com.bside.BSIDE.user.domain.UserDto;
 public interface UserMapper {
     void insertUser(UserDto userDto);
     int deleteUser(String email);
-    List<UserDto> getAllUsers();
     void updateUser(UserDto userDto);
+
+    UserDto getUserByEmail(String email);
+    void saveTemporaryPassword(String email, String password);
 }

@@ -16,16 +16,6 @@ public class UserServiceImpl implements UserService{
     public UserServiceImpl(UserMapper userMapper) {
         this.userMapper = userMapper;
     }
-
-    @Override
-    public void addUser(UserDto userDto) {
-        userMapper.insertUser(userDto);
-    }
-    
-    @Override
-    public List<UserDto> getAllUsers() {
-        return userMapper.getAllUsers();
-    }
     
     @Override
     public int deleteUser(String email) {
@@ -35,6 +25,16 @@ public class UserServiceImpl implements UserService{
     @Override
     public void updateUser(UserDto userDto) {
     	userMapper.updateUser(userDto);
+    }
+    
+    @Override
+    public UserDto getUserByEmail(String email) {
+        return userMapper.getUserByEmail(email);
+    }
+    
+    @Override
+    public void saveTemporaryPassword(String email, String password) {
+        userMapper.saveTemporaryPassword(email, password);
     }
 	
 }

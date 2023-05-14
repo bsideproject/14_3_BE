@@ -8,7 +8,7 @@
 <!--suppress ALL -->
 <mapper namespace="com.bside.BSIDE.user.persistence.SignUpMapper">
 
-    <insert id="createMember" parameterType="com.bside.BSIDE.user.domain.UserDto">
+    <insert id="signUser" parameterType="com.bside.BSIDE.user.domain.UserDto">
         INSERT INTO
             bside.user(
             eml,
@@ -27,22 +27,6 @@
                   now()
               )
     </insert>
-
-    <select id="duplicateCheck" parameterType="string" resultType="int">
-        SELECT
-            COUNT(eml)
-        FROM
-            bside.user
-        WHERE eml = #{eml}
-    </select>
-
-    <select id="selectMember" parameterType="string" resultType="Map">
-        SELECT
-            *
-        FROM
-            bside.user
-        WHERE eml = #{eml}
-    </select>
 
     <update id="updatePassword" parameterType="com.bside.BSIDE.user.domain.UserDto">
         UPDATE

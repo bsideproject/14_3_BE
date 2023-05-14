@@ -26,24 +26,16 @@ public class UserController {
 
     public UserController(UserService userService) {
         this.userService = userService;
+    }    
+    
+    /* 회원 조회 */    
+    @GetMapping("/select/{email}")
+    @Operation(summary = "회원 조회", description = "String eml")
+    public UserDto getUserByEmail(@PathVariable String email) {
+    	return userService.getUserByEmail(email);
     }
     
-    //회원 가입
-    @PostMapping("/signup")
-    @Operation(summary = "회원 가입")
-    public ResponseEntity<Void> createUser(@RequestBody UserDto userDto) {
-        userService.addUser(userDto);
-        return new ResponseEntity<>(HttpStatus.CREATED);
-    }
-    
-    //유저 전체 조회
-    @GetMapping("/selectAll")
-    @Operation(summary = "유저 전체 조회")
-    public List<UserDto> getAllUsers() {
-        return userService.getAllUsers();
-    }
-    
-    //회원 탈퇴    
+    /* 회원 탈퇴 */    
     @DeleteMapping("/delete/{email}")
     @Operation(summary = "회원 탈퇴", description = "String eml")
     public ResponseEntity<String> deleteUser(@PathVariable String email) {
@@ -59,7 +51,7 @@ public class UserController {
         }
     }
     
-    //회원 수정
+    /* 회원 수정 */
     @PutMapping("/update/{email}")
     @Operation(summary = "회원 정보 수정", description = "String eml")
     public ResponseEntity<String> updateUser(@PathVariable String email, @RequestBody UserDto userDto) {
