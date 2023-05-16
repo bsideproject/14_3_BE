@@ -5,6 +5,7 @@ import java.util.Properties;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 
@@ -36,8 +37,9 @@ public class EmailConfig {
         javaMailSender.setDefaultEncoding("UTF-8");
         return javaMailSender;
     }
-
-    private Properties getMailProperties() {
+    
+    @Bean
+    public Properties getMailProperties() {
         Properties properties = new Properties();
         properties.put("mail.smtp.starttls.enable", starttls);
         properties.put("mail.smtp.auth", auth);
