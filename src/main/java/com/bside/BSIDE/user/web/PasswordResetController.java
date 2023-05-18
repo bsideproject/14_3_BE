@@ -16,6 +16,12 @@ import com.bside.BSIDE.user.service.UserService;
 
 import io.swagger.v3.oas.annotations.Operation;
 
+/**
+ * @PasswordResetController
+ * @작성자 DongHun
+ * @일자 2023.05.12.
+ **/
+
 @RestController
 @RequestMapping("/password")
 public class PasswordResetController {

@@ -28,6 +28,10 @@
 		WHERE eml = #{email}
 	</delete>
 	
+	<select id="getUserByEmailPw" resultType="com.bside.BSIDE.user.domain.UserDto">
+    	SELECT * FROM bside.user WHERE eml = #{email} AND password = #{password}
+	</select>
+	
 	<update id="saveTemporaryPassword" parameterType="com.bside.BSIDE.user.domain.UserDto">
 		UPDATE bside.user 
 		SET

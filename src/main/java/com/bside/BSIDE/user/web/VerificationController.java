@@ -9,6 +9,12 @@ import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
+/**
+ * @VerificationController
+ * @작성자 DongHun
+ * @일자 2023.05.12.
+ **/
+
 @RestController
 @RequestMapping("/verifyCode")
 public class VerificationController {

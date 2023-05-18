@@ -22,13 +22,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 /**
-*
-* SignUpController
-*
-* @author Kang juhee
-* @version 1.0.0
-* 작성일: 2023-04-13
-**/
+ * @SignUpController
+ * @작성자 DongHun
+ * @일자 2023.05.10.
+ **/
+
 @Slf4j
 @RestController
 @RequestMapping("/user")
@@ -73,23 +71,6 @@ public class SignUpController {
             return new ResponseEntity<>(result, headers, HttpStatus.CONFLICT);  // 이메일 중복
         }
     }
-
-//
-//    // TODO: 이메일일치여부에 따른 이메일과 다른 식별데이터 조회하는 로직 필요
-//    @Operation(summary = "이메일 발송", description = "MailDto mailDto")
-//    @PostMapping("/find-password")
-//    public ResponseEntity<?> findPassword(MailDto mailDto) throws Exception {
-//        mailService.mailSend(mailDto);
-//
-//        return new ResponseEntity<>(mailDto.getEml(), HttpStatus.OK);
-//    }
-//    
-//    @PostMapping("/mailConfirm")
-//    @Operation(summary = "회원가입 시 이메일 인증", description = "String eml")
-//    public ResponseEntity<String> sendEmail(@RequestParam String email) throws Exception{
-//        mailService.sendSimpleMessage(email);
-//        return ResponseEntity.ok("Email sent successfully.");
-//    }
     
     /* 이메일 주소의 유효성 검사 */
 	private boolean isValidEmail(String email) {

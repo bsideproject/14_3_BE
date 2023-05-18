@@ -1,22 +1,26 @@
 package com.bside.BSIDE.user.web;
 
-import java.util.List;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bside.BSIDE.user.domain.UserDto;
 import com.bside.BSIDE.user.service.UserService;
 
 import io.swagger.v3.oas.annotations.Operation;
+
+/**
+ * @UserController
+ * @작성자 DongHun
+ * @일자 2023.05.10.
+ **/
 
 @RestController
 @RequestMapping("/users")
@@ -59,4 +63,24 @@ public class UserController {
         userService.updateUser(userDto);
         return ResponseEntity.ok().build();
     }
+    
+    /* 로그인 */
+    @GetMapping("/login")
+    @Operation(summary = "로그인")
+    public ResponseEntity<?> login(@RequestParam("email") String email, @RequestParam("password") String password) {
+    	UserDto user = userService.getUserByEmailPw(email, password);
+    	
+    	if(user != null) {
+    		return ResponseEntity.ok().body(user);
+    	}
+    	else {
+    		return ResponseEntity.notFound().build();
+    	}
+    }
+    
+    /* 이메일 주소의 유효성 검사 */
+	private boolean isValidEmail(String email) {
+		String regex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
+		return email.matches(regex);
+	}
 }
