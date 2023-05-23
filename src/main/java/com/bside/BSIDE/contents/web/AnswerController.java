@@ -13,6 +13,12 @@ import com.bside.BSIDE.service.AnswerService;
 
 import io.swagger.v3.oas.annotations.Operation;
 
+/**
+ * @AnswerController
+ * @작성자 DongHun
+ * @일자 2023.04.27.
+ **/
+
 @RestController
 @RequestMapping("/answers")
 public class AnswerController {

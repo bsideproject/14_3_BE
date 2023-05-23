@@ -14,6 +14,12 @@ import com.bside.BSIDE.service.CategoryService;
 
 import io.swagger.v3.oas.annotations.Operation;
 
+/**
+ * @CategoryController
+ * @작성자 DongHun
+ * @일자 2023.04.27.
+ **/
+
 @RestController
 @RequestMapping("/category")
 public class CategoryController {
@@ -26,7 +32,7 @@ public class CategoryController {
 
     @GetMapping("/select")
     @Operation(summary = "카테고리 조회")
-    public ResponseEntity<CategoryDto > getRandomCategory(@RequestParam(value = "userId") int userId) {
+    public ResponseEntity<CategoryDto> getRandomCategory(@RequestParam(value = "userId") int userId) {
     	CategoryDto  category = categoryService.getRandomCategory(userId);
         if (category != null) {
             return ResponseEntity.ok(category);

@@ -11,6 +11,12 @@ import com.bside.BSIDE.service.UserCategoryService;
 
 import io.swagger.v3.oas.annotations.Operation;
 
+/**
+ * @UserCategoryController
+ * @작성자 DongHun
+ * @일자 2023.04.28.
+ **/
+
 @RestController
 @RequestMapping("/user-categories")
 public class UserCategoryController {
