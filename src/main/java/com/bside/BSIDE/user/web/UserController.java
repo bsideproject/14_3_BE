@@ -1,5 +1,7 @@
 package com.bside.BSIDE.user.web;
 
+import java.util.Map;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,7 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bside.BSIDE.user.domain.UserDto;
@@ -65,16 +67,18 @@ public class UserController {
     }
     
     /* 로그인 */
+    @ResponseBody
     @PostMapping("/login")
     @Operation(summary = "로그인")
-    public ResponseEntity<?> login(@RequestParam("email") String email, @RequestParam("password") String password) {
-    	UserDto user = userService.getUserByEmailPw(email, password);
-    	
+    public ResponseEntity<?> login(@RequestBody Map<String, Object> obj) {
+    	System.out.println(obj.get("email").toString());
+    	UserDto user = userService.getUserByEmailPw(obj.get("email").toString(), obj.get("password").toString());
     	if(user != null) {
     		return ResponseEntity.ok().body(user);
     	}
     	else {
-    		return ResponseEntity.notFound().build();
+    		String msg = "아이디 혹은 비밀번호가 일치하지 않습니다.";
+    		return ResponseEntity.ok(msg);
     	}
     }
     
