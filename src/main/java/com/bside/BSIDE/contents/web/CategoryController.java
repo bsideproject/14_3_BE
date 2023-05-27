@@ -1,9 +1,8 @@
 package com.bside.BSIDE.contents.web;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,6 +19,7 @@ import io.swagger.v3.oas.annotations.Operation;
  * @일자 2023.04.27.
  **/
 
+@CrossOrigin
 @RestController
 @RequestMapping("/category")
 public class CategoryController {
@@ -33,7 +33,7 @@ public class CategoryController {
     @GetMapping("/select")
     @Operation(summary = "카테고리 조회")
     public ResponseEntity<CategoryDto> getRandomCategory(@RequestParam(value = "userId") int userId) {
-    	CategoryDto  category = categoryService.getRandomCategory(userId);
+    	CategoryDto category = categoryService.getRandomCategory(userId);
         if (category != null) {
             return ResponseEntity.ok(category);
         } else {

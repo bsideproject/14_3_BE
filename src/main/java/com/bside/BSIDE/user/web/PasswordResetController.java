@@ -5,6 +5,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Random;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,6 +23,7 @@ import io.swagger.v3.oas.annotations.Operation;
  * @일자 2023.05.12.
  **/
 
+@CrossOrigin
 @RestController
 @RequestMapping("/password")
 public class PasswordResetController {

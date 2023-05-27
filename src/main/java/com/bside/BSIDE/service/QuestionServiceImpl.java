@@ -33,23 +33,23 @@ public class QuestionServiceImpl implements QuestionService {
 	
 
 	@Override
-	public int countUnansweredQuestions() {
-		return questionMapper.countUnansweredQuestions();
+	public int countUnansweredQuestions(String writer) {
+		return questionMapper.countUnansweredQuestions(writer);
 	}
 
 	@Override
-	public int countAnsweredQuestionsThisMonth() {
-		return questionMapper.countAnsweredQuestionsThisMonth();
+	public int countAnsweredQuestionsThisMonth(String writer) {
+		return questionMapper.countAnsweredQuestionsThisMonth(writer);
 	}
 
 	@Override
-	public int countAnsweredQuestionsToday() {
-		return questionMapper.countAnsweredQuestionsToday();
+	public int countAnsweredQuestionsToday(String writer) {
+		return questionMapper.countAnsweredQuestionsToday(writer);
 	}
 
 	@Override
-	public int countAnsweredQuestionsByMonth(int year, int month) {
-		return questionMapper.countAnsweredQuestionsByMonth(year, month);
+	public int countAnsweredQuestionsByMonth(int year, int month, String writer) {
+		return questionMapper.countAnsweredQuestionsByMonth(year, month, writer);
 	}	
 	
 }

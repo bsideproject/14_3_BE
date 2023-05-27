@@ -1,11 +1,11 @@
 package com.bside.BSIDE.contents.web;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,6 +27,7 @@ import io.swagger.v3.oas.annotations.Operation;
  * @일자 2023.04.23.
  **/
 
+@CrossOrigin
 @RestController
 @RequestMapping("/question")
 public class QuestionController {
@@ -71,33 +72,40 @@ public class QuestionController {
     /* 금일 잔여 답변 개수 조회 */
     @GetMapping("/unanswered")
     @Operation(summary = "금일 잔여 답변 개수 조회")
-    public ResponseEntity<String> countUnansweredQuestions() {
-        Integer count = questionService.countUnansweredQuestions();
+    public ResponseEntity<Integer> countUnansweredQuestions(@RequestParam("writer") String writer) {
+        Integer count = questionService.countUnansweredQuestions(writer);
         String message = String.format("사용자가 답변할 수 있는 질문은 "+ count +"개입니다.");
-        return ResponseEntity.ok(message);
+        System.out.println(message);
+        return ResponseEntity.ok(count);
     }
     
     /* 이번달에 답변한 질문 개수 조회 */    
     @GetMapping("/answered/month")
     @Operation(summary = "이번달에 답변한 질문 개수 조회")
-    public ResponseEntity<String> countAnsweredQuestionsThisMonth() {
-        Integer count = questionService.countAnsweredQuestionsThisMonth();
-        return ResponseEntity.ok("이번 달에 답변한 질문 개수는 "+count+"개 입니다.");
+    public ResponseEntity<Integer> countAnsweredQuestionsThisMonth(@RequestParam("writer") String writer) {
+        Integer count = questionService.countAnsweredQuestionsThisMonth(writer);
+        String message = String.format("이번 달에 답변한 질문 개수는 "+count+"개 입니다.");
+        System.out.println(message);
+        return ResponseEntity.ok(count);
     }
     
     /* 오늘 답변한 질문 개수 조회 */    
     @GetMapping("/answered/day")
     @Operation(summary = "오늘 답변한 질문 개수 조회")
-    public ResponseEntity<String> countAnsweredQuestionsToday() {
-        Integer count = questionService.countAnsweredQuestionsToday();
-        return ResponseEntity.ok("오늘 답변한 질문 개수는 "+count+"개 입니다.");
+    public ResponseEntity<Integer> countAnsweredQuestionsToday(@RequestParam("writer") String writer) {
+        Integer count = questionService.countAnsweredQuestionsToday(writer);
+        String message = String.format("오늘 답변한 질문 개수는 "+count+"개 입니다.");
+        System.out.println(message);
+        return ResponseEntity.ok(count);
     }
     
     /* 선택한 월에 답변한 질문 개수 조회 */
-    @GetMapping("/answered/{year}/{month}")
+    @GetMapping("/answered/{year}/{month}/{writer}")
     @Operation(summary = "선택한 월에 답변한 질문 개수 조회")
-    public ResponseEntity<String> countAnsweredQuestionsByMonth(@PathVariable int year, @PathVariable int month) {
-        int count = questionService.countAnsweredQuestionsByMonth(year, month);
-        return ResponseEntity.ok(year+"년도 "+month+"월에 답변한 질문 개수는 " + count + "개 입니다.");
+    public ResponseEntity<Integer> countAnsweredQuestionsByMonth(@PathVariable int year, @PathVariable int month, @PathVariable String writer) {
+        int count = questionService.countAnsweredQuestionsByMonth(year, month, writer);
+        String message = String.format(year+"년도 "+month+"월에 답변한 질문 개수는 " + count + "개 입니다.");
+        System.out.println(message);
+        return ResponseEntity.ok(count);
     }
 }

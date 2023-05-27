@@ -1,5 +1,6 @@
 package com.bside.BSIDE.user.web;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -8,8 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.bside.BSIDE.user.service.EmailService;
 
 import io.swagger.v3.oas.annotations.Operation;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 
 /**
  * @EmailController
@@ -17,6 +16,7 @@ import jakarta.servlet.http.HttpSession;
  * @일자 2023.05.10.
  **/
 
+@CrossOrigin
 @RestController
 @RequestMapping("/email")
 public class EmailController {

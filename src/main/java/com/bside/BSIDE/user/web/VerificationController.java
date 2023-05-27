@@ -1,5 +1,6 @@
 package com.bside.BSIDE.user.web;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,6 +16,7 @@ import jakarta.servlet.http.HttpSession;
  * @일자 2023.05.12.
  **/
 
+@CrossOrigin
 @RestController
 @RequestMapping("/verifyCode")
 public class VerificationController {

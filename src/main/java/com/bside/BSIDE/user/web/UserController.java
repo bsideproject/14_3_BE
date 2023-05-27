@@ -3,6 +3,7 @@ package com.bside.BSIDE.user.web;
 import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,6 +25,7 @@ import io.swagger.v3.oas.annotations.Operation;
  * @일자 2023.05.10.
  **/
 
+@CrossOrigin
 @RestController
 @RequestMapping("/users")
 public class UserController {

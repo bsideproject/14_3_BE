@@ -9,8 +9,8 @@ public interface QuestionService {
 	QuestionDto getQuestionByPNO(int pNo);
 	List<QuestionDto> getQuestionByCategory(String category);
 	
-	int countUnansweredQuestions();
-	int countAnsweredQuestionsThisMonth();
-	int countAnsweredQuestionsToday();
-	int countAnsweredQuestionsByMonth(int year, int month);
+	int countUnansweredQuestions(String writer);
+	int countAnsweredQuestionsThisMonth(String writer);
+	int countAnsweredQuestionsToday(String writer);
+	int countAnsweredQuestionsByMonth(int year, int month, String writer);
 }
