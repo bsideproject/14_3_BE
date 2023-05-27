@@ -74,7 +74,8 @@ public class UserController {
     @Operation(summary = "로그인")
     public ResponseEntity<?> login(@RequestBody Map<String, Object> obj) {
     	System.out.println(obj.get("email").toString());
-    	UserDto user = userService.getUserByEmailPw(obj.get("email").toString(), obj.get("password").toString());
+    	UserDto user = new UserDto();
+    	user = userService.getUserByEmailPw(obj.get("email").toString(), obj.get("password").toString());
     	if(user != null) {
     		return ResponseEntity.ok().body(user);
     	}
