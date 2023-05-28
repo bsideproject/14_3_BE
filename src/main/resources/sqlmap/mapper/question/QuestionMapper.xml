@@ -24,7 +24,7 @@
 
 	<!--  질문 리스트 조회 -->
 	<select id="getQuestionByCategory" resultType="com.bside.BSIDE.contents.domain.QuestionDto" parameterType="string">
-		SELECT Q.q_no as qNo, Q.q_question as qQuestion
+		SELECT Q.q_no as qNo, Q.q_question as qQuestion, Q.q_category as qCategory, Q.q_writer as qWriter, Q.q_created_at as qCreatedAt
 		FROM bside.question Q 
 		LEFT OUTER JOIN bside.answer A ON Q.q_no = A.q_no
 		WHERE A.q_no IS NULL AND Q.q_category = #{category}

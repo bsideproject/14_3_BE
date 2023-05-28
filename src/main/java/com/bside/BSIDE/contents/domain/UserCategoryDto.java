@@ -13,8 +13,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder
 public class UserCategoryDto {
-	@Schema(description = "유저 아이디", example = "1")
-    private int userId;
+	@Schema(description = "유저 이메일", example = "programmer_h@naver.com")
+    private String email;
 	
 	@Schema(description = "카테고리 아이디", example = "2")
     private int categoryId;

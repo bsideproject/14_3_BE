@@ -28,12 +28,6 @@ public class UserCategoryController {
         this.userCategoryService = userCategoryService;
     }
     
-    @PostMapping("/insert")
-    @Operation(summary = "userCategory 저장")
-    public void insertUserCategory(@RequestBody UserCategoryDto userCategoryDto) {
-        userCategoryService.insertUserCategory(userCategoryDto);
-    }
-    
     @PostMapping("/reset")
     @Operation(summary = "리셋")
     public ResponseEntity<String> resetUserCategories() {

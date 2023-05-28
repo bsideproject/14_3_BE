@@ -7,8 +7,8 @@
 		
 <mapper namespace="com.bside.BSIDE.contents.persistence.UserCategoryMapper">
 	<insert id="insertUserCategory" parameterType="map">
-	    INSERT INTO user_category (user_id, category_id)
-	    VALUES (#{userId}, #{categoryId})
+	    INSERT INTO user_category (email, category_id)
+	    VALUES (#{email}, #{categoryId})
 	</insert>
 	
 	<delete id="resetUserCategories">

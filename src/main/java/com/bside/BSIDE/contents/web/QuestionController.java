@@ -39,27 +39,6 @@ public class QuestionController {
         this.questionService = questionService;
         this.answerService = answerService;
     }
-        
-	/* 질문 리스트 조회 */
-    @GetMapping("/selectByCategory")
-    @Operation(summary = "선택한 카테고리의 질문 리스트 조회")
-    public List<QuestionDto> getQuestionByCategory(@RequestParam(value = "category", required = false) String category) {
-    	// 오늘 생성된 답변되지 않은 질문 조회
-        List<AnswerDto> unansweredAnswers = answerService.getUnansweredAnswers();
-        
-        // 만약 오늘 생성된 답변되지 않은 질문이 있다면 해당 질문 출력
-        if (!unansweredAnswers.isEmpty()) {
-            List<QuestionDto> unansweredQuestions = new ArrayList<>();
-            for (AnswerDto answer : unansweredAnswers) {
-                QuestionDto question = questionService.getQuestionByPNO(answer.getQNo());
-                unansweredQuestions.add(question);
-            }
-            return unansweredQuestions;
-        }
-        
-        // 답변되지 않은 질문이 없다면 전체 질문 조회        
-        return questionService.getQuestionByCategory(category);
-    }
     
     /* 질문 저장 */
     @PostMapping("/insertQuestion")
