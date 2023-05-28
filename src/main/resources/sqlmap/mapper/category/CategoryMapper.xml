@@ -16,4 +16,13 @@
 		ORDER BY RAND() LIMIT 1
 	</select>
 	
+	<select id="selectCaterogyCount" resultType="int">
+		SELECT COUNT(*) 
+	    FROM bside.user_category
+	    WHERE YEAR(created_at) = YEAR(CURRENT_DATE())
+	    AND MONTH(created_at) = MONTH(CURRENT_DATE())
+	    AND DAY(created_at) = DAY(CURRENT_DATE())
+	    AND email = #{email}
+	</select>
+	
 </mapper>

@@ -50,6 +50,11 @@ public class CategoryController {
     @Operation(summary = "카테고리 조회")
     public ResponseEntity<List<QuestionDto>> getRandomCategory(@RequestParam(value = "email") String email) {
     	CategoryDto category = categoryService.getRandomCategory(email);
+    	
+    	int count = selectCaterogyCount(email);
+    	
+    	if(count == 3) return ResponseEntity.notFound().build();
+    	
         if (category != null) {
         	System.out.println(category.getCategoryName());
         	
@@ -66,6 +71,7 @@ public class CategoryController {
         } else {
             return ResponseEntity.notFound().build();
         }
+        
     }
     
     /* 질문 조회 */
@@ -93,6 +99,12 @@ public class CategoryController {
     /* 카테고리 저장 */
     public void insertUserCategory(@RequestBody UserCategoryDto userCategoryDto) {
         userCategoryService.insertUserCategory(userCategoryDto);
+    }
+    
+    /* UserCategory 에 저장된 개수 */
+    public Integer selectCaterogyCount(@RequestParam(value = "email") String email) {
+    	Integer count = categoryService.selectCaterogyCount(email);
+    	return count;
     }
     
 }
