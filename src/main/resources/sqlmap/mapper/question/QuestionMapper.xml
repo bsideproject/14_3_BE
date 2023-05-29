@@ -41,11 +41,12 @@
 	<!-- 금일 잔여 답변 개수 조회 -->
 	<select id="countUnansweredQuestions" resultType="int">
 		SELECT 3-COUNT(*) 
-		FROM bside.question 
-		WHERE q_no NOT IN (SELECT q_no FROM bside.answer) 
-		AND YEAR(q_created_at) = YEAR(CURRENT_DATE()) 
-		AND MONTH(q_created_at) = MONTH(CURRENT_DATE()) 
-		AND DAY(q_created_at) = DAY(CURRENT_DATE());
+		FROM bside.answer 
+		WHERE a_check = false 
+		AND YEAR(a_created_at) = YEAR(CURRENT_DATE()) 
+		AND MONTH(a_created_at) = MONTH(CURRENT_DATE()) 
+		AND DAY(a_created_at) = DAY(CURRENT_DATE())
+		AND a_writer = #{writer}
     </select>
     
     <!-- 이번달에 답변한 질문 개수 조회 -->

@@ -40,8 +40,8 @@ public class AnswerController {
 	/* 질문에 대한 답변 저장하기 */
 	@PutMapping("/saveAnswer")
 	@Operation(summary = "답변 저장")
-	public ResponseEntity<String> saveAnswer(@RequestBody AnswerDto answerDto) {
+	public ResponseEntity<?> saveAnswer(@RequestBody AnswerDto answerDto) {
         answerService.saveAnswer(answerDto);
-        return ResponseEntity.ok("답변이 수정되었습니다.");
+        return ResponseEntity.ok(true);
     }
 }
