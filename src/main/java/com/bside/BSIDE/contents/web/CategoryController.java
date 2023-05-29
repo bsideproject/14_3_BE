@@ -48,12 +48,15 @@ public class CategoryController {
     
     @GetMapping("/select")
     @Operation(summary = "카테고리 조회")
-    public ResponseEntity<List<QuestionDto>> getRandomCategory(@RequestParam(value = "email") String email) {
+    public ResponseEntity<?> getRandomCategory(@RequestParam(value = "email") String email) {
     	CategoryDto category = categoryService.getRandomCategory(email);
     	
     	int count = selectCaterogyCount(email);
     	
-    	if(count == 3) return ResponseEntity.notFound().build();
+    	if(count == 3) {
+    		String message = String.format("오늘의 카테고리 선택을 모두 진행하였습니다. ");
+    		return ResponseEntity.ok(message);
+    	}
     	
         if (category != null) {
         	System.out.println(category.getCategoryName());
