@@ -1,5 +1,7 @@
 package com.bside.BSIDE.user.service;
 
+import java.util.List;
+
 import com.bside.BSIDE.user.domain.UserDto;
 
 public interface UserService {	
@@ -9,4 +11,5 @@ public interface UserService {
 	UserDto getUserByEmail(String email);
 	UserDto getUserByEmailPw(String email, String password);
 	void saveTemporaryPassword(String email, String password);
+	List<UserDto> getUser();
 }

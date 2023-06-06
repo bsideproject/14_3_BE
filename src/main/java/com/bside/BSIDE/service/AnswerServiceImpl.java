@@ -30,7 +30,7 @@ public class AnswerServiceImpl implements AnswerService {
     }
     
     @Override
-    public void saveAnswer(AnswerDto answerDto) {
-    	answerMapper.saveAnswer(answerDto);
+    public boolean saveAnswer(AnswerDto answerDto) {
+    	return answerMapper.saveAnswer(answerDto);
     }
 }

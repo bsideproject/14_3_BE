@@ -1,5 +1,7 @@
 package com.bside.BSIDE.user.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.bside.BSIDE.user.domain.UserDto;
@@ -37,6 +39,11 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void saveTemporaryPassword(String email, String password) {
 		userMapper.saveTemporaryPassword(email, password);
+	}
+	
+	@Override
+	public List<UserDto> getUser() {
+		return userMapper.getUser();
 	}
 
 }

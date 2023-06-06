@@ -33,5 +33,12 @@ public class EmailController {
 	public String emailConfirm(@RequestParam String email) throws Exception {
 	  return emailService.sendCodeMessage(email);
 	}
+	
+	/* 이메일 인증 번호 전송 */
+	@PostMapping("/test")
+	@Operation(summary = "test")
+	public void sendUserEmail() throws Exception {
+	  emailService.sendUserEmail();
+	}
 		
 }

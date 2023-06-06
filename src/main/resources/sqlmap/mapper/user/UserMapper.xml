@@ -43,4 +43,10 @@
 			eml=#{email}
 	</update>
 	
+	<select id="getUser" resultType="com.bside.BSIDE.user.domain.UserDto">
+		SELECT eml
+		FROM bside.user 
+		WHERE eml LIKE '%@%'
+	</select>
+	
 </mapper>

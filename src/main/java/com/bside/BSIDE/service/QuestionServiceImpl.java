@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.bside.BSIDE.contents.domain.QuestionAndAnswerDto;
 import com.bside.BSIDE.contents.domain.QuestionDto;
 import com.bside.BSIDE.contents.persistence.QuestionMapper;
 
@@ -50,6 +51,16 @@ public class QuestionServiceImpl implements QuestionService {
 	@Override
 	public int countAnsweredQuestionsByMonth(int year, int month, String writer) {
 		return questionMapper.countAnsweredQuestionsByMonth(year, month, writer);
-	}	
+	}
+	
+	@Override
+    public List<QuestionAndAnswerDto> getQuestionsAndAnswersByMonthAndEmail(String email, String year, String month) {
+        return questionMapper.getQuestionsAndAnswersByMonthAndEmail(email, year, month);
+    }
+	
+	@Override
+    public List<QuestionAndAnswerDto> getQuestionsAndAnswersByDayAndEmail(String email, String date) {
+        return questionMapper.getQuestionsAndAnswersByDayAndEmail(email, date);
+    }
 	
 }

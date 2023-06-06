@@ -81,4 +81,23 @@
 	    AND a.a_writer = #{writer} 
 	</select>
 	
+	<select id="getQuestionsAndAnswersByMonthAndEmail" resultType="com.bside.BSIDE.contents.domain.QuestionAndAnswerDto">
+        SELECT q.q_question AS question, a.a_answer_content AS answer
+        FROM bside.answer a
+        INNER JOIN bside.question q ON a.q_no = q.q_no
+        WHERE a.a_writer = #{email}
+        AND YEAR(a.a_created_at) = #{year}
+        AND MONTH(a.a_created_at) = #{month}
+    </select>
+    
+    <select id="getQuestionsAndAnswersByDayAndEmail" resultType="com.bside.BSIDE.contents.domain.QuestionAndAnswerDto">
+        SELECT q.q_question AS question, a.a_answer_content AS answer
+        FROM bside.answer a
+        INNER JOIN bside.question q ON a.q_no = q.q_no
+        WHERE a.a_writer = #{email}
+        AND YEAR(a.a_created_at) = YEAR(#{date}) 
+        AND MONTH(a.a_created_at) = MONTH(#{date})
+        AND DAY(a.a_created_at) = DAY(#{date})
+    </select>
+	
 </mapper>

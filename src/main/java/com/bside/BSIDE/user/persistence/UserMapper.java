@@ -1,5 +1,7 @@
 package com.bside.BSIDE.user.persistence;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
 
 import com.bside.BSIDE.user.domain.UserDto;
@@ -14,4 +16,5 @@ public interface UserMapper {
     UserDto getUserByEmail(String email);
     UserDto getUserByEmailPw(String email, String password);
     void saveTemporaryPassword(String email, String password);
+    List<UserDto> getUser();
 }

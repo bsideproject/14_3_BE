@@ -1,5 +1,7 @@
 package com.bside.BSIDE.contents.web;
 
+import java.util.Map;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -40,8 +42,12 @@ public class AnswerController {
 	/* 질문에 대한 답변 저장하기 */
 	@PutMapping("/saveAnswer")
 	@Operation(summary = "답변 저장")
-	public ResponseEntity<?> saveAnswer(@RequestBody AnswerDto answerDto) {
-        answerService.saveAnswer(answerDto);
-        return ResponseEntity.ok(true);
+	public ResponseEntity<Boolean> saveAnswer(@RequestBody Map<String, Object> obj) {
+        AnswerDto adto = new AnswerDto();
+        adto.setQNo(Integer.parseInt(obj.get("qNo").toString()));
+        adto.setAAnswerContent(obj.get("aAnswerContent").toString());
+        adto.setAWriter(obj.get("aWriter").toString());
+        
+        return ResponseEntity.ok(answerService.saveAnswer(adto));
     }
 }
