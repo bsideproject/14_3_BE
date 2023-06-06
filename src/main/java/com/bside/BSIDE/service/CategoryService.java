@@ -5,5 +5,6 @@ import java.util.List;
 import com.bside.BSIDE.contents.domain.CategoryDto;
 
 public interface CategoryService {
-	CategoryDto getRandomCategory(int userId);
+	CategoryDto getRandomCategory(String email);
+	int selectCaterogyCount(String email);
 }

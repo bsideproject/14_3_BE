@@ -10,5 +10,5 @@ import com.bside.BSIDE.contents.domain.AnswerDto;
 public interface AnswerMapper {
 	void selectedQuestion(AnswerDto answerDto);
 	List<AnswerDto> getUnansweredAnswers();
-	void saveAnswer(AnswerDto answerDto);
+	boolean saveAnswer(AnswerDto answerDto);
 }

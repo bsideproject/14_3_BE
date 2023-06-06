@@ -7,5 +7,5 @@ import com.bside.BSIDE.contents.domain.AnswerDto;
 public interface AnswerService {
 	void selectedQuestion(int qNo, String aWriter);
 	List<AnswerDto> getUnansweredAnswers();
-	void saveAnswer(AnswerDto answerDto);
+	boolean saveAnswer(AnswerDto answerDto);
 }

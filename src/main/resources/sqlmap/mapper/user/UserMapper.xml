@@ -8,7 +8,9 @@
 	
 	<!-- 이메일 검증 -->
 	<select id="getUserByEmail" resultType="com.bside.BSIDE.user.domain.UserDto">
-		SELECT * FROM bside.user WHERE eml = #{email}
+		SELECT usr_nm as usrNm, eml, usr_nm as usrNm, password, sns_cls_cd as snsClsCd, sns_token as snsToken, gndr_cls_cd as gndrClsCd,
+		brdt, join_dtm as joinDtm, last_lgn_dtm as lastLgnDtm, update_dtm as updateDtm
+		FROM bside.user WHERE eml = #{email}
 	</select>
 	
 	<update id="updateUser" parameterType="com.bside.BSIDE.user.domain.UserDto">
@@ -40,5 +42,11 @@
 		WHERE 
 			eml=#{email}
 	</update>
+	
+	<select id="getUser" resultType="com.bside.BSIDE.user.domain.UserDto">
+		SELECT eml
+		FROM bside.user 
+		WHERE eml LIKE '%@%'
+	</select>
 	
 </mapper>

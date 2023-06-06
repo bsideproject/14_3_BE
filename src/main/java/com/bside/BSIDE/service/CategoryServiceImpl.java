@@ -18,7 +18,12 @@ public class CategoryServiceImpl implements CategoryService{
     }
     
     @Override
-    public CategoryDto getRandomCategory(int userId) {
-        return categoryMapper.getRandomCategory(userId);
+    public CategoryDto getRandomCategory(String email) {
+        return categoryMapper.getRandomCategory(email);
+    }
+    
+    @Override
+    public int selectCaterogyCount(String email) {
+    	return categoryMapper.selectCaterogyCount(email);
     }
 }

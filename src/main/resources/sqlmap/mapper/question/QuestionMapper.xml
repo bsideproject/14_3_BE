@@ -24,7 +24,7 @@
 
 	<!--  질문 리스트 조회 -->
 	<select id="getQuestionByCategory" resultType="com.bside.BSIDE.contents.domain.QuestionDto" parameterType="string">
-		SELECT Q.q_no as qNo, Q.q_question as qQuestion
+		SELECT Q.q_no as qNo, Q.q_question as qQuestion, Q.q_category as qCategory, Q.q_writer as qWriter, Q.q_created_at as qCreatedAt
 		FROM bside.question Q 
 		LEFT OUTER JOIN bside.answer A ON Q.q_no = A.q_no
 		WHERE A.q_no IS NULL AND Q.q_category = #{category}
@@ -41,28 +41,33 @@
 	<!-- 금일 잔여 답변 개수 조회 -->
 	<select id="countUnansweredQuestions" resultType="int">
 		SELECT 3-COUNT(*) 
-		FROM bside.question 
-		WHERE q_no NOT IN (SELECT q_no FROM bside.answer) 
-		AND YEAR(q_created_at) = YEAR(CURRENT_DATE()) 
-		AND MONTH(q_created_at) = MONTH(CURRENT_DATE()) 
-		AND DAY(q_created_at) = DAY(CURRENT_DATE());
+		FROM bside.answer 
+		WHERE a_check = false 
+		AND YEAR(a_created_at) = YEAR(CURRENT_DATE()) 
+		AND MONTH(a_created_at) = MONTH(CURRENT_DATE()) 
+		AND DAY(a_created_at) = DAY(CURRENT_DATE())
+		AND a_writer = #{writer}
     </select>
     
     <!-- 이번달에 답변한 질문 개수 조회 -->
     <select id="countAnsweredQuestionsThisMonth" resultType="int">
-	    SELECT COUNT(*) FROM bside.question q
+	    SELECT COUNT(*) 
+	    FROM bside.question q
 	    INNER JOIN bside.answer a ON q.q_no = a.q_no
 	    WHERE YEAR(a.a_created_at) = YEAR(CURRENT_DATE())
 	    AND MONTH(a.a_created_at) = MONTH(CURRENT_DATE())
+	    AND a.a_writer = #{writer}
 	</select>
 	
 	<!-- 오늘 답변한 질문 개수 조회 -->
     <select id="countAnsweredQuestionsToday" resultType="int">
-	    SELECT COUNT(*) FROM bside.question q
+	    SELECT COUNT(*) 
+	    FROM bside.question q
 	    INNER JOIN bside.answer a ON q.q_no = a.q_no
 	    WHERE YEAR(a.a_created_at) = YEAR(CURRENT_DATE())
 	    AND MONTH(a.a_created_at) = MONTH(CURRENT_DATE())
 	    AND DAY(a.a_created_at) = DAY(CURRENT_DATE())
+	    AND a.a_writer = #{writer}
 	</select>
     
     <!-- 선택한 월에 답변한 질문 개수 조회 -->
@@ -73,6 +78,26 @@
 	    WHERE q.q_no IS NOT NULL 
 	    AND YEAR(a.a_created_at) = #{year}
 	    AND MONTH(a.a_created_at) = #{month}
+	    AND a.a_writer = #{writer} 
 	</select>
+	
+	<select id="getQuestionsAndAnswersByMonthAndEmail" resultType="com.bside.BSIDE.contents.domain.QuestionAndAnswerDto">
+        SELECT q.q_question AS question, a.a_answer_content AS answer
+        FROM bside.answer a
+        INNER JOIN bside.question q ON a.q_no = q.q_no
+        WHERE a.a_writer = #{email}
+        AND YEAR(a.a_created_at) = #{year}
+        AND MONTH(a.a_created_at) = #{month}
+    </select>
+    
+    <select id="getQuestionsAndAnswersByDayAndEmail" resultType="com.bside.BSIDE.contents.domain.QuestionAndAnswerDto">
+        SELECT q.q_question AS question, a.a_answer_content AS answer
+        FROM bside.answer a
+        INNER JOIN bside.question q ON a.q_no = q.q_no
+        WHERE a.a_writer = #{email}
+        AND YEAR(a.a_created_at) = YEAR(#{date}) 
+        AND MONTH(a.a_created_at) = MONTH(#{date})
+        AND DAY(a.a_created_at) = DAY(#{date})
+    </select>
 	
 </mapper>

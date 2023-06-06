@@ -12,10 +12,11 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UserCategoryDto {
-	@Schema(description = "유저 이메일", example = "programmer_h@naver.com")
-    private String email;
+public class QuestionAndAnswerDto {
 	
-	@Schema(description = "카테고리 아이디", example = "2")
-    private int categoryId;
+	@Schema(description = "질문 내용", example = "가장 좋아하는 계절은?")
+	private String question;
+	
+	@Schema(description = "답변 내용", example = "겨울")
+    private String answer;
 }

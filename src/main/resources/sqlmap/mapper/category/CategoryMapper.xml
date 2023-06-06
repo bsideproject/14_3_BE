@@ -8,12 +8,21 @@
 <mapper namespace="com.bside.BSIDE.contents.persistence.CategoryMapper">
 
 	<!--  답변한 카테고리를 제외한 카테고리 랜덤 조회 -->
-	<select id="getRandomCategory" resultType="com.bside.BSIDE.contents.domain.CategoryDto" parameterType="int">
+	<select id="getRandomCategory" resultType="com.bside.BSIDE.contents.domain.CategoryDto" parameterType="String">
 		SELECT c.category_id as categoryId, c.category_name as categoryName
 		FROM bside.category c
-		LEFT JOIN bside.user_category uc ON c.category_id = uc.category_id AND uc.user_id = #{userId}
-		WHERE uc.user_id IS NULL
+		LEFT JOIN bside.user_category uc ON c.category_id = uc.category_id AND uc.email = #{email}
+		WHERE uc.category_id IS NULL
 		ORDER BY RAND() LIMIT 1
+	</select>
+	
+	<select id="selectCaterogyCount" resultType="int">
+		SELECT COUNT(*) 
+	    FROM bside.user_category
+	    WHERE YEAR(created_at) = YEAR(CURRENT_DATE())
+	    AND MONTH(created_at) = MONTH(CURRENT_DATE())
+	    AND DAY(created_at) = DAY(CURRENT_DATE())
+	    AND email = #{email}
 	</select>
 	
 </mapper>

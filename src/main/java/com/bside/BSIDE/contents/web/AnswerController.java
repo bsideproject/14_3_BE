@@ -1,6 +1,9 @@
 package com.bside.BSIDE.contents.web;
 
+import java.util.Map;
+
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,6 +22,7 @@ import io.swagger.v3.oas.annotations.Operation;
  * @일자 2023.04.27.
  **/
 
+@CrossOrigin
 @RestController
 @RequestMapping("/answers")
 public class AnswerController {
@@ -38,8 +42,12 @@ public class AnswerController {
 	/* 질문에 대한 답변 저장하기 */
 	@PutMapping("/saveAnswer")
 	@Operation(summary = "답변 저장")
-	public ResponseEntity<String> saveAnswer(@RequestBody AnswerDto answerDto) {
-        answerService.saveAnswer(answerDto);
-        return ResponseEntity.ok("답변이 수정되었습니다.");
+	public ResponseEntity<Boolean> saveAnswer(@RequestBody Map<String, Object> obj) {
+        AnswerDto adto = new AnswerDto();
+        adto.setQNo(Integer.parseInt(obj.get("qNo").toString()));
+        adto.setAAnswerContent(obj.get("aAnswerContent").toString());
+        adto.setAWriter(obj.get("aWriter").toString());
+        
+        return ResponseEntity.ok(answerService.saveAnswer(adto));
     }
 }
