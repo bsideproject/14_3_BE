@@ -3,6 +3,7 @@ package com.bside.BSIDE.user.service;
 import java.util.List;
 import java.util.Random;
 
+import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.ClassPathResource;
@@ -13,7 +14,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import com.bside.BSIDE.user.domain.UserDto;
+import com.bside.BSIDE.contents.domain.QuestionAndAnswerDto;
+import com.bside.BSIDE.service.QuestionService;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.BaseFont;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.pdf.PdfWriter;
 
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
@@ -26,9 +33,11 @@ public class EmailServiceImpl implements EmailService {
 	@Autowired
 	private JavaMailSender emailSender;
 	private final UserService userService;
-	
-	public EmailServiceImpl(UserService userService) {
+	private final QuestionService questionService;
+
+	public EmailServiceImpl(UserService userService, QuestionService questionService) {
 		this.userService = userService;
+		this.questionService = questionService;
 	}
 
 	private final String senderEmail = "goming.team@gmail.com"; // 발신자 이메일 주소
@@ -96,7 +105,7 @@ public class EmailServiceImpl implements EmailService {
 	@Override
 	public String sendTemporaryPassword(String to, String temporaryPassword) throws Exception {
 		MimeMessage message = emailSender.createMimeMessage();
-		MimeMessageHelper helper = new MimeMessageHelper(message,true, "utf-8");
+		MimeMessageHelper helper = new MimeMessageHelper(message, true, "utf-8");
 
 		helper.setTo(to); // 수신자 이메일 주소
 		helper.setSubject("Goming 비밀번호 찾기"); // 제목
@@ -127,41 +136,64 @@ public class EmailServiceImpl implements EmailService {
 		return temporaryPassword;
 	}
 	
+	/* 구현 중 */
 	@Override
-	public void sendUserEmail() throws Exception {
-	    List<UserDto> user = userService.getUser();
+	public void sendByMonth(String email, String date) throws Exception {
 
-	 // 첨부 파일 생성
-        StringBuilder attachmentContent = new StringBuilder();
-        for (UserDto dto : user) {
-            attachmentContent.append(dto.getEml()).append(", ");
-        }
-        byte[] attachmentData = attachmentContent.toString().getBytes();
+		/* MimeMessage 생성 및 설정 */
+		MimeMessage message = emailSender.createMimeMessage();
+		MimeMessageHelper helper = new MimeMessageHelper(message, true, "utf-8");
 
-        // MimeMessage 생성 및 설정
-        MimeMessage message = emailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(message, true, "utf-8");
+		String to = "ehdgns48@naver.com";
+		helper.setTo(to); // 수신자 이메일 주소
+		helper.setSubject("Goming 비밀번호 찾기"); // 제목
+		
+		String[] dateArr = date.split("-");
+		
+		List<QuestionAndAnswerDto> questionsAndAnswers = questionService
+				.getQuestionsAndAnswersByMonthAndEmail(email, dateArr[0], dateArr[1]);
 
-        String to = "ehdgns48@naver.com";
-        helper.setTo(to); // 수신자 이메일 주소
-        helper.setSubject("Goming 비밀번호 찾기"); // 제목
+		/* 폰트 설정 */
+		BaseFont baseFont = BaseFont.createFont("fonts/NanumGothic.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+		Font koreanFont = new Font(baseFont, 12);
+		
+		/* PDF 객체 생성 */
+		Document document = new Document();
+	    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
-        StringBuilder emailContent = new StringBuilder();
-        for (UserDto dto : user) {
-            emailContent.append(dto.getEml()).append(", ");
-        }
-        helper.setText(emailContent.toString(), true); // 내용
-        helper.setFrom(new InternetAddress(senderEmail, senderName)); // 발신자 정보
+	    /* PDF 생성 */
+	    PdfWriter.getInstance(document, outputStream);
+	    document.open();
+	    
+	    /* PDF에 저장할 문서 작성 */
+	    for (QuestionAndAnswerDto dto : questionsAndAnswers) {
+	    	document.add(new Paragraph("Q : " + dto.getQuestion(), koreanFont));
+	        document.add(new Paragraph("A : " + dto.getAnswer(), koreanFont));
+	        document.add(new Paragraph("\n"));
 
-        // 첨부 파일 추가
-        String attachmentFilename = "Goming.txt";
-        helper.addAttachment(attachmentFilename, new ByteArrayResource(attachmentData));
-
-	    try {
-	        emailSender.send(message);
-	    } catch (MailException e) {
-	        e.printStackTrace();
-	        throw new IllegalArgumentException();
+	        System.out.println("Q : " + dto.getQuestion());
+	        System.out.println("A : " + dto.getAnswer());
+	        System.out.println();
 	    }
+	    
+	    document.close();
+		
+		
+	    /* 전송 설정 */
+		helper.setText("hi", true); // 내용
+		helper.setFrom(new InternetAddress(senderEmail, senderName)); // 발신자 정보
+
+		/* 첨부 파일 추가 */
+		byte[] pdfData = outputStream.toByteArray();
+	    String attachmentFilename = "Goming.pdf";
+	    helper.addAttachment(attachmentFilename, new ByteArrayResource(pdfData));
+
+		try {
+			emailSender.send(message);
+		} catch (MailException e) {
+			e.printStackTrace();
+			throw new IllegalArgumentException();
+		}
 	}
+
 }

@@ -1,6 +1,7 @@
 package com.bside.BSIDE.user.web;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -34,11 +35,11 @@ public class EmailController {
 	  return emailService.sendCodeMessage(email);
 	}
 	
-	/* 이메일 인증 번호 전송 */
-	@PostMapping("/test")
-	@Operation(summary = "test")
-	public void sendUserEmail() throws Exception {
-	  emailService.sendUserEmail();
+	/* 월간 고밍 전송 */
+	@GetMapping("/sendByMonth")
+	@Operation(summary = "월간 고밍 전송")
+	public void sendByMonth(@RequestParam String email, @RequestParam String date) throws Exception {
+		emailService.sendByMonth(email,date);
 	}
 		
 }
