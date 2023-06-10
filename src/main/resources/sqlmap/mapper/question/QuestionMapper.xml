@@ -71,8 +71,8 @@
 	</select>
     
     <!-- 선택한 월에 답변한 질문 개수 조회 -->
-	<select id="countAnsweredQuestionsByMonth" resultType="java.lang.Integer">
-	    SELECT COUNT(*) 
+	<select id="countAnsweredQuestionsByMonth" resultType="com.bside.BSIDE.contents.domain.CountAnsweredQuestionsByMonthDto">
+	    SELECT COUNT(*) AS count, #{writer} AS email, CONCAT(#{year}, '-', #{month}) AS date 
 	    FROM bside.answer a
 	    LEFT OUTER JOIN bside.question q ON a.q_no = q.q_no
 	    WHERE q.q_no IS NOT NULL 

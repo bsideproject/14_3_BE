@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.bside.BSIDE.contents.domain.QuestionAndAnswerDto;
 import com.bside.BSIDE.contents.domain.QuestionDto;
+import com.bside.BSIDE.contents.domain.CountAnsweredQuestionsByMonthDto;
 import com.bside.BSIDE.contents.persistence.QuestionMapper;
 
 @Service
@@ -49,7 +50,7 @@ public class QuestionServiceImpl implements QuestionService {
 	}
 
 	@Override
-	public int countAnsweredQuestionsByMonth(int year, int month, String writer) {
+	public CountAnsweredQuestionsByMonthDto countAnsweredQuestionsByMonth(int year, int month, String writer) {
 		return questionMapper.countAnsweredQuestionsByMonth(year, month, writer);
 	}
 	
