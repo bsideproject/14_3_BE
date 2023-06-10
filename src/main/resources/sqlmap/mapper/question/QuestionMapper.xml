@@ -83,7 +83,7 @@
 	
 	<!-- 선택한 년,월에 답변한 질문 조회 -->
 	<select id="getQuestionsAndAnswersByMonthAndEmail" resultType="com.bside.BSIDE.contents.domain.QuestionAndAnswerDto">
-        SELECT q.q_question AS question, a.a_answer_content AS answer
+        SELECT q.q_question AS question, a.a_answer_content AS answer, a.a_created_at as date
         FROM bside.answer a
         INNER JOIN bside.question q ON a.q_no = q.q_no
         WHERE a.a_writer = #{email}
