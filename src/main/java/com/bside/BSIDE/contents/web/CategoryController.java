@@ -72,7 +72,8 @@ public class CategoryController {
         	
             return ResponseEntity.ok(questions);
         } else {
-            return ResponseEntity.notFound().build();
+        	String message = String.format("오늘의 카테고리 선택을 모두 진행하였습니다. ");
+            return ResponseEntity.ok("3개의 카테고리를 모두 뽑았습니다.");
         }
         
     }
