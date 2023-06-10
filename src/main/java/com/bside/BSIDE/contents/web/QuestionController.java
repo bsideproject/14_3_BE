@@ -79,20 +79,18 @@ public class QuestionController {
     }
     
     /* 선택한 월에 답변한 질문 개수 조회 */
-    @GetMapping("/answered/{year}/{month}/{writer}")
+    @GetMapping("/answeredCount/{year}/{month}/{writer}")
     @Operation(summary = "선택한 월에 답변한 질문 개수 조회")
     public ResponseEntity<CountAnsweredQuestionsByMonthDto> countAnsweredQuestionsByMonth(@PathVariable int year, @PathVariable int month, @PathVariable String writer) {
         CountAnsweredQuestionsByMonthDto dto = questionService.countAnsweredQuestionsByMonth(year, month, writer);
         return ResponseEntity.ok(dto);
     }
     
-    /* 선택한 년도, 월에 답변한 질문 */
-    @GetMapping("/answered/{year}/{month}")
+    /* 선택한 년도, 월에 답변한 질문 조회*/
+    @GetMapping("/answered/{email}/{date}")
     @Operation(summary = "선택한 월에 답변한 질문 조회")
     public ResponseEntity<?> getQuestionsAndAnswersByMonthAndEmail(@RequestParam String email, @RequestParam String date) {
  
-    	System.out.println(email+", "+date);
-    	
     	List<QuestionAndAnswerDto> questionsAndAnswers;
     	String[] dateArr = date.split("-");
     	
