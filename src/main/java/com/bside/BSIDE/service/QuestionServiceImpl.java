@@ -55,8 +55,8 @@ public class QuestionServiceImpl implements QuestionService {
 	}
 	
 	@Override
-    public List<QuestionAndAnswerDto> getQuestionsAndAnswersByMonthAndEmail(String email, String year, String month) {
-        return questionMapper.getQuestionsAndAnswersByMonthAndEmail(email, year, month);
+    public List<QuestionAndAnswerDto> getQuestionsAndAnswersByMonthAndEmail(String email, String date) {
+        return questionMapper.getQuestionsAndAnswersByMonthAndEmail(email, date);
     }
 	
 	@Override

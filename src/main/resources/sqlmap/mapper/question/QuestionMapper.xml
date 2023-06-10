@@ -88,8 +88,8 @@
         INNER JOIN bside.question q ON a.q_no = q.q_no
         WHERE a.a_writer = #{email}
         AND a.a_check = TRUE
-        AND YEAR(a.a_created_at) = #{year}
-        AND MONTH(a.a_created_at) = #{month}
+        AND YEAR(a.a_created_at) = YEAR(#{date})
+        AND MONTH(a.a_created_at) = MONTH(#{date})
     </select>
     
     <!-- 선택한 년,월,일에 답변한 질문 조회 -->

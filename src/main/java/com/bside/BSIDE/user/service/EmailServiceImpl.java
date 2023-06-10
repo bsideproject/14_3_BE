@@ -151,7 +151,7 @@ public class EmailServiceImpl implements EmailService {
 		String[] dateArr = date.split("-");
 		
 		List<QuestionAndAnswerDto> questionsAndAnswers = questionService
-				.getQuestionsAndAnswersByMonthAndEmail(email, dateArr[0], dateArr[1]);
+				.getQuestionsAndAnswersByMonthAndEmail(email, dateArr[0]+'-'+dateArr[1]);
 
 		/* 폰트 설정 */
 		BaseFont baseFont = BaseFont.createFont("fonts/NanumGothic.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);

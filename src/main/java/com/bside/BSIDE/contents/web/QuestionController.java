@@ -89,7 +89,7 @@ public class QuestionController {
     /* 선택한 년도, 월에 답변한 질문 조회*/
     @GetMapping("/answered/{email}/{date}")
     @Operation(summary = "선택한 월에 답변한 질문 조회")
-    public ResponseEntity<?> getQuestionsAndAnswersByMonthAndEmail(@RequestParam String email, @RequestParam String date) {
+    public ResponseEntity<?> getQuestionsAndAnswersByMonthAndEmail(@PathVariable String email, @PathVariable String date) {
  
     	List<QuestionAndAnswerDto> questionsAndAnswers;
     	String[] dateArr = date.split("-");
@@ -100,7 +100,7 @@ public class QuestionController {
     	}
     	/* YYYY-MM 입력했을 경우 */
     	else if(dateArr.length == 2) {
-    		questionsAndAnswers = questionService.getQuestionsAndAnswersByMonthAndEmail(email, dateArr[0], dateArr[1]);
+    		questionsAndAnswers = questionService.getQuestionsAndAnswersByMonthAndEmail(email, date+"-01");
     	}
     	/* YYYY-MM-DD 입력했을 경우 */
     	else {
