@@ -1,5 +1,6 @@
 package com.bside.BSIDE.user.web;
 
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,11 +36,20 @@ public class EmailController {
 	  return emailService.sendCodeMessage(email);
 	}
 	
-	/* 월간 고밍 전송 */
+	/* 월간고밍 페이지에서 ‘이메일로 보내기’ 버튼을 눌렀을 때 */
 	@GetMapping("/sendByMonth")
-	@Operation(summary = "월간 고밍 전송")
+	@Operation(summary = "월간 고밍 이메일로 전송")
 	public void sendByMonth(@RequestParam String email, @RequestParam String date) throws Exception {
 		emailService.sendByMonth(email,date);
+	}
+	
+	/* 월간 고밍 & 리마인드 메일 */
+	@Scheduled(cron = "0 0 0 * * *")	//test용 매일 자정에 전송
+	//@Scheduled(cron = "0 0 0 1 * *")	//실제 사용! 매월 1일 전송
+	@GetMapping("/test")
+	@Operation(summary = "월간 고밍 전송")
+	public void scheduleMonthlyEmail() throws Exception {
+		emailService.scheduleMonthlyEmail();
 	}
 		
 }

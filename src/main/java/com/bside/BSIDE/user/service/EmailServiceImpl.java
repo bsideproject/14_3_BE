@@ -1,5 +1,7 @@
 package com.bside.BSIDE.user.service;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Random;
 
@@ -16,10 +18,11 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.bside.BSIDE.contents.domain.QuestionAndAnswerDto;
 import com.bside.BSIDE.service.QuestionService;
+import com.bside.BSIDE.user.domain.UserDto;
 import com.itextpdf.text.Document;
+import com.itextpdf.text.Font;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.BaseFont;
-import com.itextpdf.text.Font;
 import com.itextpdf.text.pdf.PdfWriter;
 
 import jakarta.mail.internet.InternetAddress;
@@ -136,22 +139,22 @@ public class EmailServiceImpl implements EmailService {
 		return temporaryPassword;
 	}
 	
-	/* 구현 중 */
+	/* 월간고밍 페이지에서 ‘이메일로 보내기’ 버튼을 눌렀을 때 */
 	@Override
 	public void sendByMonth(String email, String date) throws Exception {
 
 		/* MimeMessage 생성 및 설정 */
 		MimeMessage message = emailSender.createMimeMessage();
 		MimeMessageHelper helper = new MimeMessageHelper(message, true, "utf-8");
-
-		String to = "ehdgns48@naver.com";
-		helper.setTo(to); // 수신자 이메일 주소
-		helper.setSubject("Goming 비밀번호 찾기"); // 제목
 		
+		UserDto userdto = userService.getUserByEmail(email);
 		String[] dateArr = date.split("-");
 		
+		helper.setTo(email); // 수신자 이메일 주소
+		helper.setSubject("[Goming] "+userdto.getUsrNm()+"님의 월간고밍이 도착했어요!"); // 제목
+		
 		List<QuestionAndAnswerDto> questionsAndAnswers = questionService
-				.getQuestionsAndAnswersByMonthAndEmail(email, dateArr[0]+'-'+dateArr[1]);
+				.getQuestionsAndAnswersByMonthAndEmail(email, date+"-01");
 
 		/* 폰트 설정 */
 		BaseFont baseFont = BaseFont.createFont("fonts/NanumGothic.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
@@ -177,15 +180,20 @@ public class EmailServiceImpl implements EmailService {
 	    }
 	    
 	    document.close();
-		
+	    
+	    /* 메일 본문 작성 */
+	    String emailContent = "<div align='center' style='border:1px solid black; font-family:verdana;'>"
+				+ "<h3>" + userdto.getUsrNm() +"님, 요청하신 월간고밍이 도착했어요!<br>"
+				+ Integer.parseInt(dateArr[1]) +"월의 월간고밍을 확인해보세요.<br>"
+				+ "</h3></div>";
 		
 	    /* 전송 설정 */
-		helper.setText("hi", true); // 내용
+		helper.setText(emailContent, true); // 내용
 		helper.setFrom(new InternetAddress(senderEmail, senderName)); // 발신자 정보
 
 		/* 첨부 파일 추가 */
 		byte[] pdfData = outputStream.toByteArray();
-	    String attachmentFilename = "Goming.pdf";
+	    String attachmentFilename = Integer.parseInt(dateArr[1]) + "월 Goming.pdf";
 	    helper.addAttachment(attachmentFilename, new ByteArrayResource(pdfData));
 
 		try {
@@ -193,6 +201,80 @@ public class EmailServiceImpl implements EmailService {
 		} catch (MailException e) {
 			e.printStackTrace();
 			throw new IllegalArgumentException();
+		}
+	}
+	
+	/* 월간 고밍 & 리마인드 메일 */
+	@Override
+	public void scheduleMonthlyEmail() throws Exception {		
+		List<UserDto> userList = userService.getUser();
+		
+		for(int i = 0; i < userList.size(); i++) {
+			/* MimeMessage 생성 및 설정 */
+			MimeMessage message = emailSender.createMimeMessage();
+			MimeMessageHelper helper = new MimeMessageHelper(message, true, "utf-8");
+			
+			String email = userList.get(i).getEml();
+			LocalDate currentDate = LocalDate.now().minusMonths(1);
+	        String date = currentDate.format(DateTimeFormatter.ofPattern("yyyy-MM"));
+	        
+			System.out.println("email : "+email);
+			System.out.println("date : "+date);
+		
+			helper.setTo(email); // 수신자 이메일 주소
+			helper.setSubject("[Goming] 넠넠! 이번달 월간고밍이 도착했어요:)"); // 제목
+			
+			UserDto userdto = userService.getUserByEmail(email);
+			String[] dateArr = date.split("-");
+			
+			List<QuestionAndAnswerDto> questionsAndAnswers = questionService
+					.getQuestionsAndAnswersByMonthAndEmail(email, date+"-01");
+	
+			/* 폰트 설정 */
+			BaseFont baseFont = BaseFont.createFont("fonts/NanumGothic.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+			Font koreanFont = new Font(baseFont, 12);
+			
+			/* PDF 객체 생성 */
+			Document document = new Document();
+		    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+	
+		    /* PDF 생성 */
+		    PdfWriter.getInstance(document, outputStream);
+		    document.open();
+		    
+		    /* PDF에 저장할 문서 작성 */
+		    for (QuestionAndAnswerDto dto : questionsAndAnswers) {
+		    	document.add(new Paragraph("Q : " + dto.getQuestion(), koreanFont));
+		        document.add(new Paragraph("A : " + dto.getAnswer(), koreanFont));
+		        document.add(new Paragraph("\n"));
+		    }
+		    
+		    document.close();
+			
+		    /* 메일 본문 작성 */
+		    String emailContent = "<div align='center' style='border:1px solid black; font-family:verdana;'>"
+					+ "<h3>" + userdto.getUsrNm() +"님, 오늘은 어떤 하루를 보내셨나요?<br>"
+					+"지난 한달 간 기록했던 나의 하루들을 돌아볼 수 있는 월간고밍이 도착했어요!<br>"
+					+ "소중한 나의 기록들을 돌아보면서 새로운 마음으로" + (Integer.parseInt(dateArr[1])+1) + "월을 시작해보세요.<br><br>"
+					+ "이번 달도 "+userdto.getUsrNm()+"님에게 행복한 기억으로 남는 "+ (Integer.parseInt(dateArr[1])+1) +"월이 되기를 고밍이 응원할게요!<br>"
+					+ "지금 바로 오늘의 회고 하러 가기: URL"
+					+ "</h3></div>";
+			
+		    /* 전송 설정 */
+			helper.setText(emailContent, true); // 내용
+			helper.setFrom(new InternetAddress(senderEmail, senderName)); // 발신자 정보
+	
+			/* 첨부 파일 추가 */
+			byte[] pdfData = outputStream.toByteArray();
+		    String attachmentFilename = "Goming.pdf";
+		    helper.addAttachment(attachmentFilename, new ByteArrayResource(pdfData));
+		    
+			try {
+				emailSender.send(message);
+			} catch (MailException e) {
+				e.printStackTrace();
+				throw new IllegalArgumentException();
+			}
 		}
 	}
 

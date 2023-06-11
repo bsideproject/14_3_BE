@@ -20,6 +20,9 @@ public class QuestionAndAnswerDto {
 	@Schema(description = "답변 내용", example = "겨울")
     private String answer;
 	
+	@Schema(description = "답변 횟수", example = "4")
+    private int answerCount;
+	
 	@Schema(accessMode = Schema.AccessMode.READ_ONLY)
 	private String date;
 }

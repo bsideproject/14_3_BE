@@ -50,8 +50,8 @@ public class QuestionServiceImpl implements QuestionService {
 	}
 
 	@Override
-	public CountAnsweredQuestionsByMonthDto countAnsweredQuestionsByMonth(int year, int month, String writer) {
-		return questionMapper.countAnsweredQuestionsByMonth(year, month, writer);
+	public CountAnsweredQuestionsByMonthDto countAnsweredQuestionsByMonth(String email, int year, int month) {
+	    return questionMapper.countAnsweredQuestionsByMonth(email, year, month);
 	}
 	
 	@Override

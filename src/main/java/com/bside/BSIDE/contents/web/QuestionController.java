@@ -79,10 +79,10 @@ public class QuestionController {
     }
     
     /* 선택한 월에 답변한 질문 개수 조회 */
-    @GetMapping("/answeredCount/{year}/{month}/{writer}")
+    @GetMapping("/answeredCount/{email}/{year}/{month}")
     @Operation(summary = "선택한 월에 답변한 질문 개수 조회")
-    public ResponseEntity<CountAnsweredQuestionsByMonthDto> countAnsweredQuestionsByMonth(@PathVariable int year, @PathVariable int month, @PathVariable String writer) {
-        CountAnsweredQuestionsByMonthDto dto = questionService.countAnsweredQuestionsByMonth(year, month, writer);
+    public ResponseEntity<CountAnsweredQuestionsByMonthDto> countAnsweredQuestionsByMonth(@PathVariable String email, @PathVariable int year, @PathVariable int month) {
+        CountAnsweredQuestionsByMonthDto dto = questionService.countAnsweredQuestionsByMonth(email, year, month);
         return ResponseEntity.ok(dto);
     }
     
