@@ -13,9 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bside.BSIDE.contents.domain.QuestionAndAnswerDto;
-import com.bside.BSIDE.contents.domain.QuestionDto;
 import com.bside.BSIDE.contents.domain.CountAnsweredQuestionsByMonthDto;
+import com.bside.BSIDE.contents.domain.QuestionAndAnswerDto;
+import com.bside.BSIDE.contents.domain.QuestionCountDto;
+import com.bside.BSIDE.contents.domain.QuestionDto;
 import com.bside.BSIDE.service.AnswerService;
 import com.bside.BSIDE.service.QuestionService;
 
@@ -100,6 +101,23 @@ public class QuestionController {
     	/* YYYY-MM-DD 입력하지 않은 경우 */
     	else {
     		return ResponseEntity.ok("YYYY-MM-DD 의 형식으로 정확하게 입력해주세요."); 		
+    	}    	
+    }
+    
+    /* 선택한 월에 답변한 개수를 일별로 조회 */
+    @GetMapping("/answeredCountDatesInMonth/{email}/{date}")
+    @Operation(summary = "선택한 월에 답변한 개수를 일별로 조회")
+    public ResponseEntity<?> countAnsweredDatesInMonth(@PathVariable String email, @PathVariable String date) {
+    	String[] dateArr = date.split("-");
+    	
+    	/* YYYY-MM-DD 입력했을 경우 */
+    	if(dateArr.length == 2) {
+    		List<QuestionCountDto> dto = questionService.countAnsweredDatesInMonth(email, date+"-01");
+    		return ResponseEntity.ok(dto);
+    	}
+    	/* YYYY-MM-DD 입력하지 않은 경우 */
+    	else {
+    		return ResponseEntity.ok("YYYY-MM 의 형식으로 정확하게 입력해주세요."); 		
     	}    	
     }
     
