@@ -55,6 +55,11 @@ public class QuestionServiceImpl implements QuestionService {
 	}
 	
 	@Override
+	public int countAnsweredQuestionsByDay(String email, String date) {
+	    return questionMapper.countAnsweredQuestionsByDay(email, date);
+	}
+	
+	@Override
     public List<QuestionAndAnswerDto> getQuestionsAndAnswersByMonthAndEmail(String email, String date) {
         return questionMapper.getQuestionsAndAnswersByMonthAndEmail(email, date);
     }

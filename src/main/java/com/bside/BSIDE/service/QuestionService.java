@@ -15,6 +15,7 @@ public interface QuestionService {
 	int countAnsweredQuestionsThisMonth(String writer);
 	int countAnsweredQuestionsToday(String writer);
 	CountAnsweredQuestionsByMonthDto countAnsweredQuestionsByMonth(String email, int year, int month);
+	int countAnsweredQuestionsByDay(String email, String date);
 	
 	List<QuestionAndAnswerDto> getQuestionsAndAnswersByMonthAndEmail(String email, String date);
 	List<QuestionAndAnswerDto> getQuestionsAndAnswersByDayAndEmail(String email, String date);

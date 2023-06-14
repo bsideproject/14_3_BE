@@ -86,6 +86,23 @@ public class QuestionController {
         return ResponseEntity.ok(dto);
     }
     
+    /* 선택한 일에 답변한 질문 개수 조회 */
+    @GetMapping("/answeredCount/{email}/{date}")
+    @Operation(summary = "선택한 일에 답변한 질문 개수 조회")
+    public ResponseEntity<?> countAnsweredQuestionsByDay(@PathVariable String email, @PathVariable String date) {
+    	String[] dateArr = date.split("-");
+    	
+    	/* YYYY-MM-DD 입력했을 경우 */
+    	if(dateArr.length == 3) {
+    		int count = questionService.countAnsweredQuestionsByDay(email, date);
+    		return ResponseEntity.ok(count);
+    	}
+    	/* YYYY-MM-DD 입력하지 않은 경우 */
+    	else {
+    		return ResponseEntity.ok("YYYY-MM-DD 의 형식으로 정확하게 입력해주세요."); 		
+    	}    	
+    }
+    
     /* 선택한 년도, 월에 답변한 질문 조회*/
     @GetMapping("/answered/{email}/{date}")
     @Operation(summary = "선택한 월에 답변한 질문 조회")
