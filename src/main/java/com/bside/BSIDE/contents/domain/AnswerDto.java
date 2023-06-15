@@ -30,6 +30,9 @@ public class AnswerDto {
 	@Schema(description = "질문에 대한 답변 유무", example = "false")
 	private boolean aCheck;
 	
+	@Schema(description = "질문에 대한 답변 유무", example = "false")
+	private String category; 
+	
 	public int getQNo() {
 		return qNo;
 	}

@@ -48,15 +48,18 @@ public class AnswerController {
 	}
 	
 	/* 질문에 대한 답변 저장하기 */
-	@PutMapping("/saveAnswer")
+	@PostMapping("/saveAnswer")
 	@Operation(summary = "답변 저장")
-	public ResponseEntity<Boolean> saveAnswer(@RequestBody Map<String, Object> obj, String category) {
+	public ResponseEntity<Boolean> saveAnswer(@RequestBody Map<String, Object> obj) {
         AnswerDto adto = new AnswerDto();
         adto.setQNo(Integer.parseInt(obj.get("qNo").toString()));
         adto.setAAnswerContent(obj.get("aAnswerContent").toString());
         adto.setAWriter(obj.get("aWriter").toString());
+        adto.setCategory(obj.get("category").toString());
         
-        CategoryDto dto = categoryService.getCategory(category);
+        System.out.println(obj.get("category").toString());
+        
+        CategoryDto dto = categoryService.getCategory(adto.getCategory());
         
         UserCategoryDto userCategoryDto = new UserCategoryDto();
     	userCategoryDto.setEmail(adto.getAWriter());
