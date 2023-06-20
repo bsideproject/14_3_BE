@@ -44,9 +44,8 @@ public class EmailController {
 	}
 	
 	/* 월간 고밍 & 리마인드 메일 */
-	@Scheduled(cron = "0 0 0 * * *")	//test용 매일 자정에 전송
-	//@Scheduled(cron = "0 0 0 1 * *")	//실제 사용! 매월 1일 전송
-	@GetMapping("/test")
+	@Scheduled(cron = "0 0 0 1 * *")	//매월 1일 전송
+	@GetMapping("/scheduleMonthlyEmail")
 	@Operation(summary = "월간 고밍 전송")
 	public void scheduleMonthlyEmail() throws Exception {
 		emailService.scheduleMonthlyEmail();
