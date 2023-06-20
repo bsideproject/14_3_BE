@@ -3,9 +3,10 @@ package com.bside.BSIDE.contents.persistence;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
-import org.springframework.data.repository.query.Param;
 
+import com.bside.BSIDE.contents.domain.CountAnsweredQuestionsByMonthDto;
 import com.bside.BSIDE.contents.domain.QuestionAndAnswerDto;
+import com.bside.BSIDE.contents.domain.QuestionCountDto;
 import com.bside.BSIDE.contents.domain.QuestionDto;
 
 
@@ -19,8 +20,10 @@ public interface QuestionMapper {
 	int countUnansweredQuestions(String writer);
 	int countAnsweredQuestionsThisMonth(String writer);
 	int countAnsweredQuestionsToday(String writer);
-	int countAnsweredQuestionsByMonth(int year, int month, String writer);
+	CountAnsweredQuestionsByMonthDto countAnsweredQuestionsByMonth(String email, int year, int month);
+	int countAnsweredQuestionsByDay(String email, String date);
+	List<QuestionCountDto> countAnsweredDatesInMonth(String email, String date);
 	
-	List<QuestionAndAnswerDto> getQuestionsAndAnswersByMonthAndEmail(String email, String year, String month);
+	List<QuestionAndAnswerDto> getQuestionsAndAnswersByMonthAndEmail(String email, String date);
 	List<QuestionAndAnswerDto> getQuestionsAndAnswersByDayAndEmail(String email, String date);
 }

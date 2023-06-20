@@ -59,26 +59,21 @@ public class CategoryController {
     	}
     	
         if (category != null) {
-        	System.out.println(category.getCategoryName());
+        	System.out.println(category.getCategoryName());        	
         	
+        	List<QuestionDto> questions = getQuestionByCategory(category.getCategoryName());      	
         	
-        	List<QuestionDto> questions = getQuestionByCategory(category.getCategoryName());
-        	
-        	UserCategoryDto userCategoryDto = new UserCategoryDto();
-        	userCategoryDto.setEmail(email);
-        	userCategoryDto.setCategoryId(category.getCategoryId());
-        	
-        	insertUserCategory(userCategoryDto);
         	
             return ResponseEntity.ok(questions);
         } else {
-            return ResponseEntity.notFound().build();
+        	String message = String.format("3개의 카테고리를 모두 뽑았습니다.");
+            return ResponseEntity.ok(message);
         }
         
     }
     
     /* 질문 조회 */
-    public List<QuestionDto> getQuestionByCategory(@RequestParam(value = "category", required = false) String category) {
+    public List<QuestionDto> getQuestionByCategory(String category) {
     	System.out.println("getQuestionByCategory");
     	// 오늘 생성된 답변되지 않은 질문 조회
         List<AnswerDto> unansweredAnswers = answerService.getUnansweredAnswers();

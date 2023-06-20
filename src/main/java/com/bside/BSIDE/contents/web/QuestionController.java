@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bside.BSIDE.contents.domain.CountAnsweredQuestionsByMonthDto;
 import com.bside.BSIDE.contents.domain.QuestionAndAnswerDto;
+import com.bside.BSIDE.contents.domain.QuestionCountDto;
 import com.bside.BSIDE.contents.domain.QuestionDto;
 import com.bside.BSIDE.service.AnswerService;
 import com.bside.BSIDE.service.QuestionService;
@@ -78,21 +80,52 @@ public class QuestionController {
     }
     
     /* 선택한 월에 답변한 질문 개수 조회 */
-    @GetMapping("/answered/{year}/{month}/{writer}")
+    @GetMapping("/answeredCount/{email}/{year}/{month}")
     @Operation(summary = "선택한 월에 답변한 질문 개수 조회")
-    public ResponseEntity<Integer> countAnsweredQuestionsByMonth(@PathVariable int year, @PathVariable int month, @PathVariable String writer) {
-        int count = questionService.countAnsweredQuestionsByMonth(year, month, writer);
-        String message = String.format(year+"년도 "+month+"월에 답변한 질문 개수는 " + count + "개 입니다.");
-        System.out.println(message);
-        return ResponseEntity.ok(count);
+    public ResponseEntity<CountAnsweredQuestionsByMonthDto> countAnsweredQuestionsByMonth(@PathVariable String email, @PathVariable int year, @PathVariable int month) {
+        CountAnsweredQuestionsByMonthDto dto = questionService.countAnsweredQuestionsByMonth(email, year, month);
+        return ResponseEntity.ok(dto);
     }
     
-    /* 선택한 년도, 월데 답변한 질문 */
-    @GetMapping("/answered")
-    @Operation(summary = "선택한 월에 답변한 질문 조회")
-    public ResponseEntity<?> getQuestionsAndAnswersByMonthAndEmail(@RequestParam String email, @RequestParam String date) {
-    	System.out.println(email+", "+date);
+    /* 선택한 일에 답변한 질문 개수 조회 */
+    @GetMapping("/answeredCount/{email}/{date}")
+    @Operation(summary = "선택한 일에 답변한 질문 개수 조회")
+    public ResponseEntity<?> countAnsweredQuestionsByDay(@PathVariable String email, @PathVariable String date) {
+    	String[] dateArr = date.split("-");
     	
+    	/* YYYY-MM-DD 입력했을 경우 */
+    	if(dateArr.length == 3) {
+    		int count = questionService.countAnsweredQuestionsByDay(email, date);
+    		return ResponseEntity.ok(count);
+    	}
+    	/* YYYY-MM-DD 입력하지 않은 경우 */
+    	else {
+    		return ResponseEntity.ok("YYYY-MM-DD 의 형식으로 정확하게 입력해주세요."); 		
+    	}    	
+    }
+    
+    /* 선택한 월에 답변한 개수를 일별로 조회 */
+    @GetMapping("/answeredCountDatesInMonth/{email}/{date}")
+    @Operation(summary = "선택한 월에 답변한 개수를 일별로 조회")
+    public ResponseEntity<?> countAnsweredDatesInMonth(@PathVariable String email, @PathVariable String date) {
+    	String[] dateArr = date.split("-");
+    	
+    	/* YYYY-MM-DD 입력했을 경우 */
+    	if(dateArr.length == 2) {
+    		List<QuestionCountDto> dto = questionService.countAnsweredDatesInMonth(email, date+"-01");
+    		return ResponseEntity.ok(dto);
+    	}
+    	/* YYYY-MM-DD 입력하지 않은 경우 */
+    	else {
+    		return ResponseEntity.ok("YYYY-MM 의 형식으로 정확하게 입력해주세요."); 		
+    	}    	
+    }
+    
+    /* 선택한 년도, 월에 답변한 질문 조회*/
+    @GetMapping("/answered/{email}/{date}")
+    @Operation(summary = "선택한 월에 답변한 질문 조회")
+    public ResponseEntity<?> getQuestionsAndAnswersByMonthAndEmail(@PathVariable String email, @PathVariable String date) {
+ 
     	List<QuestionAndAnswerDto> questionsAndAnswers;
     	String[] dateArr = date.split("-");
     	
@@ -102,7 +135,7 @@ public class QuestionController {
     	}
     	/* YYYY-MM 입력했을 경우 */
     	else if(dateArr.length == 2) {
-    		questionsAndAnswers = questionService.getQuestionsAndAnswersByMonthAndEmail(email, dateArr[0], dateArr[1]);
+    		questionsAndAnswers = questionService.getQuestionsAndAnswersByMonthAndEmail(email, date+"-01");
     	}
     	/* YYYY-MM-DD 입력했을 경우 */
     	else {
