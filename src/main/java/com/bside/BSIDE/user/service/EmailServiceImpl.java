@@ -240,12 +240,12 @@ public class EmailServiceImpl implements EmailService {
 
 			System.out.println("email : " + email);
 			System.out.println("date : " + date);
-
-			helper.setTo(email); // 수신자 이메일 주소
-			helper.setSubject("[Goming] 넠넠! 이번달 월간고밍이 도착했어요:)"); // 제목
-
+			
 			UserDto userdto = userService.getUserByEmail(email);
 			String[] dateArr = date.split("-");
+			
+			helper.setTo(email); // 수신자 이메일 주소
+			helper.setSubject("[Goming] 넠넠! "+Integer.parseInt(dateArr[1])+"월의 월간고밍이 도착했어요:)"); // 제목
 
 			List<QuestionAndAnswerDto> questionsAndAnswers = questionService
 					.getQuestionsAndAnswersByMonthAndEmail(email, date + "-01");
@@ -265,14 +265,14 @@ public class EmailServiceImpl implements EmailService {
 			if (questionsAndAnswers.isEmpty()) {
 				System.out.println("questionsAndAnswers.isEmpty");
 				// 첨부할 내용이 없는 경우, "답변한 내용이 없습니다." 내용을 포함한 첨부파일 생성
-				document.add(new Paragraph(Integer.parseInt(dateArr[1]) + "월 답변한 내용이 없습니다. :(", koreanFont));
+				document.add(new Paragraph(" ", koreanFont));
 
 				document.close();
 
 				/* 메일 본문 작성 */
-				String emailContent = "<div align='center' style='border:1px solid black; font-family:verdana;'>"
-						+ "<h3>" + userdto.getUsrNm() + "님, 오늘은 어떤 하루를 보내셨나요?<br>" + "지난 한달 간 기록하지 않으셨네요:(<br>"
-						+ "소중한 날들을 돌아보면서 새로운 마음으로 " + (Integer.parseInt(dateArr[1]) + 1) + "월을 시작해보세요.<br><br>"
+				String emailContent = "<div align='center' style='border:1px solid black; font-family:verdana;'>" + "<h3>"
+						+ userdto.getUsrNm() + "님, 오늘은 어떤 하루를 보내셨나요?<br>" + "지난 한달 간 기록했던 나의 하루들을 돌아볼 수 있는 월간고밍이 도착했어요!<br>"
+						+ "소중한 나의 기록들을 돌아보면서 새로운 마음으로 " + (Integer.parseInt(dateArr[1]) + 1) + "월을 시작해보세요.<br><br>"
 						+ "이번 달도 " + userdto.getUsrNm() + "님에게 행복한 기억으로 남는 " + (Integer.parseInt(dateArr[1]) + 1)
 						+ "월이 되기를 고밍이 응원할게요!<br>" + "지금 바로 오늘의 회고 하러 가기: URL" + "</h3></div>";
 
@@ -281,7 +281,7 @@ public class EmailServiceImpl implements EmailService {
 				helper.setFrom(new InternetAddress(senderEmail, senderName)); // 발신자 정보
 
 				byte[] pdfData = outputStream.toByteArray();
-				String attachmentFilename = "NoAnswer.pdf";
+				String attachmentFilename = dateArr[0] +"년 "+ Integer.parseInt(dateArr[1]) +"월 "+ "월간고밍_"+ userdto.getUsrNm()+ ".pdf";
 				helper.addAttachment(attachmentFilename, new ByteArrayResource(pdfData));
 				
 				try {
@@ -317,7 +317,7 @@ public class EmailServiceImpl implements EmailService {
 
 			/* 첨부 파일 추가 */
 			byte[] pdfData = outputStream.toByteArray();
-			String attachmentFilename = "Goming.pdf";
+			String attachmentFilename = dateArr[0] +"년 "+ Integer.parseInt(dateArr[1]) +"월 "+ "월간고밍_"+ userdto.getUsrNm()+ ".pdf";
 			helper.addAttachment(attachmentFilename, new ByteArrayResource(pdfData));
 
 			try {
