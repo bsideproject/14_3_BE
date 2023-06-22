@@ -73,5 +73,31 @@ public class SignUpController {
 		String regex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
 		return email.matches(regex);
 	}
+    @PostMapping("/check-usrnm")
+    @Operation(summary = "닉네임 체크", description = "String usrNm")
+    public ResponseEntity<String> checkNickNameAvailability(@RequestParam("usrNm") String usrNm) {
 
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.TEXT_PLAIN);
+        String user = userService.getUserByUsrNm(usrNm);
+        System.out.println(user);
+        if(user==null) {
+            return new ResponseEntity<>(user, headers, HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>(user, headers, HttpStatus.CONFLICT);
+        }
+//        if(!isValidEmail(email)) {
+//            result = "유효하지 않은 이메일 주소입니다.";
+//            return new ResponseEntity<>(result, headers, HttpStatus.CONFLICT);
+//        }
+//
+//        if (user == null) {
+//            result = "사용 가능한 이메일입니다.";
+//            return new ResponseEntity<>(result, headers, HttpStatus.OK);  // 이메일 사용 가능
+//        } else {
+//            result = "이미 사용중인 이메일입니다.";
+//            return new ResponseEntity<>(result, headers, HttpStatus.CONFLICT);  // 이메일 중복
+//        }
+
+    }
 }
