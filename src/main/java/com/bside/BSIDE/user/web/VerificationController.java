@@ -16,7 +16,7 @@ import jakarta.servlet.http.HttpSession;
  * @일자 2023.05.12.
  **/
 
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:3000",allowCredentials = "true")
 @RestController
 @RequestMapping("/verifyCode")
 public class VerificationController {

@@ -18,7 +18,8 @@ import io.swagger.v3.oas.annotations.Operation;
  * @일자 2023.05.10.
  **/
 
-@CrossOrigin
+
+@CrossOrigin(origins = "http://localhost:3000",allowCredentials = "true")
 @RestController
 @RequestMapping("/email")
 public class EmailController {
