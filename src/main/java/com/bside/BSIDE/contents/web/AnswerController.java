@@ -3,7 +3,9 @@ package com.bside.BSIDE.contents.web;
 import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -71,6 +73,23 @@ public class AnswerController {
 		insertUserCategory(userCategoryDto);
 
 		return ResponseEntity.ok(answerService.saveAnswer(adto));
+	}
+	
+	/* 질문 답변하지 않고 넘기기 */
+	@PutMapping("/passAnswer")
+	@Operation(summary = "질문 답변하지 않고 넘기기")
+	public ResponseEntity<String> passAnswer(@RequestParam("qNo") int qNo, @RequestParam("email") String email) {
+		String msg = "이번 질문은 넘어갈래요.";
+		answerService.passAnswer(qNo, email);
+		return ResponseEntity.ok(msg);
+	}
+	
+	/* 답변하지 않은 질문 삭제 */
+	@Scheduled(cron = "0 0 0 * * *")
+	public ResponseEntity<String> deleteUnanswer() {
+		answerService.deleteUnanswer();
+		String msg = "Unanswer delete successful.";
+		return ResponseEntity.ok(msg);
 	}
 
 	/* 카테고리 저장 */

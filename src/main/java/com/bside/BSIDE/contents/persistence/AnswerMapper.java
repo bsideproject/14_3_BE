@@ -11,4 +11,6 @@ public interface AnswerMapper {
 	void selectedQuestion(AnswerDto answerDto);
 	List<AnswerDto> getUnansweredAnswers();
 	boolean saveAnswer(AnswerDto answerDto);
+	void passAnswer(int qNo, String email);
+	void deleteUnanswer();
 }
