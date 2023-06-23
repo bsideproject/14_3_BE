@@ -100,7 +100,7 @@ public class UserController {
 		return email.matches(regex);
 	}
 	
-	/* 이메일 주소의 유효성 검사 */
+	/* UserDto 필수 필드 유효성 검사 */
 	private boolean isValidUserDto(UserDto userDto) {
 		if (userDto.getUsrNm() == null || userDto.getPassword() == null || userDto.getGndrClsCd() == null) {
 	        return false;
