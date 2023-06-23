@@ -64,6 +64,7 @@ public class UserController {
     @Operation(summary = "회원 정보 수정", description = "String eml")
     public ResponseEntity<String> updateUser(@PathVariable String email, @RequestBody UserDto userDto) {
         userDto.setEml(email);
+
         userService.updateUser(userDto);
         return ResponseEntity.ok().build();
     }
