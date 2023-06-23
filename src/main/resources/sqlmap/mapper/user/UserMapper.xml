@@ -16,11 +16,12 @@
 	<update id="updateUser" parameterType="com.bside.BSIDE.user.domain.UserDto">
 		UPDATE bside.user 
 		SET
-			password=#{password},
-			gndr_cls_cd=#{gndrClsCd},
-			update_dtm=now()
+			usr_nm = #{usrNm},
+			password = #{password},
+			gndr_cls_cd = #{gndrClsCd},
+			update_dtm = now()
 		WHERE 
-			eml=#{eml}
+			eml = #{email}
 	</update>
 	
 	<delete id="deleteUser" parameterType = "String">

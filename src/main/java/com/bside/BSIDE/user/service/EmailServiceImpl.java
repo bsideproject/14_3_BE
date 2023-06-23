@@ -261,7 +261,7 @@ public class EmailServiceImpl implements EmailService {
 			/* PDF 생성 */
 			PdfWriter.getInstance(document, outputStream);
 			document.open();
-
+			
 			if (questionsAndAnswers.isEmpty()) {
 				System.out.println("questionsAndAnswers.isEmpty");
 				// 첨부할 내용이 없는 경우, "답변한 내용이 없습니다." 내용을 포함한 첨부파일 생성

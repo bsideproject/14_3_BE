@@ -15,7 +15,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@JsonInclude(JsonInclude.Include.NON_NULL) //null 값 출력x
+@JsonInclude(JsonInclude.Include.NON_NULL) // null 값 출력x
 public class UserDto {
 	@Schema(accessMode = Schema.AccessMode.READ_ONLY)
 	private String usrNo;
@@ -41,14 +41,21 @@ public class UserDto {
 
 	@Schema(description = "사용자 생성일자", example = "1993-01-01")
 	private String brdt;
-	
+
 	@Schema(accessMode = Schema.AccessMode.READ_ONLY)
 	private String joinDtm;
-	
+
 	@Schema(accessMode = Schema.AccessMode.READ_ONLY)
 	private String lastLgnDtm;
-	
+
 	@Schema(accessMode = Schema.AccessMode.READ_ONLY)
 	private String updateDtm;
 	
+	public String getEmail() {
+        return eml;
+    }
+
+    public void setEmail(String eml) {
+        this.eml = eml;
+    }
 }
