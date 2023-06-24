@@ -16,8 +16,8 @@
 	<update id="updateUser" parameterType="com.bside.BSIDE.user.domain.UserDto">
 		UPDATE bside.user 
 		SET
-			usr_nm = #{usrNm},
 			password = #{password},
+			agreement = #{agreement},
 			gndr_cls_cd = #{gndrClsCd},
 			update_dtm = now()
 		WHERE 

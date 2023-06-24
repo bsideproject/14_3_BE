@@ -102,7 +102,7 @@ public class UserController {
 	
 	/* UserDto 필수 필드 유효성 검사 */
 	private boolean isValidUserDto(UserDto userDto) {
-		if (userDto.getUsrNm() == null || userDto.getPassword() == null || userDto.getGndrClsCd() == null) {
+		if (userDto.getPassword() == null || userDto.getGndrClsCd() == null || userDto.getAgreement() == null) {
 	        return false;
 	    }
 		return true;

@@ -35,6 +35,9 @@ public class UserDto {
 
 	@Schema(accessMode = Schema.AccessMode.READ_ONLY)
 	private String snsToken;
+	
+	@Schema(description = "이메일 수신 동의(Y/N)", example = "Y")
+	private String agreement;
 
 	@Schema(description = "사용자 성별(F/M)", example = "M")
 	private String gndrClsCd;
@@ -50,7 +53,7 @@ public class UserDto {
 
 	@Schema(accessMode = Schema.AccessMode.READ_ONLY)
 	private String updateDtm;
-	
+		
 	public String getEmail() {
         return eml;
     }

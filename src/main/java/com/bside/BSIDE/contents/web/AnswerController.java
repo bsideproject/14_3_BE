@@ -61,7 +61,7 @@ public class AnswerController {
 		adto.setAAnswerContent(obj.get("aAnswerContent").toString());
 		adto.setAWriter(obj.get("aWriter").toString());
 		adto.setCategory(obj.get("category").toString());
-
+		
 		System.out.println(obj.get("category").toString());
 
 		CategoryDto dto = categoryService.getCategory(adto.getCategory());
@@ -91,6 +91,8 @@ public class AnswerController {
 		String msg = "Unanswer delete successful.";
 		return ResponseEntity.ok(msg);
 	}
+	
+	/* 질문에 대한 카테고리 가져오기 */
 
 	/* 카테고리 저장 */
 	public void insertUserCategory(@RequestBody UserCategoryDto userCategoryDto) {
