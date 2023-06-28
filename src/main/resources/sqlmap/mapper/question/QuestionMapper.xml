@@ -114,6 +114,7 @@
 	    INNER JOIN bside.question q ON a.q_no = q.q_no
 	    WHERE a.a_writer = #{email}
 	    AND a.a_check = TRUE
+	    AND LENGTH(a_answer_content) >= 1
 	    AND YEAR(a.a_created_at) = YEAR(#{date})
 	    AND MONTH(a.a_created_at) = MONTH(#{date})
 	</select>
