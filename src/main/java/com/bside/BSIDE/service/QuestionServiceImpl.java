@@ -39,6 +39,11 @@ public class QuestionServiceImpl implements QuestionService {
 	public int countUnansweredQuestions(String writer) {
 		return questionMapper.countUnansweredQuestions(writer);
 	}
+	
+	@Override
+	public int countPassQuestions(String writer) {
+		return questionMapper.countPassQuestions(writer);
+	}
 
 	@Override
 	public int countAnsweredQuestionsThisMonth(String writer) {

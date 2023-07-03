@@ -49,13 +49,12 @@ public class QuestionController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
     
-    /* 금일 잔여 답변 개수 조회 */
     @GetMapping("/unanswered")
-    @Operation(summary = "금일 잔여 답변 개수 조회")
-    public ResponseEntity<Integer> countUnansweredQuestions(@RequestParam("writer") String writer) {
-        Integer count = questionService.countUnansweredQuestions(writer);
-        String message = String.format("사용자가 답변할 수 있는 질문은 "+ count +"개입니다.");
-        System.out.println(message);
+    @Operation(summary = "금일 답변하지 않은 개수 조회")
+    public ResponseEntity<Integer> countUnansweredQuestionsToday(@RequestParam("writer") String writer) {
+        Integer count = 3 - questionService.countUnansweredQuestions(writer) - questionService.countPassQuestions(writer);
+        System.out.println("사용자가 아직 답변하지 않은 질문은 "+ questionService.countUnansweredQuestions(writer) +"개입니다.");
+        System.out.println("사용자가 답변하지 않겠다고 넘긴 질문은 "+ questionService.countPassQuestions(writer) +"개입니다.");
         return ResponseEntity.ok(count);
     }
     

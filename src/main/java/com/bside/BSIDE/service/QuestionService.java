@@ -13,6 +13,7 @@ public interface QuestionService {
 	List<QuestionDto> getQuestionByCategory(String category);
 	
 	int countUnansweredQuestions(String writer);
+	int countPassQuestions(String writer);
 	int countAnsweredQuestionsThisMonth(String writer);
 	int countAnsweredQuestionsToday(String writer);
 	CountAnsweredQuestionsByMonthDto countAnsweredQuestionsByMonth(String email, int year, int month);
