@@ -94,6 +94,27 @@ public class UserController {
 		}
 	}
 
+    @PostMapping("/passwordConfirm")
+    @Operation(summary = "비밀번호 확인")
+    public boolean passwordConfirm(@RequestBody Map<String, Object> obj) {
+
+
+		if(userService.getPasswordConfirm(obj.get("eml").toString(), obj.get("password").toString())){
+			return true;
+
+		}else{
+			return false;
+
+		}
+
+//        if (user != null) {
+//            return ResponseEntity.ok().body(user);
+//        } else {
+//            String msg = "아이디 혹은 비밀번호가 일치하지 않습니다.";
+//            return ResponseEntity.ok(msg);
+//        }
+    }
+
 	/* 이메일 주소의 유효성 검사 */
 	private boolean isValidEmail(String email) {
 		String regex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";

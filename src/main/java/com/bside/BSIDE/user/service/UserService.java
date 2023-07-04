@@ -15,4 +15,6 @@ public interface UserService {
 	List<UserDto> getUser();
 
 	String getUserByUsrNm(String usrNm);
+
+	boolean getPasswordConfirm(String email, String password);
 }

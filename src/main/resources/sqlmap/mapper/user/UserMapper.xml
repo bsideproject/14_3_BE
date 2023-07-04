@@ -53,5 +53,11 @@
 		FROM bside.user WHERE usr_nm = #{usrNm}
 	</select>
 
+	<select id="getPasswordConfirm" resultType="string">
+		SELECT password
+		FROM bside.user
+		WHERE eml = #{email}
+	</select>
+
 	
 </mapper>
