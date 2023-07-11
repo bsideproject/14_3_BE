@@ -54,7 +54,7 @@
 		SELECT COUNT(*) 
 		FROM bside.answer 
 		WHERE a_check = true
-		AND LENGTH(a_answer_content) = 0
+		AND CHAR_LENGTH(a_answer_content) = 0
 		AND YEAR(a_created_at) = YEAR(CURRENT_DATE()) 
 		AND MONTH(a_created_at) = MONTH(CURRENT_DATE()) 
 		AND DAY(a_created_at) = DAY(CURRENT_DATE())
@@ -67,7 +67,7 @@
 	    FROM bside.question q
 	    INNER JOIN bside.answer a ON q.q_no = a.q_no
 	    WHERE YEAR(a.a_created_at) = YEAR(CURRENT_DATE())
-	    AND LENGTH(a_answer_content) >= 1
+	    AND CHAR_LENGTH(a_answer_content) >= 1
 	    AND MONTH(a.a_created_at) = MONTH(CURRENT_DATE())
 	    AND a.a_writer = #{writer}
 	</select>
@@ -77,7 +77,7 @@
 	    SELECT COUNT(*) 
 	    FROM bside.question q
 	    INNER JOIN bside.answer a ON q.q_no = a.q_no
-	    WHERE LENGTH(a_answer_content) >= 1
+	    WHERE CHAR_LENGTH(a_answer_content) >= 1
 	    AND YEAR(a.a_created_at) = YEAR(CURRENT_DATE())
 	    AND MONTH(a.a_created_at) = MONTH(CURRENT_DATE())
 	    AND DAY(a.a_created_at) = DAY(CURRENT_DATE())
@@ -91,7 +91,7 @@
 	    LEFT OUTER JOIN bside.question q ON a.q_no = q.q_no
 	    WHERE q.q_no IS NOT NULL
 	    AND a.a_check = TRUE
-	    AND LENGTH(a_answer_content) >= 1 
+	    AND CHAR_LENGTH(a_answer_content) >= 1
 	    AND YEAR(a.a_created_at) = #{year}
 	    AND MONTH(a.a_created_at) = #{month}
 	    AND a.a_writer = #{email} 
@@ -104,7 +104,7 @@
 	    LEFT OUTER JOIN bside.question q ON a.q_no = q.q_no
 	    WHERE q.q_no IS NOT NULL
 	    AND a.a_check = TRUE
-	    AND LENGTH(a_answer_content) >= 1 
+	    AND CHAR_LENGTH(a_answer_content) >= 1
 	    AND YEAR(a.a_created_at) = YEAR(#{date})
 	    AND MONTH(a.a_created_at) = MONTH(#{date})
 	    AND DAY(a.a_created_at) = DAY(#{date})
@@ -118,7 +118,7 @@
 	    LEFT OUTER JOIN bside.question q ON a.q_no = q.q_no
 	    WHERE q.q_no IS NOT NULL
 	    AND a.a_check = TRUE
-	    AND LENGTH(a_answer_content) >= 1 
+	    AND CHAR_LENGTH(a_answer_content) >= 1
 	    AND YEAR(a.a_created_at) = YEAR(#{date})
 	    AND MONTH(a.a_created_at) = MONTH(#{date})
 	    AND a.a_writer = #{email}	    
@@ -131,7 +131,7 @@
 	    INNER JOIN bside.question q ON a.q_no = q.q_no
 	    WHERE a.a_writer = #{email}
 	    AND a.a_check = TRUE
-	    AND LENGTH(a_answer_content) >= 1
+	    AND CHAR_LENGTH(a_answer_content) >= 1
 	    AND YEAR(a.a_created_at) = YEAR(#{date})
 	    AND MONTH(a.a_created_at) = MONTH(#{date})
 	</select>
@@ -143,7 +143,7 @@
         INNER JOIN bside.question q ON a.q_no = q.q_no
         WHERE a.a_writer = #{email}
         AND a.a_check = TRUE
-        LENGTH(a_answer_content) >= 1
+		CHAR_LENGTH(a_answer_content) >= 1
         AND YEAR(a.a_created_at) = YEAR(#{date}) 
         AND MONTH(a.a_created_at) = MONTH(#{date})
         AND DAY(a.a_created_at) = DAY(#{date})
