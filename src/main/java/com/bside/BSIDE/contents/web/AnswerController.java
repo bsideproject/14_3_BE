@@ -78,7 +78,10 @@ public class AnswerController {
 	/* 질문 답변하지 않고 넘기기 */
 	@PutMapping("/passAnswer")
 	@Operation(summary = "질문 답변하지 않고 넘기기")
-	public ResponseEntity<String> passAnswer(@RequestParam("qNo") int qNo, @RequestParam("email") String email) {
+	public ResponseEntity<String> passAnswer(@RequestBody Map<String, Object> obj) {
+		int qNo = (int) obj.get("qNo");
+		String email = (String) obj.get("email");
+
 		String msg = "이번 질문은 넘어갈래요.";
 		answerService.passAnswer(qNo, email);
 		return ResponseEntity.ok(msg);
