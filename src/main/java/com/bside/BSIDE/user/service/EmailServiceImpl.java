@@ -1,5 +1,6 @@
 package com.bside.BSIDE.user.service;
 
+import java.nio.file.Files;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -188,13 +189,22 @@ public class EmailServiceImpl implements EmailService {
 
 			return;
 		}
-
+		
+		int count = 0;
+		
 		/* PDF에 저장할 문서 작성 */
 		for (QuestionAndAnswerDto dto : questionsAndAnswers) {
+			if(count == 5) {
+				document.newPage();
+				count = 0;
+				continue;				
+			}
+			
 			document.add(new Paragraph("Q : " + dto.getQuestion(), koreanFont));
 			document.add(new Paragraph("A : " + dto.getAnswer(), koreanFont));
 			document.add(new Paragraph("\n"));
-
+			count++;
+			
 			System.out.println("Q : " + dto.getQuestion());
 			System.out.println("A : " + dto.getAnswer());
 			System.out.println();
@@ -213,7 +223,7 @@ public class EmailServiceImpl implements EmailService {
 
 		/* 첨부 파일 추가 */
 		byte[] pdfData = outputStream.toByteArray();
-		String attachmentFilename = Integer.parseInt(dateArr[1]) + "월 Goming.pdf";
+		String attachmentFilename = dateArr[0] +"년 "+ Integer.parseInt(dateArr[1]) +"월 "+ "월간고밍_"+ userdto.getUsrNm()+ ".pdf";
 		helper.addAttachment(attachmentFilename, new ByteArrayResource(pdfData));
 
 		try {
