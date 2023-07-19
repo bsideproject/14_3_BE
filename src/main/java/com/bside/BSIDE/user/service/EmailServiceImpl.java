@@ -142,7 +142,7 @@ public class EmailServiceImpl implements EmailService {
 
 	/* 월간고밍 페이지에서 ‘이메일로 보내기’ 버튼을 눌렀을 때 */
 	@Override
-	public void sendByMonth(String email, String date) throws Exception {
+	public void sendByMonth(String email,String sendEmail, String date) throws Exception {
 
 		/* MimeMessage 생성 및 설정 */
 		MimeMessage message = emailSender.createMimeMessage();
@@ -151,7 +151,7 @@ public class EmailServiceImpl implements EmailService {
 		UserDto userdto = userService.getUserByEmail(email);
 		String[] dateArr = date.split("-");
 
-		helper.setTo(email); // 수신자 이메일 주소
+		helper.setTo(sendEmail); // 수신자 이메일 주소
 		helper.setSubject("[Goming] " + userdto.getUsrNm() + "님의 월간고밍이 도착했어요!"); // 제목
 
 		List<QuestionAndAnswerDto> questionsAndAnswers = questionService.getQuestionsAndAnswersByMonthAndEmail(email,
