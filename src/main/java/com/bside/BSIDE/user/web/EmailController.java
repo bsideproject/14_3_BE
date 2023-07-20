@@ -1,12 +1,9 @@
 package com.bside.BSIDE.user.web;
 
+import com.bside.BSIDE.user.domain.EmailDto;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.bside.BSIDE.user.service.EmailService;
 
@@ -38,10 +35,14 @@ public class EmailController {
 	}
 	
 	/* 월간고밍 페이지에서 ‘이메일로 보내기’ 버튼을 눌렀을 때 */
-	@GetMapping("/sendByMonth")
+	@PostMapping("/sendByMonth")
 	@Operation(summary = "월간 고밍 이메일로 전송")
-	public void sendByMonth(@RequestParam String email, @RequestParam String date) throws Exception {
-		emailService.sendByMonth(email,date);
+	public void sendByMonth(@RequestBody EmailDto param) throws Exception {
+		System.out.println(param.getEmail()+"+ @#@#@##@#@#@#!@$@$!@$email");
+		System.out.println(param.getSendEmail()+"+ @#@#@##@#@#@#!@$@$!@sendEmail");
+		System.out.println(param.getDate()+ "+ @#@#@##@#@#@#!@$@$!@date");
+
+		emailService.sendByMonth(param.getEmail(),param.getSendEmail(),param.getDate());
 	}
 	
 	/* 월간 고밍 & 리마인드 메일 */
