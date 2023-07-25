@@ -1,17 +1,9 @@
 package com.bside.BSIDE.contents.domain;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
+@Data
 public class QuestionAndAnswerDto {
 	
 	@Schema(description = "질문 내용", example = "가장 좋아하는 계절은?")

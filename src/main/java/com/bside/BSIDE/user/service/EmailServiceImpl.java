@@ -153,7 +153,7 @@ public class EmailServiceImpl implements EmailService {
 
 		helper.setTo(sendEmail); // 수신자 이메일 주소
 		helper.setSubject("[Goming] " + userdto.getUsrNm() + "님의 월간고밍이 도착했어요!"); // 제목
-
+		
 		List<QuestionAndAnswerDto> questionsAndAnswers = questionService.getQuestionsAndAnswersByMonthAndEmail(email,
 				date + "-01");
 

@@ -97,7 +97,7 @@
 	    AND a.a_writer = #{email} 
 	</select>
 	
-	<!-- 선택한 월에 답변한 질문 개수 조회 -->
+	<!-- 선택한 일에 답변한 질문 개수 조회 -->
 	<select id="countAnsweredQuestionsByDay" resultType="int">
 	    SELECT COUNT(*) AS count
 	    FROM bside.answer a
@@ -136,17 +136,16 @@
 	    AND MONTH(a.a_created_at) = MONTH(#{date})
 	</select>
     
-    <!-- 선택한 년,월,일에 답변한 질문 조회 -->
+    <!-- 선택한 년,월에 답변한 질문 조회 -->
     <select id="getQuestionsAndAnswersByDayAndEmail" resultType="com.bside.BSIDE.contents.domain.QuestionAndAnswerDto">
         SELECT q.q_question AS question, a.a_answer_content AS answer
         FROM bside.answer a
         INNER JOIN bside.question q ON a.q_no = q.q_no
         WHERE a.a_writer = #{email}
         AND a.a_check = TRUE
-		CHAR_LENGTH(a_answer_content) >= 1
+		AND CHAR_LENGTH(a_answer_content) >= 1
         AND YEAR(a.a_created_at) = YEAR(#{date}) 
         AND MONTH(a.a_created_at) = MONTH(#{date})
         AND DAY(a.a_created_at) = DAY(#{date})
     </select>
-	
 </mapper>
