@@ -3,7 +3,6 @@ package com.bside.BSIDE.contents.persistence;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
-import org.springframework.data.domain.Page;
 
 import com.bside.BSIDE.contents.domain.CountAnsweredQuestionsByMonthDto;
 import com.bside.BSIDE.contents.domain.QuestionAndAnswerDto;
