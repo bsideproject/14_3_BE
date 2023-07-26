@@ -77,7 +77,7 @@
 	    SELECT COUNT(*) 
 	    FROM bside.question q
 	    INNER JOIN bside.answer a ON q.q_no = a.q_no
-	    WHERE a.a_check = TRUE
+	    WHERE CHAR_LENGTH(a_answer_content) >= 1
 	    AND YEAR(a.a_created_at) = YEAR(CURRENT_DATE())
 	    AND MONTH(a.a_created_at) = MONTH(CURRENT_DATE())
 	    AND DAY(a.a_created_at) = DAY(CURRENT_DATE())
