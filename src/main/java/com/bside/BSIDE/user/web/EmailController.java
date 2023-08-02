@@ -30,7 +30,9 @@ public class EmailController {
 	/* 이메일 인증 번호 전송 */
 	@PostMapping("/emailConfirm")
 	@Operation(summary = "이메일 인증 번호 전송")
-	public String emailConfirm(@RequestParam EmailDto param) throws Exception {
+	public String emailConfirm(@RequestBody EmailDto param) throws Exception {
+		System.out.println(param.getEmail());
+		System.out.println("$!@#@#$%@%@#$%$%^@##$^^$^YRDGRDGD");
 	  return emailService.sendCodeMessage(param.getEmail());
 	}
 	
