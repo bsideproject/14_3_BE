@@ -16,7 +16,7 @@ import io.swagger.v3.oas.annotations.Operation;
  **/
 
 
-@CrossOrigin
+@CrossOrigin(origins = {"http://localhost:3000","http://49.50.161.32:8080"},allowCredentials = "true")
 @RestController
 @RequestMapping("/email")
 public class EmailController {
@@ -31,8 +31,7 @@ public class EmailController {
 	@PostMapping("/emailConfirm")
 	@Operation(summary = "이메일 인증 번호 전송")
 	public String emailConfirm(@RequestBody EmailDto param) throws Exception {
-		System.out.println(param.getEmail());
-		System.out.println("$!@#@#$%@%@#$%$%^@##$^^$^YRDGRDGD");
+
 	  return emailService.sendCodeMessage(param.getEmail());
 	}
 	
