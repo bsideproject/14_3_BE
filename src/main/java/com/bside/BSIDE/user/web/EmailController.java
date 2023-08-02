@@ -16,7 +16,7 @@ import io.swagger.v3.oas.annotations.Operation;
  **/
 
 
-@CrossOrigin(origins = {"http://localhost:3000","http://49.50.161.32:8080"},allowCredentials = "true")
+@CrossOrigin(origins = {"http://localhost:3000","http://www.goming.site"},allowCredentials = "true")
 @RestController
 @RequestMapping("/email")
 public class EmailController {
