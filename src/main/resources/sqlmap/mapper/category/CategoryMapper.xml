@@ -25,4 +25,11 @@
 	    AND email = #{email}
 	</select>
 	
+	<!--  답변한 카테고리를 제외한 카테고리 랜덤 조회 -->
+	<select id="getCategory" resultType="com.bside.BSIDE.contents.domain.CategoryDto" parameterType="String">
+		SELECT c.category_id as categoryId, c.category_name as categoryName
+		FROM bside.category c
+		WHERE c.category_name = #{category}
+	</select>
+	
 </mapper>

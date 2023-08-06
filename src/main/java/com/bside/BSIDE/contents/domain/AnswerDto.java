@@ -1,19 +1,9 @@
 package com.bside.BSIDE.contents.domain;
 
-import java.time.LocalDateTime;
-
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
+@Data
 public class AnswerDto {
 	@Schema(hidden = true)
 	private int aNo;
@@ -29,6 +19,9 @@ public class AnswerDto {
 	
 	@Schema(description = "질문에 대한 답변 유무", example = "false")
 	private boolean aCheck;
+	
+	@Schema(description = "카테고리", example = "꿈")
+	private String category; 
 	
 	public int getQNo() {
 		return qNo;

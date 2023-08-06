@@ -73,5 +73,18 @@ public class SignUpController {
 		String regex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
 		return email.matches(regex);
 	}
+    @PostMapping("/check-usrnm")
+    @Operation(summary = "닉네임 체크", description = "String usrNm")
+    public ResponseEntity<String> checkNickNameAvailability(@RequestParam("nickName") String usrNm) {
 
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.TEXT_PLAIN);
+        String user = userService.getUserByUsrNm(usrNm);
+        System.out.println("test " +user);
+        if(user==null) {
+            return new ResponseEntity<>("", headers, HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>(user, headers, HttpStatus.OK);
+        }
+    }
 }

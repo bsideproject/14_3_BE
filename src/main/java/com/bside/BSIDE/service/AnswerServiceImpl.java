@@ -3,6 +3,7 @@ package com.bside.BSIDE.service;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import com.bside.BSIDE.contents.domain.AnswerDto;
 import com.bside.BSIDE.contents.persistence.AnswerMapper;
@@ -32,5 +33,15 @@ public class AnswerServiceImpl implements AnswerService {
     @Override
     public boolean saveAnswer(AnswerDto answerDto) {
     	return answerMapper.saveAnswer(answerDto);
+    }
+    
+    @Override
+    public void passAnswer(int qNo, String email) {
+    	answerMapper.passAnswer(qNo, email);
+    }
+    
+    @Override
+    public void deleteUnanswer() {
+    	answerMapper.deleteUnanswer();
     }
 }

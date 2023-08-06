@@ -9,25 +9,37 @@
 
 	<!-- 선택된 질문 보관 -->
 	<insert id="selectedQuestion" parameterType="com.bside.BSIDE.contents.domain.AnswerDto">
-        INSERT INTO answer(q_no, a_answer_content, a_check, a_writer)
-        VALUES(#{qNo}, " ", false, #{aWriter})
+        INSERT INTO bside.answer(q_no, a_answer_content, a_check, a_writer)
+        VALUES(#{qNo}, '', false, #{aWriter})
     </insert>
 	
 	<!-- 답변되지 않은 질문 조회 -->
 	<!-- getUnansweredAnswers -->
 	<select id="getUnansweredAnswers" resultMap="answerResultMap">
 	    SELECT *
-	    FROM answer
+	    FROM bside.answer
 	    WHERE a_check = false
 	    AND DATE(a_created_at) = DATE(NOW())
 	</select>
 	
 	<!-- 질문에 대한 답변 저장 -->
 	<update id="saveAnswer" parameterType="com.bside.BSIDE.contents.domain.AnswerDto">
-	    UPDATE answer
-	    SET a_answer_content = #{aAnswerContent}, a_check = true, a_writer = #{aWriter}
-	    WHERE q_no = #{qNo}
+	    UPDATE bside.answer
+	    SET a_answer_content = #{aAnswerContent}, a_check = true
+	    WHERE q_no = #{qNo} AND a_writer = #{aWriter}
 	</update>
+	
+	<!-- 질문 답변하지 않고 넘기기 -->
+	<update id="passAnswer" parameterType="com.bside.BSIDE.contents.domain.AnswerDto">
+	    UPDATE bside.answer
+	    SET a_check = true
+	    WHERE q_no = #{qNo} AND a_writer = #{email}
+	</update>
+	
+	<!-- 답변하지 않은 질문 삭제 -->
+	<delete id="deleteUnanswer">
+        DELETE FROM bside.answer WHERE a_check = false
+    </delete>
 	
 	<resultMap id="answerResultMap" type="com.bside.BSIDE.contents.domain.AnswerDto">
 		<id property="aNo" column="a_no"/>

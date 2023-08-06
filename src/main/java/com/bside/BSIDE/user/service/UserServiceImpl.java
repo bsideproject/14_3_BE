@@ -46,4 +46,15 @@ public class UserServiceImpl implements UserService {
 		return userMapper.getUser();
 	}
 
+	@Override
+	public String getUserByUsrNm(String usrNm) {
+		return userMapper.getUserByUsrNm(usrNm);
+	}
+
+	@Override
+	public boolean getPasswordConfirm(String email, String password) {
+		return userMapper.getPasswordConfirm(email,password).equals(password);
+	}
+
+
 }

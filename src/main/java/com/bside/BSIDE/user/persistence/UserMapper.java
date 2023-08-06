@@ -16,5 +16,6 @@ public interface UserMapper {
     UserDto getUserByEmail(String email);
     UserDto getUserByEmailPw(String email, String password);
     void saveTemporaryPassword(String email, String password);
-    List<UserDto> getUser();
+    List<UserDto> getUser();    String getUserByUsrNm(String usrNm);
+    String getPasswordConfirm(String email, String password);
 }

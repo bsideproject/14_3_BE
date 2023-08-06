@@ -26,4 +26,9 @@ public class CategoryServiceImpl implements CategoryService{
     public int selectCaterogyCount(String email) {
     	return categoryMapper.selectCaterogyCount(email);
     }
+    
+    @Override
+    public CategoryDto getCategory(String category) {
+    	return categoryMapper.getCategory(category);
+    }
 }
