@@ -4,10 +4,12 @@ import com.bside.BSIDE.user.domain.EmailDto;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
-
+import jakarta.servlet.http.Cookie;
 import com.bside.BSIDE.user.service.EmailService;
-
+import jakarta.servlet.http.HttpServletResponse;
 import io.swagger.v3.oas.annotations.Operation;
+
+import java.net.http.HttpResponse;
 
 /**
  * @EmailController
@@ -30,7 +32,13 @@ public class EmailController {
 	/* 이메일 인증 번호 전송 */
 	@PostMapping("/emailConfirm")
 	@Operation(summary = "이메일 인증 번호 전송")
-	public String emailConfirm(@RequestBody EmailDto param) throws Exception {
+	public String emailConfirm(@RequestBody EmailDto param, HttpServletResponse response) throws Exception {
+
+
+
+
+		// 응답 헤더에 쿠키 추가
+		response.setHeader("Set-Cookie", "cookieName=cookieValue; SameSite=None");
 
 		return emailService.sendCodeMessage(param.getEmail());
 	}
