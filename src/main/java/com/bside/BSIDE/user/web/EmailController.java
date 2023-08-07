@@ -30,8 +30,9 @@ public class EmailController {
 	/* 이메일 인증 번호 전송 */
 	@PostMapping("/emailConfirm")
 	@Operation(summary = "이메일 인증 번호 전송")
-	public String emailConfirm(@RequestParam String email) throws Exception {
-	  return emailService.sendCodeMessage(email);
+	public String emailConfirm(@RequestBody EmailDto param) throws Exception {
+
+		return emailService.sendCodeMessage(param.getEmail());
 	}
 	
 	/* 월간고밍 페이지에서 ‘이메일로 보내기’ 버튼을 눌렀을 때 */
