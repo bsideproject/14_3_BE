@@ -10,6 +10,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
+import java.net.HttpCookie;
+
 /**
  * @VerificationController
  * @작성자 DongHun
