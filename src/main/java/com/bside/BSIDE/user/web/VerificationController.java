@@ -16,7 +16,7 @@ import jakarta.servlet.http.HttpSession;
  * @일자 2023.05.12.
  **/
 
-@CrossOrigin
+@CrossOrigin(origins = {"http://localhost:3000","http://www.goming.site"},allowCredentials = "true")
 @RestController
 @RequestMapping("/verifyCode")
 public class VerificationController {
@@ -27,7 +27,8 @@ public class VerificationController {
 	public String verifyCode(@RequestParam("code") String userCode,  HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		String verificationCode = (String) session.getAttribute("verificationCode");
-		
+
+		System.out.println(verificationCode +"$!$!@$!@@!@$@$");
 		if (verificationCode != null && verificationCode.equals(userCode)) {
             // 인증번호 일치
             return "인증번호가 일치합니다.";
