@@ -31,7 +31,7 @@ import io.swagger.v3.oas.annotations.Operation;
  * @일자 2023.04.23.
  **/
 
-@CrossOrigin
+@CrossOrigin(origins = {"http://localhost:3000","http://www.goming.site"},allowCredentials = "true")
 @RestController
 @RequestMapping("/question")
 public class QuestionController {
