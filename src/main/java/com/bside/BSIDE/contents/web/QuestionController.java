@@ -1,6 +1,7 @@
 package com.bside.BSIDE.contents.web;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -46,9 +47,14 @@ public class QuestionController {
 	/* 질문 저장 */
 	@PostMapping("/insertQuestion")
 	@Operation(summary = "질문 저장")
-	public ResponseEntity<Void> createQuestion(@RequestBody QuestionDto questionDto) {
-		questionService.insertQuestion(questionDto);
-		return new ResponseEntity<>(HttpStatus.CREATED);
+	public ResponseEntity<String> createQuestion(@RequestBody Map<String, Object> obj ) {
+		QuestionDto qDto = new QuestionDto();
+		qDto.setQCategory((String) obj.get("qCategory"));
+		qDto.setQWriter((String) obj.get("qWriter"));
+		qDto.setQQuestion((String) obj.get("qQuestion"));
+
+		questionService.insertQuestion(qDto);
+		return ResponseEntity.ok("입력되었습니다.");
 	}
 
 	@GetMapping("/unanswered")
