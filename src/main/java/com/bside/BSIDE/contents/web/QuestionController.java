@@ -151,20 +151,25 @@ public class QuestionController {
 			ResponseEntity.ok("선택한 날짜의 값이 존재하지 않습니다.");
 		}
 
-		// 페이징 처리를 위한 Pageable 생성
-		int totalElements = questionAndAnswers.size();
-		int totalPages = (int) Math.ceil((double) totalElements / size);
-		int currentPage = Math.min(Math.max(1, page), totalPages);
-		int startIndex = (currentPage - 1) * size;
-		int endIndex = Math.min(startIndex + size, totalElements);
+		System.out.println(page+"@##!#!##!#$$!@$!@$!@4pagE@#!@@#$!@$!@$");
+		if(page>0) {
+			// 페이징 처리를 위한 Pageable 생성
+			int totalElements = questionAndAnswers.size();
+			int totalPages = (int) Math.ceil((double) totalElements / size);
+			int currentPage = Math.min(Math.max(1, page), totalPages);
+			int startIndex = (currentPage - 1) * size;
+			int endIndex = Math.min(startIndex + size, totalElements);
 
-		// 해당 페이지에 맞게 데이터 분할
-		List<QuestionAndAnswerDto> pageContent = questionAndAnswers.subList(startIndex, endIndex);
+			// 해당 페이지에 맞게 데이터 분할
+			List<QuestionAndAnswerDto> pageContent = questionAndAnswers.subList(startIndex, endIndex);
 
-		// PagedResponse 객체 생성
-		PagedResponse<QuestionAndAnswerDto> pagedResponse = new PagedResponse<>(pageContent, currentPage, size,
-				totalElements);
+			// PagedResponse 객체 생성
+			PagedResponse<QuestionAndAnswerDto> pagedResponse = new PagedResponse<>(pageContent, currentPage, size,
+					totalElements);
+			return ResponseEntity.ok(pagedResponse);
+		}else{
+			return ResponseEntity.ok(questionAndAnswers);
+		}
 
-		return ResponseEntity.ok(pagedResponse);
 	}
 }
