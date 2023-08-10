@@ -13,11 +13,13 @@
 			bside.question(
 			q_category,
 			q_writer,
+			q_question,
 			q_created_at
 		)
 		VALUES(
-				  #{category},
+				  #{qCategory},
 				  #{qWriter},
+		       	  #{qQuestion},
 				  now()
 			  )
 	</insert>
