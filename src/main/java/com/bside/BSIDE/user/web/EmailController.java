@@ -68,12 +68,12 @@ public class EmailController {
     }
     @PostMapping("/sendByMonthBlob")
     @Operation(summary = "월간 고밍이미지 이메일로 전송")
-    public void sendByMonth(@RequestParam String email, @RequestParam String sendEmail, @RequestParam MultipartFile imageData) throws Exception {
+    public void sendByMonth(@RequestParam String email, @RequestParam String sendEmail, @RequestParam String date ,@RequestParam MultipartFile imageData) throws Exception {
 		System.out.println(email+"+ @#@#@##@#@#@#!@$@$!@$email");
 		System.out.println(sendEmail+"+ @#@#@##@#@#@#!@$@$!@sendEmail");
 		System.out.println(imageData+ "+ @#@#@##@#@#@#!@$@$!@date");
 
-        emailService.sendByMonthBlob(email,sendEmail,imageData);
+        emailService.sendByMonthBlob(email,sendEmail,date,imageData);
     }
 
 //	@PostMapping("/api/upload-image")
