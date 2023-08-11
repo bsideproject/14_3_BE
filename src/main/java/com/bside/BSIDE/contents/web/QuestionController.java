@@ -31,23 +31,21 @@ import io.swagger.v3.oas.annotations.Operation;
  * @일자 2023.04.23.
  **/
 
-@CrossOrigin(origins = {"http://localhost:3000","http://www.goming.site"},allowCredentials = "true")
+@CrossOrigin(origins = { "http://localhost:3000", "http://www.goming.site" }, allowCredentials = "true")
 @RestController
 @RequestMapping("/question")
 public class QuestionController {
 
 	private final QuestionService questionService;
-	private final AnswerService answerService;
 
-	public QuestionController(QuestionService questionService, AnswerService answerService) {
+	public QuestionController(QuestionService questionService) {
 		this.questionService = questionService;
-		this.answerService = answerService;
 	}
 
 	/* 질문 저장 */
 	@PostMapping("/insertQuestion")
 	@Operation(summary = "질문 저장")
-	public ResponseEntity<String> createQuestion(@RequestBody Map<String, Object> obj ) {
+	public ResponseEntity<String> createQuestion(@RequestBody Map<String, Object> obj) {
 		QuestionDto qDto = new QuestionDto();
 		qDto.setQCategory((String) obj.get("qCategory"));
 		qDto.setQWriter((String) obj.get("qWriter"));
@@ -57,9 +55,9 @@ public class QuestionController {
 		return ResponseEntity.ok("입력되었습니다.");
 	}
 
-	@GetMapping("/unanswered")
+	@GetMapping("/unanswered/{writer}")
 	@Operation(summary = "금일 답변하지 않은 개수 조회")
-	public ResponseEntity<Integer> countUnansweredQuestionsToday(@RequestParam("writer") String writer) {
+	public ResponseEntity<Integer> countUnansweredQuestionsToday(@PathVariable("writer") String writer) {
 		Integer count = 3 - questionService.countAnsweredQuestionsToday(writer)
 				- questionService.countPassQuestions(writer);
 		System.out.println("사용자가 답변한 질문은 " + questionService.countAnsweredQuestionsToday(writer) + "개입니다.");
@@ -68,9 +66,9 @@ public class QuestionController {
 	}
 
 	/* 이번달에 답변한 질문 개수 조회 */
-	@GetMapping("/answered/month")
+	@GetMapping("/answered/month/{writer}")
 	@Operation(summary = "이번달에 답변한 질문 개수 조회")
-	public ResponseEntity<Integer> countAnsweredQuestionsThisMonth(@RequestParam("writer") String writer) {
+	public ResponseEntity<Integer> countAnsweredQuestionsThisMonth(@PathVariable("writer") String writer) {
 		Integer count = questionService.countAnsweredQuestionsThisMonth(writer);
 		String message = String.format("이번 달에 답변한 질문 개수는 " + count + "개 입니다.");
 		System.out.println(message);
@@ -78,9 +76,9 @@ public class QuestionController {
 	}
 
 	/* 오늘 답변한 질문 개수 조회 */
-	@GetMapping("/answered/day")
+	@GetMapping("/answered/day/{writer}")
 	@Operation(summary = "오늘 답변한 질문 개수 조회")
-	public ResponseEntity<Integer> countAnsweredQuestionsToday(@RequestParam("writer") String writer) {
+	public ResponseEntity<Integer> countAnsweredQuestionsToday(@PathVariable("writer") String writer) {
 		Integer count = questionService.countAnsweredQuestionsToday(writer);
 		String message = String.format("오늘 답변한 질문 개수는 " + count + "개 입니다.");
 		System.out.println(message);
@@ -157,8 +155,8 @@ public class QuestionController {
 			ResponseEntity.ok("선택한 날짜의 값이 존재하지 않습니다.");
 		}
 
-		System.out.println(page+"@##!#!##!#$$!@$!@$!@4pagE@#!@@#$!@$!@$");
-		if(page>0) {
+		System.out.println(page + "@##!#!##!#$$!@$!@$!@4pagE@#!@@#$!@$!@$");
+		if (page > 0) {
 			// 페이징 처리를 위한 Pageable 생성
 			int totalElements = questionAndAnswers.size();
 			int totalPages = (int) Math.ceil((double) totalElements / size);
@@ -173,7 +171,7 @@ public class QuestionController {
 			PagedResponse<QuestionAndAnswerDto> pagedResponse = new PagedResponse<>(pageContent, currentPage, size,
 					totalElements);
 			return ResponseEntity.ok(pagedResponse);
-		}else{
+		} else {
 			return ResponseEntity.ok(questionAndAnswers);
 		}
 
