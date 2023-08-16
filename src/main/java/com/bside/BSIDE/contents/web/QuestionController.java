@@ -148,7 +148,7 @@ public class QuestionController {
 		}
 		/* YYYY-MM-DD 입력했을 경우 */
 		else {
-			return ResponseEntity.ok("YYYY-MM 의 형식으로 입력해주세요.");
+			questionAndAnswers = questionService.getQuestionsAndAnswersByDayAndEmail(email, date);
 		}
 
 		if (questionAndAnswers.isEmpty()) {

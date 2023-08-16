@@ -127,6 +127,7 @@
 	    GROUP BY(DATE(a.a_created_at))
 	</select>
 	
+	<!-- 선택한 년,월에 답변한 질문 조회 -->
 	<select id="getQuestionsAndAnswersByMonthAndEmail" resultType="com.bside.BSIDE.contents.domain.QuestionAndAnswerDto">    
         SELECT q.q_question AS question, a.a_answer_content AS answer, DATE(a.a_created_at) AS date, q.q_category AS category
 	    FROM bside.answer a
@@ -138,9 +139,9 @@
 	    AND MONTH(a.a_created_at) = MONTH(#{date})
 	</select>
     
-    <!-- 선택한 년,월에 답변한 질문 조회 -->
+    <!-- 선택한 년,월,일에 답변한 질문 조회 -->
     <select id="getQuestionsAndAnswersByDayAndEmail" resultType="com.bside.BSIDE.contents.domain.QuestionAndAnswerDto">
-        SELECT q.q_question AS question, a.a_answer_content AS answer
+        SELECT q.q_question AS question, a.a_answer_content AS answer, DATE(a.a_created_at) AS date, q.q_category AS category
         FROM bside.answer a
         INNER JOIN bside.question q ON a.q_no = q.q_no
         WHERE a.a_writer = #{email}
