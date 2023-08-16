@@ -79,13 +79,11 @@ public class EmailServiceImpl implements EmailService {
 		MimeMessageHelper helper = new MimeMessageHelper(message, "utf-8");
 
 		helper.setTo(to); // 수신자 이메일 주소
-		helper.setSubject("Goming 이메일 인증"); // 제목
+		helper.setSubject("&#91;Goming&#93; 인증코드를 안내해 드립니다."); // 제목
 
-		String emailContent = "<div style='margin:20px;'>" + "<h1>안녕하세요 이동훈입니다.</h1>" + "<br>"
-				+ "<p>아래 코드를 복사해 입력해주세요.</p>" + "<br>" + "<p>감사합니다.</p>" + "<br>"
-				+ "<div align='center' style='border:1px solid black; font-family:verdana;'>"
-				+ "<h3 style='color:blue;'>회원가입 인증 코드입니다.</h3>" + "<div style='font-size:130%'>" + "CODE : <strong>"
-				+ verificationCode + "</strong><div><br/> " + "</div>";
+		String emailContent = "<p>Goming 회원가입을 위한 이메일 인증코드입니다.</p>" + "<br><br>"
+				+ "<p>&#8226;&nbsp; 이메일 인증코드&nbsp;&nbsp;&nbsp;&nbsp;<strong>"+ verificationCode +"</strong></p>" + "<br><br>"
+				+ "<p>해당 인증코드를 입력하여 이메일 주소 인증을 완료해 주세요.</p>";
 
 		helper.setText(emailContent, true); // 내용
 		helper.setFrom(new InternetAddress(senderEmail, senderName)); // 발신자 정보
