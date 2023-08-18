@@ -2,13 +2,9 @@ package com.bside.BSIDE.service;
 
 import java.util.List;
 
-import org.springframework.data.domain.Page;
+import com.bside.BSIDE.contents.domain.*;
 import org.springframework.stereotype.Service;
 
-import com.bside.BSIDE.contents.domain.CountAnsweredQuestionsByMonthDto;
-import com.bside.BSIDE.contents.domain.QuestionAndAnswerDto;
-import com.bside.BSIDE.contents.domain.QuestionCountDto;
-import com.bside.BSIDE.contents.domain.QuestionDto;
 import com.bside.BSIDE.contents.persistence.QuestionMapper;
 
 @Service
@@ -80,5 +76,20 @@ public class QuestionServiceImpl implements QuestionService {
     public List<QuestionAndAnswerDto> getQuestionsAndAnswersByDayAndEmail(String email, String date) {
         return questionMapper.getQuestionsAndAnswersByDayAndEmail(email, date);
     }
-	
+
+	@Override
+	public List<QuestionDto> selectListQuestion(QuestionListInDto input) {
+		int pageNo = input.getPageNo();
+		int pageSize = input.getPageSize();
+		QuestionListInDto inDto = new QuestionListInDto();
+		inDto.setPageNo(pageNo);
+		inDto.setPageSize(pageSize);
+		System.out.println("serviceImpl  -------   pageNo: " + pageNo + "   pageSize: " + pageSize);
+		List<QuestionDto> list = questionMapper.selectListQuestion(inDto);
+		System.out.println("serviceImpl  ------- end");
+		System.out.println(list);
+		return list;
+	}
+
 }
+
