@@ -151,4 +151,21 @@
         AND MONTH(a.a_created_at) = MONTH(#{date})
         AND DAY(a.a_created_at) = DAY(#{date})
     </select>
+
+	<!-- 질문목록 조회 -->
+	<select id="selectListQuestion"
+			resultType="com.bside.BSIDE.contents.domain.QuestionDto"
+			parameterType="com.bside.BSIDE.contents.domain.QuestionListInDto" >
+		SELECT
+		    q_no as qNo
+		     ,q_question as qQuestion
+		     , q_category as qCategory
+		     , q_writer as qWriter
+		     , q_created_at as qCreatedAt
+		FROM question
+		ORDER BY q_created_at DESC
+ 		LIMIT #{pageSize}
+ 		OFFSET #{pageNo} - 1
+	</select>
+
 </mapper>

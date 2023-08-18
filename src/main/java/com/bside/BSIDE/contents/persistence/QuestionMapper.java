@@ -2,14 +2,8 @@ package com.bside.BSIDE.contents.persistence;
 
 import java.util.List;
 
+import com.bside.BSIDE.contents.domain.*;
 import org.apache.ibatis.annotations.Mapper;
-import org.springframework.data.domain.Page;
-
-import com.bside.BSIDE.contents.domain.CountAnsweredQuestionsByMonthDto;
-import com.bside.BSIDE.contents.domain.QuestionAndAnswerDto;
-import com.bside.BSIDE.contents.domain.QuestionCountDto;
-import com.bside.BSIDE.contents.domain.QuestionDto;
-
 
 
 @Mapper
@@ -28,4 +22,7 @@ public interface QuestionMapper {
 	
 	List<QuestionAndAnswerDto> getQuestionsAndAnswersByMonthAndEmail(String email, String date);
 	List<QuestionAndAnswerDto> getQuestionsAndAnswersByDayAndEmail(String email, String date);
+
+	List<QuestionDto> selectListQuestion(QuestionListInDto questionListInDto);
+//	List<QuestionDto> selectListQuestion(int pageNo, int pageSize);
 }
