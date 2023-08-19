@@ -152,11 +152,24 @@
         AND DAY(a.a_created_at) = DAY(#{date})
     </select>
 
-	<!-- 질문목록 조회 -->
+	<!-- 질문 리스트 조회 -->
 	<select id="selectListQuestion" resultType="com.bside.BSIDE.contents.domain.QuestionDto">
 		SELECT q_no AS qNo, q_question AS qQuestion, q_category AS qCategory, q_writer AS qWriter, q_created_at AS qCreatedAt
 		FROM bside.question
 		ORDER BY q_created_at DESC
 	</select>
+	
+	<!-- 질문 리스트 수정 -->
+	<update id="updateQuestion" parameterType="com.bside.BSIDE.contents.domain.QuestionDto">
+		UPDATE bside.question
+		SET q_question = #{qQuestion}, q_category = #{qCategory}, q_writer = #{qWriter}
+		WHERE q_no = #{qNo}
+	</update>
+	
+	<!-- 질문 리스트 삭제 -->
+	<delete id="deleteQuestion" parameterType="int">
+		DELETE FROM bside.question
+		WHERE q_no = #{qNo}
+	</delete>
 
 </mapper>

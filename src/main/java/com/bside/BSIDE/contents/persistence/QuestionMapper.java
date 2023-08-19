@@ -13,6 +13,8 @@ import com.bside.BSIDE.contents.domain.QuestionDto;
 @Mapper
 public interface QuestionMapper {
 	void insertQuestion(QuestionDto questionDto);
+	void updateQuestion(QuestionDto questionDto);
+	void deleteQuestion(int qNo);
 	QuestionDto getQuestionByPNO(int pNo);
 	List<QuestionDto> getQuestionByCategory(String category);
 	

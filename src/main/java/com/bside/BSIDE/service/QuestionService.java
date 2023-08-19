@@ -9,6 +9,8 @@ import com.bside.BSIDE.contents.domain.QuestionDto;
 
 public interface QuestionService {
 	void insertQuestion(QuestionDto questionDto);
+	void updateQuestion(QuestionDto questionDto);
+	void deleteQuestion(int qNo);
 	QuestionDto getQuestionByPNO(int pNo);
 	List<QuestionDto> getQuestionByCategory(String category);
 	

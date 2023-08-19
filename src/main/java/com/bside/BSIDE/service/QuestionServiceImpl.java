@@ -20,6 +20,16 @@ public class QuestionServiceImpl implements QuestionService {
 	}
 
 	@Override
+	public void updateQuestion(QuestionDto questionDto) {
+		questionMapper.updateQuestion(questionDto);
+	}
+
+	@Override
+	public void deleteQuestion(int qNo) {
+		questionMapper.deleteQuestion(qNo);
+	}
+	
+	@Override
 	public void insertQuestion(QuestionDto questionDto) {
 		questionMapper.insertQuestion(questionDto);
 	}
