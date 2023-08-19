@@ -13,11 +13,13 @@
 			bside.question(
 			q_category,
 			q_writer,
+			q_question,
 			q_created_at
 		)
 		VALUES(
-				  #{category},
+				  #{qCategory},
 				  #{qWriter},
+		       	  #{qQuestion},
 				  now()
 			  )
 	</insert>
@@ -77,7 +79,7 @@
 	    SELECT COUNT(*) 
 	    FROM bside.question q
 	    INNER JOIN bside.answer a ON q.q_no = a.q_no
-	    WHERE CHAR_LENGTH(a_answer_content) >= 1
+	    WHERE CHAR_LENGTH(a.a_answer_content) >= 1
 	    AND YEAR(a.a_created_at) = YEAR(CURRENT_DATE())
 	    AND MONTH(a.a_created_at) = MONTH(CURRENT_DATE())
 	    AND DAY(a.a_created_at) = DAY(CURRENT_DATE())
@@ -125,6 +127,7 @@
 	    GROUP BY(DATE(a.a_created_at))
 	</select>
 	
+	<!-- 선택한 년,월에 답변한 질문 조회 -->
 	<select id="getQuestionsAndAnswersByMonthAndEmail" resultType="com.bside.BSIDE.contents.domain.QuestionAndAnswerDto">    
         SELECT q.q_question AS question, a.a_answer_content AS answer, DATE(a.a_created_at) AS date, q.q_category AS category
 	    FROM bside.answer a
@@ -136,9 +139,9 @@
 	    AND MONTH(a.a_created_at) = MONTH(#{date})
 	</select>
     
-    <!-- 선택한 년,월에 답변한 질문 조회 -->
+    <!-- 선택한 년,월,일에 답변한 질문 조회 -->
     <select id="getQuestionsAndAnswersByDayAndEmail" resultType="com.bside.BSIDE.contents.domain.QuestionAndAnswerDto">
-        SELECT q.q_question AS question, a.a_answer_content AS answer
+        SELECT q.q_question AS question, a.a_answer_content AS answer, DATE(a.a_created_at) AS date, q.q_category AS category
         FROM bside.answer a
         INNER JOIN bside.question q ON a.q_no = q.q_no
         WHERE a.a_writer = #{email}
@@ -148,4 +151,25 @@
         AND MONTH(a.a_created_at) = MONTH(#{date})
         AND DAY(a.a_created_at) = DAY(#{date})
     </select>
+
+	<!-- 질문 리스트 조회 -->
+	<select id="selectListQuestion" resultType="com.bside.BSIDE.contents.domain.QuestionDto">
+		SELECT q_no AS qNo, q_question AS qQuestion, q_category AS qCategory, q_writer AS qWriter, q_created_at AS qCreatedAt
+		FROM bside.question
+		ORDER BY q_created_at DESC
+	</select>
+	
+	<!-- 질문 리스트 수정 -->
+	<update id="updateQuestion" parameterType="com.bside.BSIDE.contents.domain.QuestionDto">
+		UPDATE bside.question
+		SET q_question = #{qQuestion}, q_category = #{qCategory}, q_writer = #{qWriter}
+		WHERE q_no = #{qNo}
+	</update>
+	
+	<!-- 질문 리스트 삭제 -->
+	<delete id="deleteQuestion" parameterType="int">
+		DELETE FROM bside.question
+		WHERE q_no = #{qNo}
+	</delete>
+
 </mapper>
