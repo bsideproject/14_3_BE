@@ -1,14 +1,15 @@
 package com.bside.BSIDE.contents.web;
 
 import java.util.List;
+import java.util.Map;
 
-import org.springframework.data.domain.Page;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,7 +20,6 @@ import com.bside.BSIDE.contents.domain.PagedResponse;
 import com.bside.BSIDE.contents.domain.QuestionAndAnswerDto;
 import com.bside.BSIDE.contents.domain.QuestionCountDto;
 import com.bside.BSIDE.contents.domain.QuestionDto;
-import com.bside.BSIDE.service.AnswerService;
 import com.bside.BSIDE.service.QuestionService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -30,41 +30,44 @@ import io.swagger.v3.oas.annotations.Operation;
  * @일자 2023.04.23.
  **/
 
-@CrossOrigin
+@CrossOrigin(origins = { "http://localhost:3000", "http://www.goming.site" }, allowCredentials = "true")
 @RestController
 @RequestMapping("/question")
 public class QuestionController {
 
 	private final QuestionService questionService;
-	private final AnswerService answerService;
 
-	public QuestionController(QuestionService questionService, AnswerService answerService) {
+	public QuestionController(QuestionService questionService) {
 		this.questionService = questionService;
-		this.answerService = answerService;
 	}
 
 	/* 질문 저장 */
 	@PostMapping("/insertQuestion")
 	@Operation(summary = "질문 저장")
-	public ResponseEntity<Void> createQuestion(@RequestBody QuestionDto questionDto) {
-		questionService.insertQuestion(questionDto);
-		return new ResponseEntity<>(HttpStatus.CREATED);
+	public ResponseEntity<String> createQuestion(@RequestBody Map<String, Object> obj) {
+		QuestionDto qDto = new QuestionDto();
+		qDto.setQCategory((String) obj.get("qCategory"));
+		qDto.setQWriter((String) obj.get("qWriter"));
+		qDto.setQQuestion((String) obj.get("qQuestion"));
+
+		questionService.insertQuestion(qDto);
+		return ResponseEntity.ok("입력되었습니다.");
 	}
 
-	@GetMapping("/unanswered")
+	@GetMapping("/unanswered/{writer}")
 	@Operation(summary = "금일 답변하지 않은 개수 조회")
-	public ResponseEntity<Integer> countUnansweredQuestionsToday(@RequestParam("writer") String writer) {
-		Integer count = 3 - questionService.countUnansweredQuestions(writer)
+	public ResponseEntity<Integer> countUnansweredQuestionsToday(@PathVariable("writer") String writer) {
+		Integer count = 3 - questionService.countAnsweredQuestionsToday(writer)
 				- questionService.countPassQuestions(writer);
-		System.out.println("사용자가 아직 답변하지 않은 질문은 " + questionService.countUnansweredQuestions(writer) + "개입니다.");
+		System.out.println("사용자가 답변한 질문은 " + questionService.countAnsweredQuestionsToday(writer) + "개입니다.");
 		System.out.println("사용자가 답변하지 않겠다고 넘긴 질문은 " + questionService.countPassQuestions(writer) + "개입니다.");
 		return ResponseEntity.ok(count);
 	}
 
 	/* 이번달에 답변한 질문 개수 조회 */
-	@GetMapping("/answered/month")
+	@GetMapping("/answered/month/{writer}")
 	@Operation(summary = "이번달에 답변한 질문 개수 조회")
-	public ResponseEntity<Integer> countAnsweredQuestionsThisMonth(@RequestParam("writer") String writer) {
+	public ResponseEntity<Integer> countAnsweredQuestionsThisMonth(@PathVariable("writer") String writer) {
 		Integer count = questionService.countAnsweredQuestionsThisMonth(writer);
 		String message = String.format("이번 달에 답변한 질문 개수는 " + count + "개 입니다.");
 		System.out.println(message);
@@ -72,9 +75,9 @@ public class QuestionController {
 	}
 
 	/* 오늘 답변한 질문 개수 조회 */
-	@GetMapping("/answered/day")
+	@GetMapping("/answered/day/{writer}")
 	@Operation(summary = "오늘 답변한 질문 개수 조회")
-	public ResponseEntity<Integer> countAnsweredQuestionsToday(@RequestParam("writer") String writer) {
+	public ResponseEntity<Integer> countAnsweredQuestionsToday(@PathVariable("writer") String writer) {
 		Integer count = questionService.countAnsweredQuestionsToday(writer);
 		String message = String.format("오늘 답변한 질문 개수는 " + count + "개 입니다.");
 		System.out.println(message);
@@ -136,7 +139,7 @@ public class QuestionController {
 
 		/* YYYY 입력했을 경우 */
 		if (dateArr.length == 1) {
-			return ResponseEntity.ok("YYYY-MM 의 형식 또는 YYYY-MM-DD 의 형식으로 입력해주세요.");
+			return ResponseEntity.ok("YYYY-MM 의 형식으로 입력해주세요.");
 		}
 		/* YYYY-MM 입력했을 경우 */
 		else if (dateArr.length == 2) {
@@ -151,20 +154,82 @@ public class QuestionController {
 			ResponseEntity.ok("선택한 날짜의 값이 존재하지 않습니다.");
 		}
 
-		// 페이징 처리를 위한 Pageable 생성
-		int totalElements = questionAndAnswers.size();
-		int totalPages = (int) Math.ceil((double) totalElements / size);
-		int currentPage = Math.min(Math.max(1, page), totalPages);
-		int startIndex = (currentPage - 1) * size;
-		int endIndex = Math.min(startIndex + size, totalElements);
+		System.out.println(page + "@##!#!##!#$$!@$!@$!@4pagE@#!@@#$!@$!@$");
+		if (page > 0) {
+			// 페이징 처리를 위한 Pageable 생성
+			int totalElements = questionAndAnswers.size();
+			int totalPages = (int) Math.ceil((double) totalElements / size);
+			int currentPage = Math.min(Math.max(1, page), totalPages);
+			int startIndex = (currentPage - 1) * size;
+			int endIndex = Math.min(startIndex + size, totalElements);
 
-		// 해당 페이지에 맞게 데이터 분할
-		List<QuestionAndAnswerDto> pageContent = questionAndAnswers.subList(startIndex, endIndex);
+			// 해당 페이지에 맞게 데이터 분할
+			List<QuestionAndAnswerDto> pageContent = questionAndAnswers.subList(startIndex, endIndex);
 
-		// PagedResponse 객체 생성
-		PagedResponse<QuestionAndAnswerDto> pagedResponse = new PagedResponse<>(pageContent, currentPage, size,
-				totalElements);
+			// PagedResponse 객체 생성
+			PagedResponse<QuestionAndAnswerDto> pagedResponse = new PagedResponse<>(pageContent, currentPage, size,
+					totalElements);
+			return ResponseEntity.ok(pagedResponse);
+		} else {
+			return ResponseEntity.ok(questionAndAnswers);
+		}
 
-		return ResponseEntity.ok(pagedResponse);
+	}
+	
+	/* 질문 리스트 조회 */
+	@GetMapping("/questions")
+	@Operation(summary = "질문 리스트 조회")
+	public ResponseEntity<?> getQuestions(@RequestParam(defaultValue = "1") int page,
+			@RequestParam(defaultValue = "15") int size) {
+
+		List<QuestionDto> question = questionService.selectListQuestion();
+		
+		System.out.println(question);
+		
+		if (page > 0) {
+			// 페이징 처리를 위한 Pageable 생성
+			int totalElements = question.size();
+			int totalPages = (int) Math.ceil((double) totalElements / size);
+			int currentPage = Math.min(Math.max(1, page), totalPages);
+			int startIndex = (currentPage - 1) * size;
+			int endIndex = Math.min(startIndex + size, totalElements);
+
+			// 해당 페이지에 맞게 데이터 분할
+			List<QuestionDto> pageContent = question.subList(startIndex, endIndex);
+
+			// PagedResponse 객체 생성
+			PagedResponse<QuestionDto> pagedResponse = new PagedResponse<>(pageContent, currentPage, size,
+					totalElements);
+			return ResponseEntity.ok(pagedResponse);
+		} else {
+			return ResponseEntity.ok(question);
+		}
+
+	}
+	
+	/* 질문 리스트 수정 */
+	@PutMapping("/question/update")
+	@Operation(summary = "질문 리스트 수정")
+	public ResponseEntity<String> updateQuestion(@RequestBody Map<String, Object> object) {
+		QuestionDto question = new QuestionDto();
+		
+		question.setQNo((Integer)object.get("qNo"));
+		question.setQQuestion((String) object.get("qQuestion"));
+		question.setQCategory((String) object.get("qCategory"));
+		question.setQWriter((String) object.get("qWriter"));
+		questionService.updateQuestion(question);
+				
+		String message = String.format(object.get("qNo") + "에 해당하는 질문을 수정하였습니다.");
+		return ResponseEntity.ok(message);
+	}
+	
+	/* 질문 리스트 삭제 */
+	@DeleteMapping("/question/delete/{qNo}")
+	@Operation(summary = "질문 리스트 삭제")
+	public ResponseEntity<String> deleteQuestion(@PathVariable int qNo) {
+		questionService.deleteQuestion(qNo);
+		
+		String message = String.format(qNo + "에 해당하는 질문을 삭제하였습니다.");
+		return ResponseEntity.ok(message);
 	}
 }

@@ -2,7 +2,6 @@ package com.bside.BSIDE.service;
 
 import java.util.List;
 
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import com.bside.BSIDE.contents.domain.CountAnsweredQuestionsByMonthDto;
@@ -20,6 +19,16 @@ public class QuestionServiceImpl implements QuestionService {
 		this.questionMapper = questionMapper;
 	}
 
+	@Override
+	public void updateQuestion(QuestionDto questionDto) {
+		questionMapper.updateQuestion(questionDto);
+	}
+
+	@Override
+	public void deleteQuestion(int qNo) {
+		questionMapper.deleteQuestion(qNo);
+	}
+	
 	@Override
 	public void insertQuestion(QuestionDto questionDto) {
 		questionMapper.insertQuestion(questionDto);
@@ -80,5 +89,11 @@ public class QuestionServiceImpl implements QuestionService {
     public List<QuestionAndAnswerDto> getQuestionsAndAnswersByDayAndEmail(String email, String date) {
         return questionMapper.getQuestionsAndAnswersByDayAndEmail(email, date);
     }
-	
+
+	@Override
+	public List<QuestionDto> selectListQuestion() {
+		return questionMapper.selectListQuestion();
+	}
+
 }
+

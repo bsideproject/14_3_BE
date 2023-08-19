@@ -1,6 +1,5 @@
 package com.bside.BSIDE.user.service;
 
-import java.nio.file.Files;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -16,6 +15,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.bside.BSIDE.contents.domain.QuestionAndAnswerDto;
 import com.bside.BSIDE.service.QuestionService;
@@ -79,13 +79,11 @@ public class EmailServiceImpl implements EmailService {
 		MimeMessageHelper helper = new MimeMessageHelper(message, "utf-8");
 
 		helper.setTo(to); // 수신자 이메일 주소
-		helper.setSubject("Goming 이메일 인증"); // 제목
+		helper.setSubject("&#91;Goming&#93; 인증코드를 안내해 드립니다."); // 제목
 
-		String emailContent = "<div style='margin:20px;'>" + "<h1>안녕하세요 이동훈입니다.</h1>" + "<br>"
-				+ "<p>아래 코드를 복사해 입력해주세요.</p>" + "<br>" + "<p>감사합니다.</p>" + "<br>"
-				+ "<div align='center' style='border:1px solid black; font-family:verdana;'>"
-				+ "<h3 style='color:blue;'>회원가입 인증 코드입니다.</h3>" + "<div style='font-size:130%'>" + "CODE : <strong>"
-				+ verificationCode + "</strong><div><br/> " + "</div>";
+		String emailContent = "<p>Goming 회원가입을 위한 이메일 인증코드입니다.</p>" + "<br><br>"
+				+ "<p>&#8226;&nbsp; 이메일 인증코드&nbsp;&nbsp;&nbsp;&nbsp;<strong>"+ verificationCode +"</strong></p>" + "<br><br>"
+				+ "<p>해당 인증코드를 입력하여 이메일 주소 인증을 완료해 주세요.</p>";
 
 		helper.setText(emailContent, true); // 내용
 		helper.setFrom(new InternetAddress(senderEmail, senderName)); // 발신자 정보
@@ -142,18 +140,19 @@ public class EmailServiceImpl implements EmailService {
 
 	/* 월간고밍 페이지에서 ‘이메일로 보내기’ 버튼을 눌렀을 때 */
 	@Override
-	public void sendByMonth(String email,String sendEmail, String date) throws Exception {
+	public void sendByMonth(String email, String sendEmail, String date) throws Exception {
 
 		/* MimeMessage 생성 및 설정 */
 		MimeMessage message = emailSender.createMimeMessage();
 		MimeMessageHelper helper = new MimeMessageHelper(message, true, "utf-8");
 
 		UserDto userdto = userService.getUserByEmail(email);
+		System.out.println(date + "@@@데이터");
 		String[] dateArr = date.split("-");
 
 		helper.setTo(sendEmail); // 수신자 이메일 주소
 		helper.setSubject("[Goming] " + userdto.getUsrNm() + "님의 월간고밍이 도착했어요!"); // 제목
-		
+
 		List<QuestionAndAnswerDto> questionsAndAnswers = questionService.getQuestionsAndAnswersByMonthAndEmail(email,
 				date + "-01");
 
@@ -189,22 +188,22 @@ public class EmailServiceImpl implements EmailService {
 
 			return;
 		}
-		
+
 		int count = 0;
-		
+
 		/* PDF에 저장할 문서 작성 */
 		for (QuestionAndAnswerDto dto : questionsAndAnswers) {
-			if(count == 5) {
+			if (count == 5) {
 				document.newPage();
 				count = 0;
-				continue;				
+				continue;
 			}
-			
+
 			document.add(new Paragraph("Q : " + dto.getQuestion(), koreanFont));
 			document.add(new Paragraph("A : " + dto.getAnswer(), koreanFont));
 			document.add(new Paragraph("\n"));
 			count++;
-			
+
 			System.out.println("Q : " + dto.getQuestion());
 			System.out.println("A : " + dto.getAnswer());
 			System.out.println();
@@ -223,9 +222,43 @@ public class EmailServiceImpl implements EmailService {
 
 		/* 첨부 파일 추가 */
 		byte[] pdfData = outputStream.toByteArray();
-		String attachmentFilename = dateArr[0] +"년 "+ Integer.parseInt(dateArr[1]) +"월 "+ "월간고밍_"+ userdto.getUsrNm()+ ".pdf";
+		String attachmentFilename = dateArr[0] + "년 " + Integer.parseInt(dateArr[1]) + "월 " + "월간고밍_"
+				+ userdto.getUsrNm() + ".pdf";
 		helper.addAttachment(attachmentFilename, new ByteArrayResource(pdfData));
 
+		try {
+			emailSender.send(message);
+		} catch (MailException e) {
+			e.printStackTrace();
+			throw new IllegalArgumentException();
+		}
+	}
+
+	@Override
+	public void sendByMonthBlob(String email, String sendEmail, String date, MultipartFile imageData) throws Exception {
+
+		/* MimeMessage 생성 및 설정 */
+		MimeMessage message = emailSender.createMimeMessage();
+		MimeMessageHelper helper = new MimeMessageHelper(message, true, "utf-8");
+
+		UserDto userdto = userService.getUserByEmail(email);
+		String[] dateArr = date.split("-");
+
+		helper.setTo(sendEmail); // 수신자 이메일 주소
+		helper.setSubject("[Goming] " + userdto.getUsrNm() + "님의 월간고밍이 도착했어요!"); // 제목
+
+		/* 메일 본문 작성 */
+		String emailContent = "<div align='center' style='border:1px solid black; font-family:verdana;'>" + "<h3>"
+				+ userdto.getUsrNm() + "님, 요청하신 월간고밍이 도착했어요!<br>" + Integer.parseInt(dateArr[1])
+				+ "월의 월간고밍을 확인해보세요.<br>" + "</h3></div>";
+		/* 전송 설정 */
+		helper.setText(emailContent, true); // 내용
+		helper.setFrom(new InternetAddress(senderEmail, senderName)); // 발신자 정보
+
+		/* 첨부 파일 추가 */
+		String fileName = dateArr[0] + "년 " + Integer.parseInt(dateArr[1]) + "월 " + "월간고밍_" + userdto.getUsrNm()
+				+ ".png";
+		helper.addAttachment(fileName, imageData, "image/png");
 		try {
 			emailSender.send(message);
 		} catch (MailException e) {
@@ -250,12 +283,12 @@ public class EmailServiceImpl implements EmailService {
 
 			System.out.println("email : " + email);
 			System.out.println("date : " + date);
-			
+
 			UserDto userdto = userService.getUserByEmail(email);
 			String[] dateArr = date.split("-");
-			
+
 			helper.setTo(email); // 수신자 이메일 주소
-			helper.setSubject("[Goming] 넠넠! "+Integer.parseInt(dateArr[1])+"월의 월간고밍이 도착했어요:)"); // 제목
+			helper.setSubject("[Goming] 넠넠! " + Integer.parseInt(dateArr[1]) + "월의 월간고밍이 도착했어요:)"); // 제목
 
 			List<QuestionAndAnswerDto> questionsAndAnswers = questionService
 					.getQuestionsAndAnswersByMonthAndEmail(email, date + "-01");
@@ -271,7 +304,7 @@ public class EmailServiceImpl implements EmailService {
 			/* PDF 생성 */
 			PdfWriter.getInstance(document, outputStream);
 			document.open();
-			
+
 			if (questionsAndAnswers.isEmpty()) {
 				System.out.println("questionsAndAnswers.isEmpty");
 				// 첨부할 내용이 없는 경우, "답변한 내용이 없습니다." 내용을 포함한 첨부파일 생성
@@ -280,20 +313,22 @@ public class EmailServiceImpl implements EmailService {
 				document.close();
 
 				/* 메일 본문 작성 */
-				String emailContent = "<div align='center' style='border:1px solid black; font-family:verdana;'>" + "<h3>"
-						+ userdto.getUsrNm() + "님, 오늘은 어떤 하루를 보내셨나요?<br>" + "지난 한달 간 기록했던 나의 하루들을 돌아볼 수 있는 월간고밍이 도착했어요!<br>"
-						+ "소중한 나의 기록들을 돌아보면서 새로운 마음으로 " + (Integer.parseInt(dateArr[1]) + 1) + "월을 시작해보세요.<br><br>"
-						+ "이번 달도 " + userdto.getUsrNm() + "님에게 행복한 기억으로 남는 " + (Integer.parseInt(dateArr[1]) + 1)
-						+ "월이 되기를 고밍이 응원할게요!<br>" + "지금 바로 오늘의 회고 하러 가기: URL" + "</h3></div>";
+				String emailContent = "<div align='center' style='border:1px solid black; font-family:verdana;'>"
+						+ "<h3>" + userdto.getUsrNm() + "님, 오늘은 어떤 하루를 보내셨나요?<br>"
+						+ "지난 한달 간 기록했던 나의 하루들을 돌아볼 수 있는 월간고밍이 도착했어요!<br>" + "소중한 나의 기록들을 돌아보면서 새로운 마음으로 "
+						+ (Integer.parseInt(dateArr[1]) + 1) + "월을 시작해보세요.<br><br>" + "이번 달도 " + userdto.getUsrNm()
+						+ "님에게 행복한 기억으로 남는 " + (Integer.parseInt(dateArr[1]) + 1) + "월이 되기를 고밍이 응원할게요!<br>"
+						+ "지금 바로 오늘의 회고 하러 가기: URL" + "</h3></div>";
 
 				/* 전송 설정 */
 				helper.setText(emailContent, true); // 내용
 				helper.setFrom(new InternetAddress(senderEmail, senderName)); // 발신자 정보
 
 				byte[] pdfData = outputStream.toByteArray();
-				String attachmentFilename = dateArr[0] +"년 "+ Integer.parseInt(dateArr[1]) +"월 "+ "월간고밍_"+ userdto.getUsrNm()+ ".pdf";
+				String attachmentFilename = dateArr[0] + "년 " + Integer.parseInt(dateArr[1]) + "월 " + "월간고밍_"
+						+ userdto.getUsrNm() + ".pdf";
 				helper.addAttachment(attachmentFilename, new ByteArrayResource(pdfData));
-				
+
 				try {
 					emailSender.send(message);
 				} catch (MailException e) {
@@ -327,7 +362,8 @@ public class EmailServiceImpl implements EmailService {
 
 			/* 첨부 파일 추가 */
 			byte[] pdfData = outputStream.toByteArray();
-			String attachmentFilename = dateArr[0] +"년 "+ Integer.parseInt(dateArr[1]) +"월 "+ "월간고밍_"+ userdto.getUsrNm()+ ".pdf";
+			String attachmentFilename = dateArr[0] + "년 " + Integer.parseInt(dateArr[1]) + "월 " + "월간고밍_"
+					+ userdto.getUsrNm() + ".pdf";
 			helper.addAttachment(attachmentFilename, new ByteArrayResource(pdfData));
 
 			try {
