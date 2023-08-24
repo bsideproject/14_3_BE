@@ -158,7 +158,7 @@ public class QuestionController {
 		System.out.println(page + "@##!#!##!#$$!@$!@$!@4pagE@#!@@#$!@$!@$");
 		if (page > 0) {
 			// 페이징 처리를 위한 Pageable 생성
-			int totalElements = questionAndAnswers.size();
+			int totalElements = questionAndAnswers.size(); 
 			int totalPages = (int) Math.ceil((double) totalElements / size);
 			int currentPage = Math.min(Math.max(1, page), totalPages);
 			int startIndex = (currentPage - 1) * size;

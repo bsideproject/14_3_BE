@@ -237,13 +237,14 @@ public class EmailServiceImpl implements EmailService {
 	}
 
 	@Override
-	public void sendByMonthBlob(String email, String sendEmail, String date, MultipartFile imageData) throws Exception {
+	public void sendByMonthBlob(String email, String sendEmail, String date, MultipartFile imageData0,MultipartFile imageData1,MultipartFile imageData2) throws Exception {
 
 		/* MimeMessage 생성 및 설정 */
 		MimeMessage message = emailSender.createMimeMessage();
 		MimeMessageHelper helper = new MimeMessageHelper(message, true, "utf-8");
 
 		UserDto userdto = userService.getUserByEmail(email);
+
 		String[] dateArr = date.split("-");
 
 		helper.setTo(sendEmail); // 수신자 이메일 주소
@@ -260,7 +261,23 @@ public class EmailServiceImpl implements EmailService {
 		/* 첨부 파일 추가 */
 		String fileName = dateArr[0] + "년 " + Integer.parseInt(dateArr[1]) + "월 " + "월간고밍_" + userdto.getUsrNm()
 				+ ".png";
-		helper.addAttachment(fileName, imageData, "image/png");
+		helper.addAttachment(fileName, imageData0, "image/png");
+		if(!imageData1.isEmpty()) {
+			System.out.println("imageData1 있음");
+			String fileName1 = dateArr[0] + "년 " + Integer.parseInt(dateArr[1]) + "월 " + "월간고밍_" + userdto.getUsrNm()
+					+ "[1].png";
+			helper.addAttachment(fileName1, imageData1, "image/png");
+
+		}
+		if(!imageData2.isEmpty()) {
+
+			System.out.println("imageData2 있음");
+			String fileName2 = dateArr[0] + "년 " + Integer.parseInt(dateArr[1]) + "월 " + "월간고밍_" + userdto.getUsrNm()
+					+ "[2].png";
+			helper.addAttachment(fileName2, imageData2, "image/png");
+
+		}
+
 		try {
 			emailSender.send(message);
 		} catch (MailException e) {

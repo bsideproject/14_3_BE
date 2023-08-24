@@ -22,9 +22,9 @@ import java.net.http.HttpResponse;
 
 @CrossOrigin(origins = {"http://localhost:3000","http://www.goming.site"},allowCredentials = "true")
 @RestController
-@RequestMapping("/email")
-public class EmailController {
-	
+@RequestMapping("/email")public class EmailController {
+
+
 	private final EmailService emailService;
 	
 	public EmailController(EmailService emailService) {
@@ -68,12 +68,12 @@ public class EmailController {
     }
     @PostMapping("/sendByMonthBlob")
     @Operation(summary = "월간 고밍이미지 이메일로 전송")
-    public void sendByMonth(@RequestParam String email, @RequestParam String sendEmail, @RequestParam String date ,@RequestParam MultipartFile imageData) throws Exception {
+    public void sendByMonth(@RequestParam String email, @RequestParam String sendEmail, @RequestParam String date ,@RequestParam MultipartFile imageData0,@RequestParam MultipartFile imageData1,@RequestParam MultipartFile imageData2) throws Exception {
 		System.out.println(email+"+ @#@#@##@#@#@#!@$@$!@$email");
 		System.out.println(sendEmail+"+ @#@#@##@#@#@#!@$@$!@sendEmail");
-		System.out.println(imageData+ "+ @#@#@##@#@#@#!@$@$!@date");
+		System.out.println(imageData0+ "+ @#@#@##@#@#@#!@$@$!@date");
 
-        emailService.sendByMonthBlob(email,sendEmail,date,imageData);
+        emailService.sendByMonthBlob(email,sendEmail,date,imageData0,imageData1,imageData2);
     }
 
 //	@PostMapping("/api/upload-image")
