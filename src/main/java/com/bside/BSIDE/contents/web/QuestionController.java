@@ -3,13 +3,13 @@ package com.bside.BSIDE.contents.web;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.data.domain.Page;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,7 +20,6 @@ import com.bside.BSIDE.contents.domain.PagedResponse;
 import com.bside.BSIDE.contents.domain.QuestionAndAnswerDto;
 import com.bside.BSIDE.contents.domain.QuestionCountDto;
 import com.bside.BSIDE.contents.domain.QuestionDto;
-import com.bside.BSIDE.service.AnswerService;
 import com.bside.BSIDE.service.QuestionService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -148,7 +147,7 @@ public class QuestionController {
 		}
 		/* YYYY-MM-DD 입력했을 경우 */
 		else {
-			return ResponseEntity.ok("YYYY-MM 의 형식으로 입력해주세요.");
+			questionAndAnswers = questionService.getQuestionsAndAnswersByDayAndEmail(email, date);
 		}
 
 		if (questionAndAnswers.isEmpty()) {
@@ -175,5 +174,62 @@ public class QuestionController {
 			return ResponseEntity.ok(questionAndAnswers);
 		}
 
+	}
+	
+	/* 질문 리스트 조회 */
+	@GetMapping("/questions")
+	@Operation(summary = "질문 리스트 조회")
+	public ResponseEntity<?> getQuestions(@RequestParam(defaultValue = "1") int page,
+			@RequestParam(defaultValue = "15") int size) {
+
+		List<QuestionDto> question = questionService.selectListQuestion();
+		
+		System.out.println(question);
+		
+		if (page > 0) {
+			// 페이징 처리를 위한 Pageable 생성
+			int totalElements = question.size();
+			int totalPages = (int) Math.ceil((double) totalElements / size);
+			int currentPage = Math.min(Math.max(1, page), totalPages);
+			int startIndex = (currentPage - 1) * size;
+			int endIndex = Math.min(startIndex + size, totalElements);
+
+			// 해당 페이지에 맞게 데이터 분할
+			List<QuestionDto> pageContent = question.subList(startIndex, endIndex);
+
+			// PagedResponse 객체 생성
+			PagedResponse<QuestionDto> pagedResponse = new PagedResponse<>(pageContent, currentPage, size,
+					totalElements);
+			return ResponseEntity.ok(pagedResponse);
+		} else {
+			return ResponseEntity.ok(question);
+		}
+
+	}
+	
+	/* 질문 리스트 수정 */
+	@PutMapping("/question/update")
+	@Operation(summary = "질문 리스트 수정")
+	public ResponseEntity<String> updateQuestion(@RequestBody Map<String, Object> object) {
+		QuestionDto question = new QuestionDto();
+		
+		question.setQNo((Integer)object.get("qNo"));
+		question.setQQuestion((String) object.get("qQuestion"));
+		question.setQCategory((String) object.get("qCategory"));
+		question.setQWriter((String) object.get("qWriter"));
+		questionService.updateQuestion(question);
+				
+		String message = String.format(object.get("qNo") + "에 해당하는 질문을 수정하였습니다.");
+		return ResponseEntity.ok(message);
+	}
+	
+	/* 질문 리스트 삭제 */
+	@DeleteMapping("/question/delete/{qNo}")
+	@Operation(summary = "질문 리스트 삭제")
+	public ResponseEntity<String> deleteQuestion(@PathVariable int qNo) {
+		questionService.deleteQuestion(qNo);
+		
+		String message = String.format(qNo + "에 해당하는 질문을 삭제하였습니다.");
+		return ResponseEntity.ok(message);
 	}
 }

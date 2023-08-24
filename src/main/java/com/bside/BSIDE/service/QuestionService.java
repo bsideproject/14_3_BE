@@ -2,9 +2,6 @@ package com.bside.BSIDE.service;
 
 import java.util.List;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-
 import com.bside.BSIDE.contents.domain.CountAnsweredQuestionsByMonthDto;
 import com.bside.BSIDE.contents.domain.QuestionAndAnswerDto;
 import com.bside.BSIDE.contents.domain.QuestionCountDto;
@@ -12,6 +9,8 @@ import com.bside.BSIDE.contents.domain.QuestionDto;
 
 public interface QuestionService {
 	void insertQuestion(QuestionDto questionDto);
+	void updateQuestion(QuestionDto questionDto);
+	void deleteQuestion(int qNo);
 	QuestionDto getQuestionByPNO(int pNo);
 	List<QuestionDto> getQuestionByCategory(String category);
 	
@@ -25,4 +24,6 @@ public interface QuestionService {
 	
 	List<QuestionAndAnswerDto> getQuestionsAndAnswersByMonthAndEmail(String email, String date);
 	List<QuestionAndAnswerDto> getQuestionsAndAnswersByDayAndEmail(String email, String date);
+
+	List<QuestionDto> selectListQuestion();
 }

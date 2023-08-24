@@ -3,7 +3,6 @@ package com.bside.BSIDE.contents.persistence;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
-import org.springframework.data.domain.Page;
 
 import com.bside.BSIDE.contents.domain.CountAnsweredQuestionsByMonthDto;
 import com.bside.BSIDE.contents.domain.QuestionAndAnswerDto;
@@ -11,10 +10,11 @@ import com.bside.BSIDE.contents.domain.QuestionCountDto;
 import com.bside.BSIDE.contents.domain.QuestionDto;
 
 
-
 @Mapper
 public interface QuestionMapper {
 	void insertQuestion(QuestionDto questionDto);
+	void updateQuestion(QuestionDto questionDto);
+	void deleteQuestion(int qNo);
 	QuestionDto getQuestionByPNO(int pNo);
 	List<QuestionDto> getQuestionByCategory(String category);
 	
@@ -28,4 +28,8 @@ public interface QuestionMapper {
 	
 	List<QuestionAndAnswerDto> getQuestionsAndAnswersByMonthAndEmail(String email, String date);
 	List<QuestionAndAnswerDto> getQuestionsAndAnswersByDayAndEmail(String email, String date);
+
+	List<QuestionDto> selectListQuestion();
+//	List<QuestionDto> selectListQuestion(QuestionListInDto questionListInDto);
+//	List<QuestionDto> selectListQuestion(int pageNo, int pageSize);
 }
