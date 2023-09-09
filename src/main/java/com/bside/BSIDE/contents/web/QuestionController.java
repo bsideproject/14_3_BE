@@ -74,16 +74,6 @@ public class QuestionController {
 		return ResponseEntity.ok(count);
 	}
 
-	/* 오늘 답변한 질문 개수 조회 */
-	@GetMapping("/answered/day/{writer}")
-	@Operation(summary = "오늘 답변한 질문 개수 조회")
-	public ResponseEntity<Integer> countAnsweredQuestionsToday(@PathVariable("writer") String writer) {
-		Integer count = questionService.countAnsweredQuestionsToday(writer);
-		String message = String.format("오늘 답변한 질문 개수는 " + count + "개 입니다.");
-		System.out.println(message);
-		return ResponseEntity.ok(count);
-	}
-
 	/* 선택한 월에 답변한 질문 개수 조회 */
 	@GetMapping("/answeredCount/{email}/{year}/{month}")
 	@Operation(summary = "선택한 월에 답변한 질문 개수 조회")
