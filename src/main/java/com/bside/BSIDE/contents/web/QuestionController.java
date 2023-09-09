@@ -141,7 +141,7 @@ public class QuestionController {
 		}
 
 		if (questionAndAnswers.isEmpty()) {
-			ResponseEntity.ok("선택한 날짜의 값이 존재하지 않습니다.");
+			return ResponseEntity.ok("선택한 날짜의 값이 존재하지 않습니다.");
 		}
 
 		System.out.println(page + "@##!#!##!#$$!@$!@$!@4pagE@#!@@#$!@$!@$");
