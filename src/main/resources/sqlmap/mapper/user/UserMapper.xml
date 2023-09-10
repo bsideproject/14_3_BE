@@ -30,7 +30,9 @@
 	</delete>
 	
 	<select id="getUserByEmailPw" resultType="com.bside.BSIDE.user.domain.UserDto">
-    	SELECT * FROM bside.user WHERE eml = #{email} AND password = #{password}
+    	SELECT usr_nm as usrNm, eml, usr_nm as usrNm, password, sns_cls_cd as snsClsCd, sns_token as snsToken, gndr_cls_cd as gndrClsCd,
+		brdt, join_dtm as joinDtm, last_lgn_dtm as lastLgnDtm, update_dtm as updateDtm, agreement
+    	FROM bside.user WHERE eml = #{email} AND password = #{password}
 	</select>
 	
 	<update id="saveTemporaryPassword" parameterType="com.bside.BSIDE.user.domain.UserDto">
