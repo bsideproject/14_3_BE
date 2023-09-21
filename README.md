@@ -8,7 +8,6 @@ SpringBoot
 ### Features 🌿
 ```
 Swagger
-JWT
 etc...
 ```
 
