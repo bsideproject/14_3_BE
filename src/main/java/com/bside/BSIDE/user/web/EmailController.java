@@ -68,11 +68,11 @@ import java.net.http.HttpResponse;
     }
     @PostMapping("/sendByMonthBlob")
     @Operation(summary = "월간 고밍이미지 이메일로 전송")
-    public void sendByMonth(@RequestParam String email, @RequestParam String sendEmail, @RequestParam String date ,@RequestParam MultipartFile imageData0,@RequestParam MultipartFile imageData1,@RequestParam MultipartFile imageData2) throws Exception {
+    public void sendByMonth(@RequestParam String email, @RequestParam String sendEmail, @RequestParam String date ,@RequestParam(required=false) MultipartFile imageData0,@RequestParam(required=false) MultipartFile imageData1 ,@RequestParam(required=false) MultipartFile imageData2 ) throws Exception {
 		System.out.println(email+"+ @#@#@##@#@#@#!@$@$!@$email");
 		System.out.println(sendEmail+"+ @#@#@##@#@#@#!@$@$!@sendEmail");
 		System.out.println(imageData0+ "+ @#@#@##@#@#@#!@$@$!@date");
-
+		System.out.println(imageData1 + "뭐냐 데이터");
         emailService.sendByMonthBlob(email,sendEmail,date,imageData0,imageData1,imageData2);
     }
 

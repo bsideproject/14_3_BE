@@ -260,14 +260,14 @@ public class EmailServiceImpl implements EmailService {
 		String fileName = dateArr[0] + "년 " + Integer.parseInt(dateArr[1]) + "월 " + "월간고밍_" + userdto.getUsrNm()
 				+ ".png";
 		helper.addAttachment(fileName, imageData0, "image/png");
-		if(!imageData1.isEmpty()) {
+		if(imageData1 != null) {
 			System.out.println("imageData1 있음");
 			String fileName1 = dateArr[0] + "년 " + Integer.parseInt(dateArr[1]) + "월 " + "월간고밍_" + userdto.getUsrNm()
 					+ "[1].png";
 			helper.addAttachment(fileName1, imageData1, "image/png");
 
 		}
-		if(!imageData2.isEmpty()) {
+		if(imageData2 != null) {
 
 			System.out.println("imageData2 있음");
 			String fileName2 = dateArr[0] + "년 " + Integer.parseInt(dateArr[1]) + "월 " + "월간고밍_" + userdto.getUsrNm()
