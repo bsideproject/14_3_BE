@@ -5,6 +5,9 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Random;
 
+
+import com.bside.BSIDE.user.domain.EmailDto;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,7 +26,7 @@ import io.swagger.v3.oas.annotations.Operation;
  * @일자 2023.05.12.
  **/
 
-@CrossOrigin
+@CrossOrigin(origins = {"http://localhost:3000","http://www.goming.site"},allowCredentials = "true")
 @RestController
 @RequestMapping("/password")
 public class PasswordResetController {
@@ -38,14 +41,16 @@ public class PasswordResetController {
 
 	@PostMapping("/password-reset")
 	@Operation(summary = "임시 비밀번호 발급")
-	public String resetPassword(@RequestParam("email") String email) {
+	public String resetPassword(@RequestBody EmailDto param) {
+		System.out.println("@#테스트");
+		System.out.println(param.getEmail());
 		// 1. 이메일 주소의 유효성 검사
-		if (!isValidEmail(email)) {
+		if (!isValidEmail(param.getEmail())) {
 			return "유효하지 않은 이메일 주소입니다.";
 		}
-		
+
 		// 2. 이메일 주소의 존재 여부 확인
-		UserDto user = userService.getUserByEmail(email);
+		UserDto user = userService.getUserByEmail(param.getEmail());
 		if (user == null) {
 			return "해당 이메일로 가입된 사용자가 없습니다.";
 		}
@@ -53,13 +58,13 @@ public class PasswordResetController {
 		// 3. 임시 비밀번호 생성 및 이메일 전송
 		String temporaryPassword = generateTemporaryPassword();
 		try {
-			emailService.sendTemporaryPassword(email,temporaryPassword);
+			emailService.sendTemporaryPassword(param.getEmail(),temporaryPassword);
 		} catch (Exception e) {
 			return "이메일 전송에 실패했습니다.";
 		}
 
 		// 4. 임시 비밀번호 저장
-		userService.saveTemporaryPassword(email, temporaryPassword);
+		userService.saveTemporaryPassword(param.getEmail(), temporaryPassword);
 
 		return "임시 비밀번호가 이메일로 전송되었습니다.";
 	}

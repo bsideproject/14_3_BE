@@ -86,9 +86,9 @@ public class AnswerController {
 		answerService.passAnswer(qNo, email);
 		return ResponseEntity.ok(msg);
 	}
-	
-	/* 답변하지 않은 질문 삭제 */
+
 	@Scheduled(cron = "0 0 0 * * *")
+	/* 답변하지 않은 질문 삭제 */
 	public ResponseEntity<String> deleteUnanswer() {
 		answerService.deleteUnanswer();
 		String msg = "Unanswer delete successful.";
