@@ -3,6 +3,7 @@ package com.bside.BSIDE.user.web;
 import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bside.BSIDE.jwt.JwtProvider;
 import com.bside.BSIDE.user.domain.UserDto;
 import com.bside.BSIDE.user.service.UserService;
 
@@ -31,11 +33,13 @@ import io.swagger.v3.oas.annotations.Operation;
 public class UserController {
 
 	private final UserService userService;
+	private final PasswordEncoder passwordEncoder;
 
-	public UserController(UserService userService) {
+	public UserController(UserService userService, PasswordEncoder passwordEncoder) {
 		this.userService = userService;
+		this.passwordEncoder = passwordEncoder;
 	}
-
+	
 	/* 회원 조회 */
 	@GetMapping("/select/{email}")
 	@Operation(summary = "회원 조회", description = "String eml")
@@ -82,16 +86,23 @@ public class UserController {
 	@ResponseBody
 	@PostMapping("/login")
 	@Operation(summary = "로그인")
-	public ResponseEntity<?> login(@RequestBody Map<String, Object> obj) {
+	public ResponseEntity<?> login(@RequestBody Map<String, String> obj) {
 		System.out.println(obj.get("email").toString());
-		UserDto user = new UserDto();
-		user = userService.getUserByEmailPw(obj.get("email").toString(), obj.get("password").toString());
-		if (user != null) {
-			return ResponseEntity.ok().body(user);
-		} else {
-			String msg = "아이디 혹은 비밀번호가 일치하지 않습니다.";
-			return ResponseEntity.ok(msg);
+		UserDto user = userService.getUserByEmailPw(obj.get("email").toString(), passwordEncoder.encode(obj.get("password").toString()));
+		System.out.println(passwordEncoder.encode(obj.get("password").toString()));
+		
+		user = userService.getUserByEmail(obj.get("email").toString());
+		
+		if(user == null) {
+			return ResponseEntity.ok().body(obj.get("email") + "는(은) 회원이 아닙니다.");
 		}
+		
+		if(!passwordEncoder.matches(obj.get("password").toString(), user.getPassword())) {
+			return ResponseEntity.ok().body("비밀번호가 다릅니다.");
+		}
+		
+		String accessToken = JwtProvider.createToken(obj.get("email").toString());
+		return ResponseEntity.ok().body(accessToken);
 	}
 
     @PostMapping("/passwordConfirm")

@@ -56,5 +56,4 @@ public class UserServiceImpl implements UserService {
 		return userMapper.getPasswordConfirm(email,password).equals(password);
 	}
 
-
 }

@@ -48,7 +48,7 @@ spring:
   # 존재하지 않는 api 요청 처리
     throw-exception-if-no-handler-found: true
   datasource: 
-    url: jdbc:mysql://49.50.174.69:3306/bside?characterEncoding=UTF-8&serverTimezone=UTC&useSSL=false&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://43.202.90.197:3306/bside?characterEncoding=UTF-8&serverTimezone=UTC&useSSL=true
     username: bside
     password: bside
     driver-class-name: com.mysql.cj.jdbc.Driver   
@@ -72,3 +72,9 @@ logging:
         SQL: debug
       springframework:
         web: debug
+        
+jwt:
+  header: Authorization
+  secret: 
+    key: 4oCYbGVhLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQtbmZ0LXNwcmluZy1ib290LWp3dC10dXRvcmlhbOKAmQo=
+  token-validity-in-seconds: 86400

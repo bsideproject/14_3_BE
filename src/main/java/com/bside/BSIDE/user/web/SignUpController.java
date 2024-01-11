@@ -4,6 +4,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,16 +31,19 @@ public class SignUpController {
 
     private final SignUpService signUpService;
     private final UserService userService;
+    private final PasswordEncoder passwordEncoder;
     
-    public SignUpController(SignUpService signUpService, UserService userService) {
+    public SignUpController(SignUpService signUpService, UserService userService, PasswordEncoder passwordEncoder) {
     	this.signUpService = signUpService;
     	this.userService = userService;
+    	this.passwordEncoder = passwordEncoder;
     }
     
 
     @PostMapping("/register")
     @Operation(summary = "회원가입", description = "UserDto userDto")
     public ResponseEntity<?> register(@RequestBody UserDto userDto) throws Exception {
+    	userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
         signUpService.signUser(userDto);
         String result = "회원가입이 완료되었습니다.";
         return new ResponseEntity<>(result,HttpStatus.OK);
