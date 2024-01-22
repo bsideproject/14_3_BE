@@ -51,7 +51,12 @@ spring:
     url: jdbc:mysql://43.202.90.197:3306/bside?characterEncoding=UTF-8&serverTimezone=UTC&useSSL=true
     username: bside
     password: bside
-    driver-class-name: com.mysql.cj.jdbc.Driver   
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    
+  data:
+    redis:
+      host: localhost
+      port: 6379
 
 mybatis: 
   mapper-locations: classpath:sqlmap/mapper/**/*.xml
@@ -74,7 +79,5 @@ logging:
         web: debug
         
 jwt:
-  header: Authorization
-  secret: 
-    key: 4oCYbGVhLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQtbmZ0LXNwcmluZy1ib290LWp3dC10dXRvcmlhbOKAmQo=
-  token-validity-in-seconds: 86400
+  secretkey: 4oCYbGVhLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQtbmZ0LXNwcmluZy1ib290LWp3dC10dXRvcmlhbOKAmQo=
+  refreshKey: c3ByaW5nYm9vdC1qd3QtdHV0b3JpYWwtc3ByaW5nYm9vdC1qd3QtdHV0b3JpYWwtc3ByaW5nYm9vdC1qd3QtdHV0b3JpYWwK

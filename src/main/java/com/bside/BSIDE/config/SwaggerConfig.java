@@ -1,24 +1,30 @@
 package com.bside.BSIDE.config;
 
+import java.util.Arrays;
+
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
+import io.swagger.v3.oas.models.security.SecurityScheme;
+
 
 @Configuration
 public class SwaggerConfig implements WebMvcConfigurer {
 	
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/swagger-ui/**")
-                .addResourceLocations("classpath:/META-INF/resources/webjars/springfox-swagger-ui/")
-                .resourceChain(false);
-    }
+	@Bean
+    public OpenAPI openAPI(){
+        SecurityScheme securityScheme = new SecurityScheme()
+                .type(SecurityScheme.Type.HTTP).scheme("bearer").bearerFormat("JWT")
+                .in(SecurityScheme.In.HEADER).name("Authorization");
+        SecurityRequirement securityRequirement = new SecurityRequirement().addList("bearerAuth");
 
-    @Override
-    public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/swagger-ui/")
-                .setViewName("forward:/swagger-ui/index.html");
+        return new OpenAPI()
+                .components(new Components().addSecuritySchemes("bearerAuth", securityScheme))
+                .security(Arrays.asList(securityRequirement));
     }
 
 }

@@ -1,9 +1,15 @@
 package com.bside.BSIDE.user.web;
 
+import java.time.Duration;
+import java.util.List;
 import java.util.Map;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,15 +17,20 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bside.BSIDE.jwt.JwtProvider;
+import com.bside.BSIDE.jwt.dto.MemberLoginResponseDto;
+import com.bside.BSIDE.jwt.dto.RedisDao;
 import com.bside.BSIDE.user.domain.UserDto;
 import com.bside.BSIDE.user.service.UserService;
 
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 
 /**
  * @UserController
@@ -29,16 +40,14 @@ import io.swagger.v3.oas.annotations.Operation;
 
 @CrossOrigin
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/users")
 public class UserController {
 
 	private final UserService userService;
 	private final PasswordEncoder passwordEncoder;
-
-	public UserController(UserService userService, PasswordEncoder passwordEncoder) {
-		this.userService = userService;
-		this.passwordEncoder = passwordEncoder;
-	}
+	private final JwtProvider jwtProvider;
+	private final RedisDao redisDao;
 	
 	/* 회원 조회 */
 	@GetMapping("/select/{email}")
@@ -101,8 +110,39 @@ public class UserController {
 			return ResponseEntity.ok().body("비밀번호가 다릅니다.");
 		}
 		
-		String accessToken = JwtProvider.createToken(obj.get("email").toString());
-		return ResponseEntity.ok().body(accessToken);
+		Long memberId = 1L;
+        String email = obj.get("email").toString();
+        List<String> roles = List.of("ROLE_USER");
+		
+		String accessToken = jwtProvider.createAccessToken(memberId, email, roles);
+        String refreshToken = jwtProvider.createRefreshToken(memberId, email, roles);        
+        
+        redisDao.setValues(email, refreshToken, Duration.ofDays(7));
+        
+        MemberLoginResponseDto loginResponse = MemberLoginResponseDto.builder()
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
+                .memberId(memberId)
+                .name("name")
+                .build();
+        
+		return new ResponseEntity<>(loginResponse, HttpStatus.OK);
+	}
+	
+	@PostMapping(value = "/logout")
+	@Operation(summary = "로그아웃")
+	public ResponseEntity<Void> logout(HttpServletRequest servletRequest) {
+		String atk = servletRequest.getHeader("Authorization");
+		String accessToken = atk.substring(7);
+		Long expiration = jwtProvider.getExpiration(accessToken);
+		String email = SecurityContextHolder.getContext().getAuthentication().getName();
+		
+		if(redisDao.getValues(email) != null) {
+			redisDao.deleteValues(email);
+		}
+		
+		redisDao.setValues(accessToken, "logout", Duration.ofMillis(expiration));
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
     @PostMapping("/passwordConfirm")

@@ -9,6 +9,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import com.bside.BSIDE.jwt.exception.CustomAuthenticationEntryPoint;
+
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -23,7 +25,8 @@ import lombok.RequiredArgsConstructor;
 public class WebConfig {	
 	
 //	순환 참조, 양방향 의존관계 해결 시급
-//	private final JwtProvider jwtProvider;
+	 private final AuthenticationManagerConfig authenticationManagerConfig;
+	 private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
 	
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -48,8 +51,11 @@ public class WebConfig {
 					.requestMatchers("/users/**", "/user/**", "/question/**", "/password/**", "/email/**", "/category/**").permitAll()
 					.anyRequest().authenticated()
 			
-			);
-//			.addFilterBefore(new JwtAuthenticationFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class); // 필터 구현 후 사용
+			)
+			.exceptionHandling((exceptionConfig) ->
+				exceptionConfig.authenticationEntryPoint(customAuthenticationEntryPoint)
+			)			
+			.apply(authenticationManagerConfig); // 필터 구현 후 사용
 		
 			
 		return http.build();
