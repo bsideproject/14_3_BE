@@ -87,6 +87,7 @@ public class UserController {
 		}
 
 		userDto.setEml(email);
+		userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
 		userService.updateUser(userDto);
 		return ResponseEntity.ok().body("회원 수정이 성공하였습니다.");
 	}
@@ -123,7 +124,7 @@ public class UserController {
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .memberId(memberId)
-                .name("name")
+                .name(user.getUsrNm())
                 .build();
         
 		return new ResponseEntity<>(loginResponse, HttpStatus.OK);
