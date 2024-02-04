@@ -34,6 +34,9 @@ public class WebConfig {
 			.csrf((csrfConfig) ->
 				csrfConfig.disable()
 			)
+			.cors((corsConfig) ->
+				corsConfig.disable()
+			)			
 			.headers((headerCofig) ->
 				headerCofig.frameOptions(frameOptionsConfig ->
 					frameOptionsConfig.disable()
