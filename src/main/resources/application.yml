@@ -4,7 +4,7 @@ server:
   ssl:
     key-store: classpath:ssl/keystore.p12
     key-store-type: PKCS12
-    key-store-password: rhald1q2w
+    key-store-password: rhald!q2w
   servlet:
     context-path: /api
     encoding:
